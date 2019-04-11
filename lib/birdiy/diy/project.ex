@@ -2,7 +2,7 @@ defmodule Birdiy.Diy.Project do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Birdiy.{Accounts, Diy}
+  alias Birdiy.{Accounts, Diy, Timeline}
 
   schema "projects" do
     field :introduction, :string
@@ -13,6 +13,7 @@ defmodule Birdiy.Diy.Project do
     has_many :materials, Diy.ProjectMaterials
     has_many :file_resources, Diy.ProjectFileResource
     has_many :methods, Diy.ProjectMethod
+    has_many :related_posts, Timeline.Post, foreign_key: :related_project_id
 
     timestamps()
   end

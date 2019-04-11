@@ -2,8 +2,11 @@ defmodule Birdiy.Diy.ProjectCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Birdiy.Diy
+
   schema "project_categories" do
     field :name, :string
+    has_many :projects, Diy.Project, foreign_key: :category_id
 
     timestamps()
   end
