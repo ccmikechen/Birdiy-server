@@ -10,7 +10,7 @@ defmodule Birdiy.Diy.Project do
     field :tip, :string
     belongs_to :author, Accounts.User
     belongs_to :category, Diy.ProjectCategory
-    has_many :materials, Diy.ProjectMaterials
+    has_many :materials, Diy.ProjectMaterial
     has_many :file_resources, Diy.ProjectFileResource
     has_many :methods, Diy.ProjectMethod
     has_many :related_posts, Timeline.Post, foreign_key: :related_project_id

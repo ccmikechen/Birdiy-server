@@ -4,8 +4,9 @@ defmodule Birdiy.Repo.Migrations.CreateProjectMaterials do
   def change do
     create table(:project_materials) do
       add :name, :string, null: false
-      add :amountUnit, :string, null: false
+      add :amount_unit, :string, null: false
       add :url, :string
+      add :order, :decimal, null: false
       add :project_id, references(:projects, on_delete: :nothing), null: false
 
       timestamps()

@@ -5,6 +5,7 @@ defmodule Birdiy.Repo.Migrations.CreateProjectFileResources do
     create table(:project_file_resources) do
       add :name, :string, null: false
       add :url, :string, null: false
+      add :order, :decimal, null: false
       add :project_id, references(:projects, on_delete: :nothing), null: false
 
       timestamps()

@@ -3,9 +3,10 @@ defmodule Birdiy.Diy.ProjectMaterial do
   import Ecto.Changeset
 
   schema "project_materials" do
-    field :amountUnit, :string
+    field :amount_unit, :string
     field :name, :string
     field :url, :string
+    field :order, :decimal
     belongs_to :project, Birdiy.Diy.Project
 
     timestamps()
@@ -14,7 +15,7 @@ defmodule Birdiy.Diy.ProjectMaterial do
   @doc false
   def changeset(project_material, attrs) do
     project_material
-    |> cast(attrs, [:name, :amountUnit, :url])
-    |> validate_required([:name, :amountUnit, :project])
+    |> cast(attrs, [:name, :amountUnit, :url, :order])
+    |> validate_required([:name, :amountUnit, :order, :project])
   end
 end
