@@ -6,8 +6,16 @@ defmodule Birdiy.TimelineTest do
   describe "posts" do
     alias Birdiy.Timeline.Post
 
-    @valid_attrs %{message: "some message", related_project_name: "some related_project_name", related_project_type: "some related_project_type"}
-    @update_attrs %{message: "some updated message", related_project_name: "some updated related_project_name", related_project_type: "some updated related_project_type"}
+    @valid_attrs %{
+      message: "some message",
+      related_project_name: "some related_project_name",
+      related_project_type: "some related_project_type"
+    }
+    @update_attrs %{
+      message: "some updated message",
+      related_project_name: "some updated related_project_name",
+      related_project_type: "some updated related_project_type"
+    }
     @invalid_attrs %{message: nil, related_project_name: nil, related_project_type: nil}
 
     def post_fixture(attrs \\ %{}) do
@@ -103,7 +111,10 @@ defmodule Birdiy.TimelineTest do
 
     test "update_post_photo/2 with valid data updates the post_photo" do
       post_photo = post_photo_fixture()
-      assert {:ok, %PostPhoto{} = post_photo} = Timeline.update_post_photo(post_photo, @update_attrs)
+
+      assert {:ok, %PostPhoto{} = post_photo} =
+               Timeline.update_post_photo(post_photo, @update_attrs)
+
       assert post_photo.image == "some updated image"
     end
 

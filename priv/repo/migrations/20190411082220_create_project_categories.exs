@@ -7,6 +7,5 @@ defmodule Birdiy.Repo.Migrations.CreateProjectCategories do
 
       timestamps()
     end
-
   end
 end

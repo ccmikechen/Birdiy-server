@@ -91,7 +91,8 @@ defmodule Birdiy.AccountsTest do
     end
 
     test "create_user_following/1 with valid data creates a user_following" do
-      assert {:ok, %UserFollowing{} = user_following} = Accounts.create_user_following(@valid_attrs)
+      assert {:ok, %UserFollowing{} = user_following} =
+               Accounts.create_user_following(@valid_attrs)
     end
 
     test "create_user_following/1 with invalid data returns error changeset" do
@@ -100,12 +101,17 @@ defmodule Birdiy.AccountsTest do
 
     test "update_user_following/2 with valid data updates the user_following" do
       user_following = user_following_fixture()
-      assert {:ok, %UserFollowing{} = user_following} = Accounts.update_user_following(user_following, @update_attrs)
+
+      assert {:ok, %UserFollowing{} = user_following} =
+               Accounts.update_user_following(user_following, @update_attrs)
     end
 
     test "update_user_following/2 with invalid data returns error changeset" do
       user_following = user_following_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_following(user_following, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_following(user_following, @invalid_attrs)
+
       assert user_following == Accounts.get_user_following!(user_following.id)
     end
 
@@ -144,11 +150,14 @@ defmodule Birdiy.AccountsTest do
 
     test "get_user_favorite_project!/1 returns the user_favorite_project with given id" do
       user_favorite_project = user_favorite_project_fixture()
-      assert Accounts.get_user_favorite_project!(user_favorite_project.id) == user_favorite_project
+
+      assert Accounts.get_user_favorite_project!(user_favorite_project.id) ==
+               user_favorite_project
     end
 
     test "create_user_favorite_project/1 with valid data creates a user_favorite_project" do
-      assert {:ok, %UserFavoriteProject{} = user_favorite_project} = Accounts.create_user_favorite_project(@valid_attrs)
+      assert {:ok, %UserFavoriteProject{} = user_favorite_project} =
+               Accounts.create_user_favorite_project(@valid_attrs)
     end
 
     test "create_user_favorite_project/1 with invalid data returns error changeset" do
@@ -157,19 +166,30 @@ defmodule Birdiy.AccountsTest do
 
     test "update_user_favorite_project/2 with valid data updates the user_favorite_project" do
       user_favorite_project = user_favorite_project_fixture()
-      assert {:ok, %UserFavoriteProject{} = user_favorite_project} = Accounts.update_user_favorite_project(user_favorite_project, @update_attrs)
+
+      assert {:ok, %UserFavoriteProject{} = user_favorite_project} =
+               Accounts.update_user_favorite_project(user_favorite_project, @update_attrs)
     end
 
     test "update_user_favorite_project/2 with invalid data returns error changeset" do
       user_favorite_project = user_favorite_project_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_favorite_project(user_favorite_project, @invalid_attrs)
-      assert user_favorite_project == Accounts.get_user_favorite_project!(user_favorite_project.id)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_favorite_project(user_favorite_project, @invalid_attrs)
+
+      assert user_favorite_project ==
+               Accounts.get_user_favorite_project!(user_favorite_project.id)
     end
 
     test "delete_user_favorite_project/1 deletes the user_favorite_project" do
       user_favorite_project = user_favorite_project_fixture()
-      assert {:ok, %UserFavoriteProject{}} = Accounts.delete_user_favorite_project(user_favorite_project)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_favorite_project!(user_favorite_project.id) end
+
+      assert {:ok, %UserFavoriteProject{}} =
+               Accounts.delete_user_favorite_project(user_favorite_project)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_user_favorite_project!(user_favorite_project.id)
+      end
     end
 
     test "change_user_favorite_project/1 returns a user_favorite_project changeset" do
@@ -205,7 +225,8 @@ defmodule Birdiy.AccountsTest do
     end
 
     test "create_user_liked_project/1 with valid data creates a user_liked_project" do
-      assert {:ok, %UserLikedProject{} = user_liked_project} = Accounts.create_user_liked_project(@valid_attrs)
+      assert {:ok, %UserLikedProject{} = user_liked_project} =
+               Accounts.create_user_liked_project(@valid_attrs)
     end
 
     test "create_user_liked_project/1 with invalid data returns error changeset" do
@@ -214,19 +235,27 @@ defmodule Birdiy.AccountsTest do
 
     test "update_user_liked_project/2 with valid data updates the user_liked_project" do
       user_liked_project = user_liked_project_fixture()
-      assert {:ok, %UserLikedProject{} = user_liked_project} = Accounts.update_user_liked_project(user_liked_project, @update_attrs)
+
+      assert {:ok, %UserLikedProject{} = user_liked_project} =
+               Accounts.update_user_liked_project(user_liked_project, @update_attrs)
     end
 
     test "update_user_liked_project/2 with invalid data returns error changeset" do
       user_liked_project = user_liked_project_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_liked_project(user_liked_project, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_liked_project(user_liked_project, @invalid_attrs)
+
       assert user_liked_project == Accounts.get_user_liked_project!(user_liked_project.id)
     end
 
     test "delete_user_liked_project/1 deletes the user_liked_project" do
       user_liked_project = user_liked_project_fixture()
       assert {:ok, %UserLikedProject{}} = Accounts.delete_user_liked_project(user_liked_project)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_liked_project!(user_liked_project.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_user_liked_project!(user_liked_project.id)
+      end
     end
 
     test "change_user_liked_project/1 returns a user_liked_project changeset" do
@@ -262,7 +291,8 @@ defmodule Birdiy.AccountsTest do
     end
 
     test "create_user_viewed_project/1 with valid data creates a user_viewed_project" do
-      assert {:ok, %UserViewedProject{} = user_viewed_project} = Accounts.create_user_viewed_project(@valid_attrs)
+      assert {:ok, %UserViewedProject{} = user_viewed_project} =
+               Accounts.create_user_viewed_project(@valid_attrs)
     end
 
     test "create_user_viewed_project/1 with invalid data returns error changeset" do
@@ -271,19 +301,29 @@ defmodule Birdiy.AccountsTest do
 
     test "update_user_viewed_project/2 with valid data updates the user_viewed_project" do
       user_viewed_project = user_viewed_project_fixture()
-      assert {:ok, %UserViewedProject{} = user_viewed_project} = Accounts.update_user_viewed_project(user_viewed_project, @update_attrs)
+
+      assert {:ok, %UserViewedProject{} = user_viewed_project} =
+               Accounts.update_user_viewed_project(user_viewed_project, @update_attrs)
     end
 
     test "update_user_viewed_project/2 with invalid data returns error changeset" do
       user_viewed_project = user_viewed_project_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_viewed_project(user_viewed_project, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_viewed_project(user_viewed_project, @invalid_attrs)
+
       assert user_viewed_project == Accounts.get_user_viewed_project!(user_viewed_project.id)
     end
 
     test "delete_user_viewed_project/1 deletes the user_viewed_project" do
       user_viewed_project = user_viewed_project_fixture()
-      assert {:ok, %UserViewedProject{}} = Accounts.delete_user_viewed_project(user_viewed_project)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_viewed_project!(user_viewed_project.id) end
+
+      assert {:ok, %UserViewedProject{}} =
+               Accounts.delete_user_viewed_project(user_viewed_project)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_user_viewed_project!(user_viewed_project.id)
+      end
     end
 
     test "change_user_viewed_project/1 returns a user_viewed_project changeset" do

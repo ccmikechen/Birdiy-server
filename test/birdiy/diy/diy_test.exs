@@ -30,7 +30,9 @@ defmodule Birdiy.DiyTest do
     end
 
     test "create_project_category/1 with valid data creates a project_category" do
-      assert {:ok, %ProjectCategory{} = project_category} = Diy.create_project_category(@valid_attrs)
+      assert {:ok, %ProjectCategory{} = project_category} =
+               Diy.create_project_category(@valid_attrs)
+
       assert project_category.name == "some name"
     end
 
@@ -40,13 +42,19 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_category/2 with valid data updates the project_category" do
       project_category = project_category_fixture()
-      assert {:ok, %ProjectCategory{} = project_category} = Diy.update_project_category(project_category, @update_attrs)
+
+      assert {:ok, %ProjectCategory{} = project_category} =
+               Diy.update_project_category(project_category, @update_attrs)
+
       assert project_category.name == "some updated name"
     end
 
     test "update_project_category/2 with invalid data returns error changeset" do
       project_category = project_category_fixture()
-      assert {:error, %Ecto.Changeset{}} = Diy.update_project_category(project_category, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Diy.update_project_category(project_category, @invalid_attrs)
+
       assert project_category == Diy.get_project_category!(project_category.id)
     end
 
@@ -66,7 +74,11 @@ defmodule Birdiy.DiyTest do
     alias Birdiy.Diy.Project
 
     @valid_attrs %{introduction: "some introduction", name: "some name", tip: "some tip"}
-    @update_attrs %{introduction: "some updated introduction", name: "some updated name", tip: "some updated tip"}
+    @update_attrs %{
+      introduction: "some updated introduction",
+      name: "some updated name",
+      tip: "some updated tip"
+    }
     @invalid_attrs %{introduction: nil, name: nil, tip: nil}
 
     def project_fixture(attrs \\ %{}) do
@@ -129,7 +141,11 @@ defmodule Birdiy.DiyTest do
     alias Birdiy.Diy.ProjectMaterial
 
     @valid_attrs %{amountUnit: "some amountUnit", name: "some name", url: "some url"}
-    @update_attrs %{amountUnit: "some updated amountUnit", name: "some updated name", url: "some updated url"}
+    @update_attrs %{
+      amountUnit: "some updated amountUnit",
+      name: "some updated name",
+      url: "some updated url"
+    }
     @invalid_attrs %{amountUnit: nil, name: nil, url: nil}
 
     def project_material_fixture(attrs \\ %{}) do
@@ -152,7 +168,9 @@ defmodule Birdiy.DiyTest do
     end
 
     test "create_project_material/1 with valid data creates a project_material" do
-      assert {:ok, %ProjectMaterial{} = project_material} = Diy.create_project_material(@valid_attrs)
+      assert {:ok, %ProjectMaterial{} = project_material} =
+               Diy.create_project_material(@valid_attrs)
+
       assert project_material.amountUnit == "some amountUnit"
       assert project_material.name == "some name"
       assert project_material.url == "some url"
@@ -164,7 +182,10 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_material/2 with valid data updates the project_material" do
       project_material = project_material_fixture()
-      assert {:ok, %ProjectMaterial{} = project_material} = Diy.update_project_material(project_material, @update_attrs)
+
+      assert {:ok, %ProjectMaterial{} = project_material} =
+               Diy.update_project_material(project_material, @update_attrs)
+
       assert project_material.amountUnit == "some updated amountUnit"
       assert project_material.name == "some updated name"
       assert project_material.url == "some updated url"
@@ -172,7 +193,10 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_material/2 with invalid data returns error changeset" do
       project_material = project_material_fixture()
-      assert {:error, %Ecto.Changeset{}} = Diy.update_project_material(project_material, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Diy.update_project_material(project_material, @invalid_attrs)
+
       assert project_material == Diy.get_project_material!(project_material.id)
     end
 
@@ -215,7 +239,9 @@ defmodule Birdiy.DiyTest do
     end
 
     test "create_project_file_resource/1 with valid data creates a project_file_resource" do
-      assert {:ok, %ProjectFileResource{} = project_file_resource} = Diy.create_project_file_resource(@valid_attrs)
+      assert {:ok, %ProjectFileResource{} = project_file_resource} =
+               Diy.create_project_file_resource(@valid_attrs)
+
       assert project_file_resource.name == "some name"
       assert project_file_resource.url == "some url"
     end
@@ -226,21 +252,32 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_file_resource/2 with valid data updates the project_file_resource" do
       project_file_resource = project_file_resource_fixture()
-      assert {:ok, %ProjectFileResource{} = project_file_resource} = Diy.update_project_file_resource(project_file_resource, @update_attrs)
+
+      assert {:ok, %ProjectFileResource{} = project_file_resource} =
+               Diy.update_project_file_resource(project_file_resource, @update_attrs)
+
       assert project_file_resource.name == "some updated name"
       assert project_file_resource.url == "some updated url"
     end
 
     test "update_project_file_resource/2 with invalid data returns error changeset" do
       project_file_resource = project_file_resource_fixture()
-      assert {:error, %Ecto.Changeset{}} = Diy.update_project_file_resource(project_file_resource, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Diy.update_project_file_resource(project_file_resource, @invalid_attrs)
+
       assert project_file_resource == Diy.get_project_file_resource!(project_file_resource.id)
     end
 
     test "delete_project_file_resource/1 deletes the project_file_resource" do
       project_file_resource = project_file_resource_fixture()
-      assert {:ok, %ProjectFileResource{}} = Diy.delete_project_file_resource(project_file_resource)
-      assert_raise Ecto.NoResultsError, fn -> Diy.get_project_file_resource!(project_file_resource.id) end
+
+      assert {:ok, %ProjectFileResource{}} =
+               Diy.delete_project_file_resource(project_file_resource)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Diy.get_project_file_resource!(project_file_resource.id)
+      end
     end
 
     test "change_project_file_resource/1 returns a project_file_resource changeset" do
@@ -252,8 +289,18 @@ defmodule Birdiy.DiyTest do
   describe "project_methods" do
     alias Birdiy.Diy.ProjectMethod
 
-    @valid_attrs %{content: "some content", image: "some image", order: "120.5", title: "some title"}
-    @update_attrs %{content: "some updated content", image: "some updated image", order: "456.7", title: "some updated title"}
+    @valid_attrs %{
+      content: "some content",
+      image: "some image",
+      order: "120.5",
+      title: "some title"
+    }
+    @update_attrs %{
+      content: "some updated content",
+      image: "some updated image",
+      order: "456.7",
+      title: "some updated title"
+    }
     @invalid_attrs %{content: nil, image: nil, order: nil, title: nil}
 
     def project_method_fixture(attrs \\ %{}) do
@@ -289,7 +336,10 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_method/2 with valid data updates the project_method" do
       project_method = project_method_fixture()
-      assert {:ok, %ProjectMethod{} = project_method} = Diy.update_project_method(project_method, @update_attrs)
+
+      assert {:ok, %ProjectMethod{} = project_method} =
+               Diy.update_project_method(project_method, @update_attrs)
+
       assert project_method.content == "some updated content"
       assert project_method.image == "some updated image"
       assert project_method.order == Decimal.new("456.7")
@@ -298,7 +348,10 @@ defmodule Birdiy.DiyTest do
 
     test "update_project_method/2 with invalid data returns error changeset" do
       project_method = project_method_fixture()
-      assert {:error, %Ecto.Changeset{}} = Diy.update_project_method(project_method, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Diy.update_project_method(project_method, @invalid_attrs)
+
       assert project_method == Diy.get_project_method!(project_method.id)
     end
 
