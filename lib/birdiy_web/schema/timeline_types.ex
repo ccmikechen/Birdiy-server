@@ -3,6 +3,14 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
 
   alias BirdiyWeb.Resolvers
 
+  object :post_photo do
+    field :image, non_null(:string)
+
+    field :post, non_null(:post) do
+      resolve(&Resolvers.Timeline.photo_post/3)
+    end
+  end
+
   object :post do
     field :message, :string
     field :related_project_name, :string
@@ -14,6 +22,10 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
 
     field :related_project, :project do
       resolve(&Resolvers.Timeline.post_related_project/3)
+    end
+
+    field :photos, list_of(:post_photo) do
+      resolve(&Resolvers.Timeline.photos_for_post/3)
     end
   end
 end

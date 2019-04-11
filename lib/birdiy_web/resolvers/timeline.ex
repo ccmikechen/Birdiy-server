@@ -15,7 +15,14 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   end
 
   def posts_for_user(user, _, _) do
-    query = Ecto.assoc(user, :posts)
-    {:ok, Repo.all(query)}
+    Helpers.assoc(user, :posts)
+  end
+
+  def photo_post(post_photo, _, _) do
+    Helpers.batch_by_id(Timeline.Post, post_photo.post_id)
+  end
+
+  def photos_for_post(post, _, _) do
+    Helpers.assoc(post, :photos)
   end
 end
