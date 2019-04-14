@@ -17,10 +17,15 @@ defmodule BirdiyWeb.Schema do
       %Diy.Project{}, _ ->
         :project
 
+      %Timeline.Post{}, _ ->
+        :post
+
       _, _ ->
         nil
     end)
   end
+
+  connection(node_type: :post)
 
   query do
     node field do
@@ -28,9 +33,16 @@ defmodule BirdiyWeb.Schema do
         %{type: :user, id: local_id}, _ ->
           {:ok, Repo.get(Accounts.User, local_id)}
 
+        %{type: :post, id: local_id}, _ ->
+          {:ok, Repo.get(Timeline.Post, local_id)}
+
         _, _ ->
           {:error, "Unknown node"}
       end)
+    end
+
+    field :viewer, :user do
+      resolve(&Resolvers.Accounts.viewer/3)
     end
 
     field :users, list_of(:user) do
@@ -41,8 +53,8 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.projects/3)
     end
 
-    field :posts, list_of(:post) do
-      resolve(&Resolvers.Timeline.posts/3)
+    connection field :all_posts, node_type: :post do
+      resolve(&Resolvers.Timeline.posts/2)
     end
   end
 

@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Schema.TimelineTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   alias BirdiyWeb.Resolvers
 
@@ -11,7 +12,7 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     end
   end
 
-  object :post do
+  node object(:post) do
     field :message, :string
     field :related_project_name, :string
     field :related_project_type, non_null(:string)

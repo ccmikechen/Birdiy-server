@@ -3,6 +3,7 @@ defmodule BirdiyWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug BirdiyWeb.Context
   end
 
   scope "/api", BirdiyWeb do

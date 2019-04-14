@@ -2,6 +2,10 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   alias Birdiy.{Repo, Accounts}
   alias BirdiyWeb.Schema.Helpers
 
+  def viewer(_, _, %{context: %{current_user: current_user}}) do
+    {:ok, current_user}
+  end
+
   def users(_, _, _) do
     {:ok, Accounts.list_users()}
   end

@@ -1,9 +1,13 @@
 defmodule BirdiyWeb.Resolvers.Timeline do
+  import Ecto.Query
+
+  alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Timeline, Diy, Accounts}
   alias BirdiyWeb.Schema.Helpers
 
-  def posts(_, _, _) do
-    {:ok, Timeline.list_posts() |> Repo.preload([:author, :related_project])}
+  def posts(pagination_args, _) do
+    from(Timeline.Post, order_by: [desc: :inserted_at])
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def post_author(post, _, _) do
