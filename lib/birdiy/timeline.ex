@@ -133,6 +133,12 @@ defmodule Birdiy.Timeline do
   """
   def get_post_photo!(id), do: Repo.get!(PostPhoto, id)
 
+  def get_first_photo_of_post!(post) do
+    from(p in PostPhoto, where: p.post_id == ^post.id)
+    |> first()
+    |> Repo.one()
+  end
+
   @doc """
   Creates a post_photo.
 

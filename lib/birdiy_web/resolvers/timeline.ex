@@ -25,4 +25,8 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   def photos_for_post(post, _, _) do
     Helpers.assoc(post, :photos)
   end
+
+  def thumbnail_for_post(post, _, _) do
+    {:ok, Timeline.get_first_photo_of_post!(post)}
+  end
 end

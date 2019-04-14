@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.UserSocket do
   use Phoenix.Socket
+  use Absinthe.Phoenix.Socket, schema: BirdiyWeb.Schema
 
   ## Channels
   # channel "room:*", BirdiyWeb.RoomChannel

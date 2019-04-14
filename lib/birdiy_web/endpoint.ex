@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :birdiy
+  use Absinthe.Phoenix.Endpoint
 
   socket "/socket", BirdiyWeb.UserSocket,
     websocket: true,

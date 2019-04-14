@@ -44,7 +44,8 @@ defmodule Birdiy.MixProject do
       {:absinthe, "~> 1.4.16"},
       {:absinthe_plug, "~> 1.4.6"},
       {:absinthe_phoenix, "~> 1.4.3"},
-      {:absinthe_relay, "~> 1.4.6"}
+      {:absinthe_relay, "~> 1.4.6"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 

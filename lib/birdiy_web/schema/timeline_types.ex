@@ -27,5 +27,11 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     field :photos, list_of(:post_photo) do
       resolve(&Resolvers.Timeline.photos_for_post/3)
     end
+
+    field :thumbnail, :post_photo do
+      resolve(&Resolvers.Timeline.thumbnail_for_post/3)
+    end
+
+    field :inserted_at, :datetime
   end
 end
