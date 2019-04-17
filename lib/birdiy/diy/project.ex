@@ -8,6 +8,7 @@ defmodule Birdiy.Diy.Project do
     field :introduction, :string
     field :name, :string
     field :tip, :string
+    field :image, :string
     belongs_to :author, Accounts.User
     belongs_to :category, Diy.ProjectCategory
     has_many :materials, Diy.ProjectMaterial
@@ -21,7 +22,7 @@ defmodule Birdiy.Diy.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:name, :introduction, :tip])
-    |> validate_required([:name, :author, :category])
+    |> cast(attrs, [:name, :introduction, :tip, :image])
+    |> validate_required([:name, :author, :category, :image])
   end
 end

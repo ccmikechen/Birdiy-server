@@ -25,6 +25,7 @@ defmodule BirdiyWeb.Schema do
     end)
   end
 
+  connection(node_type: :project)
   connection(node_type: :post)
 
   query do
@@ -32,6 +33,9 @@ defmodule BirdiyWeb.Schema do
       resolve(fn
         %{type: :user, id: local_id}, _ ->
           {:ok, Repo.get(Accounts.User, local_id)}
+
+        %{type: :prject, id: local_id}, _ ->
+          {:ok, Repo.get(Diy.Project, local_id)}
 
         %{type: :post, id: local_id}, _ ->
           {:ok, Repo.get(Timeline.Post, local_id)}
@@ -49,8 +53,8 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Accounts.users/3)
     end
 
-    field :projects, list_of(:project) do
-      resolve(&Resolvers.Diy.projects/3)
+    connection field :all_projects, node_type: :project do
+      resolve(&Resolvers.Diy.projects/2)
     end
 
     connection field :all_posts, node_type: :post do

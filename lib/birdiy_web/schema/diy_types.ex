@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Schema.DiyTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   alias BirdiyWeb.Resolvers
 
@@ -43,10 +44,11 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
-  object :project do
+  node object(:project) do
     field :introduction, :string
     field :name, non_null(:string)
     field :tip, :string
+    field :image, non_null(:string)
 
     field :author, non_null(:user) do
       resolve(&Resolvers.Diy.project_author/3)

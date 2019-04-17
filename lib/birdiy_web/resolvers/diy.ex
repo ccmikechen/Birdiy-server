@@ -1,9 +1,13 @@
 defmodule BirdiyWeb.Resolvers.Diy do
+  import Ecto.Query
+
+  alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Diy, Accounts}
   alias BirdiyWeb.Schema.Helpers
 
-  def projects(_, _, _) do
-    {:ok, Diy.list_projects()}
+  def projects(pagination_args, _) do
+    from(Diy.Project, order_by: [desc: :inserted_at])
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def project_author(project, _, _) do
