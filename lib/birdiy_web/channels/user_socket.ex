@@ -17,6 +17,12 @@ defmodule BirdiyWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket, _connect_info) do
+    socket =
+      Absinthe.Phoenix.Socket.put_options(
+        socket,
+        context: %{current_user: Birdiy.Repo.get(Birdiy.Accounts.User, 1)}
+      )
+
     {:ok, socket}
   end
 

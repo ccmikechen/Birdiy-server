@@ -6,10 +6,6 @@ defmodule BirdiyWeb.Router do
     plug BirdiyWeb.Context
   end
 
-  scope "/api", BirdiyWeb do
-    pipe_through :api
-  end
-
   scope "/" do
     pipe_through :api
 

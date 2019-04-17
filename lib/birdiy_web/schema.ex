@@ -42,7 +42,7 @@ defmodule BirdiyWeb.Schema do
     end
 
     field :viewer, :user do
-      resolve(&Resolvers.Accounts.viewer/3)
+      resolve(&Resolvers.Accounts.viewer/2)
     end
 
     field :users, list_of(:user) do
