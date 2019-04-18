@@ -6,7 +6,7 @@ defmodule Birdiy.Accounts do
   import Ecto.Query, warn: false
   alias Birdiy.Repo
 
-  alias Birdiy.Accounts.User
+  alias Birdiy.Accounts.{User, UserFollowing}
 
   @doc """
   Returns the list of users.
@@ -100,6 +100,20 @@ defmodule Birdiy.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def count_user_following(%User{} = user) do
+    from(u in UserFollowing,
+      where: u.following_id == ^user.id
+    )
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_user_followed(%User{} = user) do
+    from(u in UserFollowing,
+      where: u.followed_id == ^user.id
+    )
+    |> Repo.aggregate(:count, :id)
   end
 
   alias Birdiy.Accounts.UserFollowing

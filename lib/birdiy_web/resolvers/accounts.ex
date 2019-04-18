@@ -41,4 +41,12 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   def viewed_projects(pagination_args, %{source: user}) do
     Helpers.assoc_connection(user, :viewed_projects, pagination_args)
   end
+
+  def following_count(user, _, _) do
+    {:ok, Accounts.count_user_following(user)}
+  end
+
+  def followed_count(user, _, _) do
+    {:ok, Accounts.count_user_followed(user)}
+  end
 end

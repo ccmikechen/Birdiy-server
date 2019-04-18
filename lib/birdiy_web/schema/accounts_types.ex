@@ -39,5 +39,13 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     connection field :viewed_projects, node_type: :project do
       resolve(&Resolvers.Accounts.viewed_projects/2)
     end
+
+    field :following_count, :integer do
+      resolve(&Resolvers.Accounts.following_count/3)
+    end
+
+    field :followed_count, :integer do
+      resolve(&Resolvers.Accounts.followed_count/3)
+    end
   end
 end
