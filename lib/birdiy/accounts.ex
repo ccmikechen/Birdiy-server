@@ -102,14 +102,14 @@ defmodule Birdiy.Accounts do
     User.changeset(user, %{})
   end
 
-  def count_user_following(%User{} = user) do
+  def count_user_followings(%User{} = user) do
     from(u in UserFollowing,
       where: u.following_id == ^user.id
     )
     |> Repo.aggregate(:count, :id)
   end
 
-  def count_user_followed(%User{} = user) do
+  def count_user_followers(%User{} = user) do
     from(u in UserFollowing,
       where: u.followed_id == ^user.id
     )

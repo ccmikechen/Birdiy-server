@@ -43,10 +43,10 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   end
 
   def following_count(user, _, _) do
-    {:ok, Accounts.count_user_following(user)}
+    {:ok, Accounts.count_user_followings(user)}
   end
 
-  def followed_count(user, _, _) do
-    {:ok, Accounts.count_user_followed(user)}
+  def follower_count(user, _, _) do
+    {:ok, Accounts.count_user_followers(user)}
   end
 end

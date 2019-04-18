@@ -44,8 +44,8 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
       resolve(&Resolvers.Accounts.following_count/3)
     end
 
-    field :followed_count, :integer do
-      resolve(&Resolvers.Accounts.followed_count/3)
+    field :follower_count, :integer do
+      resolve(&Resolvers.Accounts.follower_count/3)
     end
   end
 end
