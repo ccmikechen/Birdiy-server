@@ -18,8 +18,8 @@ defmodule BirdiyWeb.Resolvers.Diy do
     Helpers.batch_by_id(Diy.ProjectCategory, project.category_id)
   end
 
-  def projects_for_user(user, _, _) do
-    Helpers.assoc(user, :projects)
+  def projects_for_user(pagination_args, %{source: user}) do
+    Helpers.assoc_connection(user, :projects, pagination_args)
   end
 
   def projects_for_category(category, _, _) do

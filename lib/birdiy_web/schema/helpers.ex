@@ -3,6 +3,7 @@ defmodule BirdiyWeb.Schema.Helpers do
 
   import Ecto.Query
 
+  alias Absinthe.Relay.Connection
   alias Birdiy.Repo
 
   def by_id(model, ids) do
@@ -27,5 +28,10 @@ defmodule BirdiyWeb.Schema.Helpers do
   def assoc(record, attr) do
     query = Ecto.assoc(record, attr)
     {:ok, Repo.all(query)}
+  end
+
+  def assoc_connection(record, attr, pagination_args) do
+    Ecto.assoc(record, attr)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 end

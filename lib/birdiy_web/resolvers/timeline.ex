@@ -18,8 +18,8 @@ defmodule BirdiyWeb.Resolvers.Timeline do
     Helpers.batch_by_id(Diy.Project, post.related_project_id)
   end
 
-  def posts_for_user(user, _, _) do
-    Helpers.assoc(user, :posts)
+  def posts_for_user(pagination_args, %{source: user}) do
+    Helpers.assoc_connection(user, :posts, pagination_args)
   end
 
   def photo_post(post_photo, _, _) do
