@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Resolvers.Diy do
   import Ecto.Query
+  import Absinthe.Resolution.Helpers
 
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Diy, Accounts}
@@ -8,6 +9,14 @@ defmodule BirdiyWeb.Resolvers.Diy do
   def projects(pagination_args, _) do
     from(Diy.Project, order_by: [desc: :inserted_at])
     |> Connection.from_query(&Repo.all/1, pagination_args)
+  end
+
+  def project(_, %{id: id}, %{context: %{loader: loader}}) do
+    loader
+    |> Dataloader.load(Diy, Diy.Project, id)
+    |> on_load(fn loader ->
+      {:ok, Dataloader.get(loader, Diy, Diy.Project, id)}
+    end)
   end
 
   def project_author(project, _, _) do
