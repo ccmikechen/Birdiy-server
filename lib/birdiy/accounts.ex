@@ -21,6 +21,21 @@ defmodule Birdiy.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
+  def count_user_projects!(%User{} = user) do
+    Ecto.assoc(user, :projects)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_user_followings!(%User{} = user) do
+    Ecto.assoc(user, :following_users)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_user_followers!(%User{} = user) do
+    Ecto.assoc(user, :followed_users)
+    |> Repo.aggregate(:count, :id)
+  end
+
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
@@ -39,20 +54,6 @@ defmodule Birdiy.Accounts do
 
   def change_user(%User{} = user) do
     User.changeset(user, %{})
-  end
-
-  def count_user_followings(%User{} = user) do
-    from(u in UserFollowing,
-      where: u.following_id == ^user.id
-    )
-    |> Repo.aggregate(:count, :id)
-  end
-
-  def count_user_followers(%User{} = user) do
-    from(u in UserFollowing,
-      where: u.followed_id == ^user.id
-    )
-    |> Repo.aggregate(:count, :id)
   end
 
   def list_user_followings do

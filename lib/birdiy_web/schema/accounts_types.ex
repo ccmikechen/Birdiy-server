@@ -12,6 +12,10 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
       resolve(&Resolvers.Diy.projects_for_user/2)
     end
 
+    field :project_count, :integer do
+      resolve(&Resolvers.Accounts.project_count_for_user/3)
+    end
+
     connection field :posts, node_type: :post do
       resolve(&Resolvers.Timeline.posts_for_user/2)
     end
@@ -29,23 +33,23 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     end
 
     connection field :favorite_projects, node_type: :project do
-      resolve(&Resolvers.Accounts.favorite_projects/2)
+      resolve(&Resolvers.Accounts.favorite_projects_for_user/2)
     end
 
     connection field :liked_projects, node_type: :project do
-      resolve(&Resolvers.Accounts.liked_projects/2)
+      resolve(&Resolvers.Accounts.liked_projects_for_user/2)
     end
 
     connection field :viewed_projects, node_type: :project do
-      resolve(&Resolvers.Accounts.viewed_projects/2)
+      resolve(&Resolvers.Accounts.viewed_projects_for_user/2)
     end
 
     field :following_count, :integer do
-      resolve(&Resolvers.Accounts.following_count/3)
+      resolve(&Resolvers.Accounts.following_count_for_user/3)
     end
 
     field :follower_count, :integer do
-      resolve(&Resolvers.Accounts.follower_count/3)
+      resolve(&Resolvers.Accounts.follower_count_for_user/3)
     end
   end
 end

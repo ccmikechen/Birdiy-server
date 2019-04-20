@@ -15,6 +15,12 @@ defmodule Birdiy.Diy do
     ProjectMethod
   }
 
+  alias Birdiy.Accounts.{
+    UserViewedProject,
+    UserFavoriteProject,
+    UserLikedProject
+  }
+
   def list_project_categories do
     Repo.all(ProjectCategory)
   end
@@ -46,6 +52,44 @@ defmodule Birdiy.Diy do
   end
 
   def get_project!(id), do: Repo.get!(Project, id)
+
+  def get_project_materials!(%Project{} = project) do
+    Ecto.assoc(project, :materials)
+    |> order_by(desc: :order)
+    |> Repo.all()
+  end
+
+  def get_project_file_resources!(%Project{} = project) do
+    Ecto.assoc(project, :file_resources)
+    |> order_by(desc: :order)
+    |> Repo.all()
+  end
+
+  def get_project_methods!(%Project{} = project) do
+    Ecto.assoc(project, :methods)
+    |> order_by(desc: :order)
+    |> Repo.all()
+  end
+
+  def count_project_related_posts!(%Project{} = project) do
+    Ecto.assoc(project, :related_posts)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_project_views!(%Project{} = project) do
+    Ecto.assoc(project, :viewed_users)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_project_favorites!(%Project{} = project) do
+    Ecto.assoc(project, :favorite_users)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_project_likes!(%Project{} = project) do
+    Ecto.assoc(project, :liked_users)
+    |> Repo.aggregate(:count, :id)
+  end
 
   def create_project(attrs \\ %{}) do
     %Project{}

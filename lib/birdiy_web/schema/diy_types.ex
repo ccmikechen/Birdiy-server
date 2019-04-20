@@ -70,8 +70,24 @@ defmodule BirdiyWeb.Schema.DiyTypes do
       resolve(&Resolvers.Diy.methods_for_project/3)
     end
 
-    field :related_posts, list_of(:post) do
-      resolve(&Resolvers.Diy.related_posts_for_project/3)
+    connection field :related_posts, node_type: :post do
+      resolve(&Resolvers.Diy.related_posts_for_project/2)
+    end
+
+    field :related_post_count, :integer do
+      resolve(&Resolvers.Diy.project_related_post_count/3)
+    end
+
+    field :view_count, :integer do
+      resolve(&Resolvers.Diy.project_view_count/3)
+    end
+
+    field :favorite_count, :integer do
+      resolve(&Resolvers.Diy.project_favorite_count/3)
+    end
+
+    field :like_count, :integer do
+      resolve(&Resolvers.Diy.project_like_count/3)
     end
   end
 end

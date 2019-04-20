@@ -40,7 +40,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def materials_for_project(project, _, _) do
-    Helpers.assoc(project, :materials)
+    {:ok, Diy.get_project_materials!(project)}
   end
 
   def file_resource_project(file_resource, _, _) do
@@ -48,7 +48,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def file_resources_for_project(project, _, _) do
-    Helpers.assoc(project, :file_resources)
+    {:ok, Diy.get_project_file_resources!(project)}
   end
 
   def method_project(method, _, _) do
@@ -56,10 +56,27 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def methods_for_project(project, _, _) do
-    Helpers.assoc(project, :methods)
+    {:ok, Diy.get_project_methods!(project)}
   end
 
-  def related_posts_for_project(project, _, _) do
-    Helpers.assoc(project, :related_posts)
+  def related_posts_for_project(pagination_args, %{source: project}) do
+    Ecto.assoc(project, :related_posts)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
+  end
+
+  def project_related_post_count(project, _, _) do
+    {:ok, Diy.count_project_related_posts!(project)}
+  end
+
+  def project_view_count(project, _, _) do
+    {:ok, Diy.count_project_views!(project)}
+  end
+
+  def project_favorite_count(project, _, _) do
+    {:ok, Diy.count_project_favorites!(project)}
+  end
+
+  def project_like_count(project, _, _) do
+    {:ok, Diy.count_project_likes!(project)}
   end
 end

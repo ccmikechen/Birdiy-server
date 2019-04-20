@@ -30,23 +30,27 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     Helpers.assoc(user, :followed_users)
   end
 
-  def favorite_projects(pagination_args, %{source: user}) do
+  def favorite_projects_for_user(pagination_args, %{source: user}) do
     Helpers.assoc_connection(user, :favorite_projects, pagination_args)
   end
 
-  def liked_projects(pagination_args, %{source: user}) do
+  def liked_projects_for_user(pagination_args, %{source: user}) do
     Helpers.assoc_connection(user, :liked_projects, pagination_args)
   end
 
-  def viewed_projects(pagination_args, %{source: user}) do
+  def viewed_projects_for_user(pagination_args, %{source: user}) do
     Helpers.assoc_connection(user, :viewed_projects, pagination_args)
   end
 
-  def following_count(user, _, _) do
-    {:ok, Accounts.count_user_followings(user)}
+  def following_count_for_user(user, _, _) do
+    {:ok, Accounts.count_user_followings!(user)}
   end
 
-  def follower_count(user, _, _) do
-    {:ok, Accounts.count_user_followers(user)}
+  def follower_count_for_user(user, _, _) do
+    {:ok, Accounts.count_user_followers!(user)}
+  end
+
+  def project_count_for_user(user, _, _) do
+    {:ok, Accounts.count_user_projects!(user)}
   end
 end

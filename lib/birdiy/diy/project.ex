@@ -16,6 +16,21 @@ defmodule Birdiy.Diy.Project do
     has_many :methods, Diy.ProjectMethod
     has_many :related_posts, Timeline.Post, foreign_key: :related_project_id
 
+    many_to_many :favorite_users,
+                 Accounts.User,
+                 join_through: "user_favorite_projects",
+                 on_replace: :delete
+
+    many_to_many :liked_users,
+                 Accounts.User,
+                 join_through: "user_liked_projects",
+                 on_replace: :delete
+
+    many_to_many :viewed_users,
+                 Accounts.User,
+                 join_through: "user_viewed_projects",
+                 on_replace: :delete
+
     timestamps()
   end
 
