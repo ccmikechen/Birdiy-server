@@ -4,8 +4,9 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   alias BirdiyWeb.Resolvers
 
-  object :project_category do
+  node object(:project_category) do
     field :name, non_null(:string)
+    field :image, :string
 
     field :projects, list_of(:project) do
       resolve(&Resolvers.Diy.projects_for_category/3)

@@ -15,14 +15,18 @@ defmodule Birdiy.Diy do
     ProjectMethod
   }
 
-  alias Birdiy.Accounts.{
-    UserViewedProject,
-    UserFavoriteProject,
-    UserLikedProject
-  }
-
   def list_project_categories do
     Repo.all(ProjectCategory)
+  end
+
+  def project_categories_query(args) do
+    Enum.reduce(args, ProjectCategory, fn
+      {:order, order}, query ->
+        query |> order_by(asc: ^order)
+
+      _, query ->
+        query
+    end)
   end
 
   def get_project_category!(id), do: Repo.get!(ProjectCategory, id)

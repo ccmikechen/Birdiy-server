@@ -6,6 +6,7 @@ defmodule Birdiy.Diy.ProjectCategory do
 
   schema "project_categories" do
     field :name, :string
+    field :image, :string
     has_many :projects, Diy.Project, foreign_key: :category_id
 
     timestamps()
@@ -14,7 +15,7 @@ defmodule Birdiy.Diy.ProjectCategory do
   @doc false
   def changeset(project_category, attrs) do
     project_category
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :image])
     |> validate_required([:name])
   end
 end

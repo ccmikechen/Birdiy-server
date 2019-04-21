@@ -3,7 +3,7 @@ defmodule BirdiyWeb.Schema do
   use Absinthe.Relay.Schema, :modern
 
   alias Absinthe.Relay.Node.ParseIDs
-  alias Birdiy.{Accounts, Diy, Timeline, Repo}
+  alias Birdiy.{Accounts, Diy, Timeline}
   alias BirdiyWeb.Resolvers
 
   def plugins do
@@ -32,6 +32,9 @@ defmodule BirdiyWeb.Schema do
       %Diy.Project{}, _ ->
         :project
 
+      %Diy.ProjectCategory{}, _ ->
+        :project_category
+
       %Timeline.Post{}, _ ->
         :post
 
@@ -41,6 +44,7 @@ defmodule BirdiyWeb.Schema do
   end
 
   connection(node_type: :project)
+  connection(node_type: :project_category)
   connection(node_type: :post)
 
   query do
@@ -49,8 +53,11 @@ defmodule BirdiyWeb.Schema do
         %{type: :user, id: local_id}, _ ->
           {:ok, Accounts.get_user!(local_id)}
 
-        %{type: :prject, id: local_id}, _ ->
+        %{type: :project, id: local_id}, _ ->
           {:ok, Diy.get_project!(local_id)}
+
+        %{type: :project_category, id: local_id}, _ ->
+          {:ok, Diy.get_project_category!(local_id)}
 
         %{type: :post, id: local_id}, _ ->
           {:ok, Timeline.get_post!(local_id)}
@@ -64,8 +71,10 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Accounts.viewer/2)
     end
 
-    field :users, list_of(:user) do
-      resolve(&Resolvers.Accounts.users/3)
+    connection field :all_project_categories, node_type: :project_category do
+      arg(:order, type: :rank_order, default_value: :name)
+
+      resolve(&Resolvers.Diy.project_categories/2)
     end
 
     connection field :all_projects, node_type: :project do
@@ -102,5 +111,9 @@ defmodule BirdiyWeb.Schema do
     serialize(fn date ->
       NaiveDateTime.to_iso8601(date)
     end)
+  end
+
+  enum :rank_order do
+    value(:name)
   end
 end

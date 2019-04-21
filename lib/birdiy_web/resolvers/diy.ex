@@ -6,6 +6,14 @@ defmodule BirdiyWeb.Resolvers.Diy do
   alias Birdiy.{Repo, Diy, Accounts}
   alias BirdiyWeb.Schema.Helpers
 
+  def project_categories(pagination_args, _) do
+    Connection.from_query(
+      Diy.project_categories_query(pagination_args),
+      &Repo.all/1,
+      pagination_args
+    )
+  end
+
   def projects(pagination_args, _) do
     from(Diy.Project, order_by: [desc: :inserted_at])
     |> Connection.from_query(&Repo.all/1, pagination_args)
