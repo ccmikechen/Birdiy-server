@@ -55,6 +55,37 @@ defmodule Birdiy.Diy do
     Repo.all(Project)
   end
 
+  def projects_query(args), do: projects_query(Project, args)
+
+  def projects_query(query, args) do
+    Enum.reduce(args, query, fn
+      {:order, :newest}, query ->
+        query |> order_by(desc: :inserted_at)
+
+      {:filter, filter}, query ->
+        query |> project_filter_with(filter)
+
+      _, query ->
+        query
+    end)
+  end
+
+  defp project_filter_with(query, filter) do
+    Enum.reduce(filter, query, fn
+      {:name, name}, query ->
+        from(q in query, where: ilike(q.name, ^"%#{name}%"))
+
+      {:categories, []}, query ->
+        query
+
+      {:categories, categories}, query ->
+        from(q in query,
+          join: c in assoc(q, :category),
+          where: c.name in ^categories
+        )
+    end)
+  end
+
   def get_project!(id), do: Repo.get!(Project, id)
 
   def get_project_materials!(%Project{} = project) do

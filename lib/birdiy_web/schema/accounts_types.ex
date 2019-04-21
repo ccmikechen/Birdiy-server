@@ -9,7 +9,10 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :name, non_null(:string)
 
     connection field :projects, node_type: :project do
-      resolve(&Resolvers.Diy.projects_for_user/2)
+      arg(:filter, :project_filter)
+      arg(:order, type: :project_order, default_value: :newest)
+
+      resolve(&Resolvers.Accounts.projects_for_user/2)
     end
 
     field :project_count, :integer do

@@ -78,6 +78,9 @@ defmodule BirdiyWeb.Schema do
     end
 
     connection field :all_projects, node_type: :project do
+      arg(:filter, :project_filter)
+      arg(:order, type: :project_order, default_value: :newest)
+
       resolve(&Resolvers.Diy.projects/2)
     end
 

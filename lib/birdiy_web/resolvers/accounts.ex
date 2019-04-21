@@ -2,7 +2,7 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   import Ecto.Query
 
   alias Absinthe.Relay.Connection
-  alias Birdiy.{Repo, Accounts, Timeline}
+  alias Birdiy.{Repo, Accounts, Timeline, Diy}
   alias BirdiyWeb.Schema.Helpers
 
   def viewer(_, %{context: %{current_user: current_user}}) do
@@ -52,5 +52,13 @@ defmodule BirdiyWeb.Resolvers.Accounts do
 
   def project_count_for_user(user, _, _) do
     {:ok, Accounts.count_user_projects!(user)}
+  end
+
+  def projects_for_user(pagination_args, %{source: user}) do
+    query =
+      Ecto.assoc(user, :projects)
+      |> Diy.projects_query(pagination_args)
+
+    Connection.from_query(query, &Repo.all/1, pagination_args)
   end
 end

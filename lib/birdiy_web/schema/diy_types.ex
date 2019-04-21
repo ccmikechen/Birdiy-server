@@ -45,6 +45,16 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
+  input_object :project_filter do
+    field :name, :string
+    field :categories, list_of(:string)
+  end
+
+  enum :project_order do
+    value(:newest)
+    value(:hotest)
+  end
+
   node object(:project) do
     field :introduction, :string
     field :name, non_null(:string)

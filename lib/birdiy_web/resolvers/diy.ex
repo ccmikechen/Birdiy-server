@@ -15,8 +15,11 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def projects(pagination_args, _) do
-    from(Diy.Project, order_by: [desc: :inserted_at])
-    |> Connection.from_query(&Repo.all/1, pagination_args)
+    Connection.from_query(
+      Diy.projects_query(pagination_args),
+      &Repo.all/1,
+      pagination_args
+    )
   end
 
   def project(_, %{id: id}, %{context: %{loader: loader}}) do
@@ -33,10 +36,6 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def project_category(project, _, _) do
     Helpers.batch_by_id(Diy.ProjectCategory, project.category_id)
-  end
-
-  def projects_for_user(pagination_args, %{source: user}) do
-    Helpers.assoc_connection(user, :projects, pagination_args)
   end
 
   def projects_for_category(category, _, _) do
