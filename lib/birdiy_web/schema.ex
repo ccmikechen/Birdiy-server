@@ -20,6 +20,7 @@ defmodule BirdiyWeb.Schema do
     Map.put(ctx, :loader, dataloader())
   end
 
+  import_types(Absinthe.Plug.Types)
   import_types(__MODULE__.AccountsTypes)
   import_types(__MODULE__.DiyTypes)
   import_types(__MODULE__.TimelineTypes)
@@ -101,6 +102,33 @@ defmodule BirdiyWeb.Schema do
       middleware(ParseIDs, id: :post)
       resolve(&Resolvers.Timeline.post/3)
     end
+  end
+
+  mutation do
+    field :create_project, :project_result do
+      arg(:input, non_null(:create_project_input))
+
+      resolve(&Resolvers.Diy.create_project/3)
+    end
+
+    field :edit_project, :project_result do
+      arg(:input, non_null(:edit_project_input))
+
+      middleware(ParseIDs,
+        input: [
+          id: :project,
+          materials: [id: :project_material],
+          methods: [id: :project_method]
+        ]
+      )
+
+      resolve(&Resolvers.Diy.edit_project/3)
+    end
+  end
+
+  object :input_error do
+    field :key, non_null(:string)
+    field :message, non_null(:string)
   end
 
   scalar :datetime do

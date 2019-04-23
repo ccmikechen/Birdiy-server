@@ -1,5 +1,4 @@
 defmodule BirdiyWeb.Resolvers.Diy do
-  import Ecto.Query
   import Absinthe.Resolution.Helpers
 
   alias Absinthe.Relay.Connection
@@ -28,6 +27,19 @@ defmodule BirdiyWeb.Resolvers.Diy do
     |> on_load(fn loader ->
       {:ok, Dataloader.get(loader, Diy, Diy.Project, id)}
     end)
+  end
+
+  def create_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    with {:ok, project} <- Diy.create_project(current_user, params) do
+      {:ok, %{project: project}}
+    end
+  end
+
+  def edit_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    with project = Diy.get_project!(params[:id]),
+         {:ok, project} <- Diy.update_project(project, current_user, params) do
+      {:ok, %{project: project}}
+    end
   end
 
   def project_author(project, _, _) do

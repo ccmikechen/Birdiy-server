@@ -13,7 +13,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
-  object :project_material do
+  node object(:project_material) do
     field :amount_unit, non_null(:string)
     field :name, non_null(:string)
     field :url, :string
@@ -24,7 +24,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
-  object :project_file_resource do
+  node object(:project_file_resource) do
     field :name, non_null(:string)
     field :url, non_null(:string)
     field :order, non_null(:integer)
@@ -34,7 +34,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
-  object :project_method do
+  node object(:project_method) do
     field :title, :string
     field :content, non_null(:string)
     field :image, :string
@@ -60,6 +60,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :name, non_null(:string)
     field :tip, :string
     field :image, non_null(:string)
+    field :published_at, :datetime
 
     field :author, non_null(:user) do
       resolve(&Resolvers.Diy.project_author/3)
@@ -100,5 +101,51 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :like_count, :integer do
       resolve(&Resolvers.Diy.project_like_count/3)
     end
+  end
+
+  object :project_result do
+    field :project, :project
+    field :errors, list_of(:input_error)
+  end
+
+  input_object :create_project_input do
+    field :name, non_null(:string)
+    field :category, non_null(:string)
+  end
+
+  input_object :edit_project_input do
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :category, non_null(:string)
+    field :introduction, :string
+    field :tip, :string
+    field :image, :upload
+    field :publish, :boolean
+    field :materials, list_of(:project_material_input)
+    field :file_resources, list_of(:project_file_resource_input)
+    field :methods, list_of(:project_method_input)
+  end
+
+  input_object :project_material_input do
+    field :id, :id
+    field :amount_unit, non_null(:string)
+    field :name, non_null(:string)
+    field :url, :string
+    field :order, non_null(:integer)
+  end
+
+  input_object :project_file_resource_input do
+    field :id, :id
+    field :name, non_null(:string)
+    field :url, non_null(:string)
+    field :order, non_null(:integer)
+  end
+
+  input_object :project_method_input do
+    field :id, :id
+    field :title, :string
+    field :content, non_null(:string)
+    field :image, :upload
+    field :order, :integer
   end
 end

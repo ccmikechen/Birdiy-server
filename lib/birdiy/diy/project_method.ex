@@ -1,6 +1,7 @@
 defmodule Birdiy.Diy.ProjectMethod do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   schema "project_methods" do
     field :content, :string
@@ -9,6 +10,7 @@ defmodule Birdiy.Diy.ProjectMethod do
     field :title, :string
     belongs_to :project, Birdiy.Diy.Project
 
+    soft_delete_schema()
     timestamps()
   end
 

@@ -1,6 +1,7 @@
 defmodule Birdiy.Timeline.Post do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   alias Birdiy.{Accounts, Diy, Timeline}
 
@@ -12,6 +13,7 @@ defmodule Birdiy.Timeline.Post do
     belongs_to :related_project, Diy.Project
     has_many :photos, Timeline.PostPhoto
 
+    soft_delete_schema()
     timestamps()
   end
 

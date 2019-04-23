@@ -1,11 +1,13 @@
 defmodule Birdiy.Timeline.PostPhoto do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   schema "post_photos" do
     field :image, :string
     belongs_to :post, Birdiy.Timeline.Post
 
+    soft_delete_schema()
     timestamps()
   end
 

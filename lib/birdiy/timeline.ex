@@ -27,20 +27,12 @@ defmodule Birdiy.Timeline do
   end
 
   def delete_post(%Post{} = post) do
-    Repo.delete(post)
-  end
-
-  def change_post(%Post{} = post) do
-    Post.changeset(post, %{})
-  end
-
-  def list_post_photos do
-    Repo.all(PostPhoto)
+    Repo.soft_delete(post)
   end
 
   def get_post_photo!(id), do: Repo.get!(PostPhoto, id)
 
-  def get_first_photo_of_post!(post) do
+  def get_post_thumbnail!(post) do
     from(p in PostPhoto, where: p.post_id == ^post.id)
     |> first()
     |> Repo.one()
@@ -59,11 +51,7 @@ defmodule Birdiy.Timeline do
   end
 
   def delete_post_photo(%PostPhoto{} = post_photo) do
-    Repo.delete(post_photo)
-  end
-
-  def change_post_photo(%PostPhoto{} = post_photo) do
-    PostPhoto.changeset(post_photo, %{})
+    Repo.soft_delete(post_photo)
   end
 
   def data do

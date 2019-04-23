@@ -1,6 +1,8 @@
 defmodule Birdiy.Diy.Project do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
+  import Ecto.SoftDelete.Query
 
   alias Birdiy.{Accounts, Diy, Timeline}
 
@@ -9,12 +11,17 @@ defmodule Birdiy.Diy.Project do
     field :name, :string
     field :tip, :string
     field :image, :string
+    field :published_at, :date
     belongs_to :author, Accounts.User
     belongs_to :category, Diy.ProjectCategory
-    has_many :materials, Diy.ProjectMaterial
-    has_many :file_resources, Diy.ProjectFileResource
-    has_many :methods, Diy.ProjectMethod
-    has_many :related_posts, Timeline.Post, foreign_key: :related_project_id
+    has_many :materials, Diy.ProjectMaterial, where: [deleted_at: nil]
+    has_many :file_resources, Diy.ProjectFileResource, where: [deleted_at: nil]
+    has_many :methods, Diy.ProjectMethod, where: [deleted_at: nil]
+
+    has_many :related_posts,
+             Timeline.Post,
+             foreign_key: :related_project_id,
+             where: [deleted_at: nil]
 
     many_to_many :favorite_users,
                  Accounts.User,
@@ -31,13 +38,33 @@ defmodule Birdiy.Diy.Project do
                  join_through: "user_viewed_projects",
                  on_replace: :delete
 
+    soft_delete_schema()
     timestamps()
   end
 
   @doc false
-  def changeset(project, attrs) do
+  def changeset(project, author, attrs) do
     project
-    |> cast(attrs, [:name, :introduction, :tip, :image])
-    |> validate_required([:name, :author, :category, :image])
+    |> draft_changeset(author, attrs)
+    |> cast(attrs, [:introduction, :tip])
+  end
+
+  @doc false
+  def draft_changeset(project, author, attrs) do
+    project
+    |> cast(attrs, [:name])
+    |> put_change(:author_id, author.id)
+    |> put_category(attrs[:category])
+    |> validate_required([:author_id, :name, :category_id])
+  end
+
+  defp put_category(struct, category_name) do
+    case Diy.get_project_category_by_name!(category_name) do
+      %Diy.ProjectCategory{id: id} ->
+        put_change(struct, :category_id, id)
+
+      _ ->
+        struct
+    end
   end
 end

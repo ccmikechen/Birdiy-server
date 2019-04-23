@@ -40,6 +40,6 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   end
 
   def thumbnail_for_post(post, _, _) do
-    {:ok, Timeline.get_first_photo_of_post!(post)}
+    {:ok, Timeline.get_post_thumbnail!(post)}
   end
 end

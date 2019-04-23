@@ -1,6 +1,7 @@
 defmodule Birdiy.Diy.ProjectFileResource do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   schema "project_file_resources" do
     field :name, :string
@@ -8,6 +9,7 @@ defmodule Birdiy.Diy.ProjectFileResource do
     field :order, :decimal
     belongs_to :project, Birdiy.Diy.Project
 
+    soft_delete_schema()
     timestamps()
   end
 

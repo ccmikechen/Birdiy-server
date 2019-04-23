@@ -52,14 +52,6 @@ defmodule Birdiy.Accounts do
     Repo.delete(user)
   end
 
-  def change_user(%User{} = user) do
-    User.changeset(user, %{})
-  end
-
-  def list_user_followings do
-    Repo.all(UserFollowing)
-  end
-
   def get_user_following!(id), do: Repo.get!(UserFollowing, id)
 
   def create_user_following(attrs \\ %{}) do
@@ -76,14 +68,6 @@ defmodule Birdiy.Accounts do
 
   def delete_user_following(%UserFollowing{} = user_following) do
     Repo.delete(user_following)
-  end
-
-  def change_user_following(%UserFollowing{} = user_following) do
-    UserFollowing.changeset(user_following, %{})
-  end
-
-  def list_user_favorite_projects do
-    Repo.all(UserFavoriteProject)
   end
 
   def get_user_favorite_project!(id), do: Repo.get!(UserFavoriteProject, id)
@@ -104,14 +88,6 @@ defmodule Birdiy.Accounts do
     Repo.delete(user_favorite_project)
   end
 
-  def change_user_favorite_project(%UserFavoriteProject{} = user_favorite_project) do
-    UserFavoriteProject.changeset(user_favorite_project, %{})
-  end
-
-  def list_user_liked_projects do
-    Repo.all(UserLikedProject)
-  end
-
   def get_user_liked_project!(id), do: Repo.get!(UserLikedProject, id)
 
   def create_user_liked_project(attrs \\ %{}) do
@@ -130,14 +106,6 @@ defmodule Birdiy.Accounts do
     Repo.delete(user_liked_project)
   end
 
-  def change_user_liked_project(%UserLikedProject{} = user_liked_project) do
-    UserLikedProject.changeset(user_liked_project, %{})
-  end
-
-  def list_user_viewed_projects do
-    Repo.all(UserViewedProject)
-  end
-
   def get_user_viewed_project!(id), do: Repo.get!(UserViewedProject, id)
 
   def create_user_viewed_project(attrs \\ %{}) do
@@ -154,9 +122,5 @@ defmodule Birdiy.Accounts do
 
   def delete_user_viewed_project(%UserViewedProject{} = user_viewed_project) do
     Repo.delete(user_viewed_project)
-  end
-
-  def change_user_viewed_project(%UserViewedProject{} = user_viewed_project) do
-    UserViewedProject.changeset(user_viewed_project, %{})
   end
 end
