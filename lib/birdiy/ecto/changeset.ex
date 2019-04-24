@@ -4,7 +4,11 @@ defmodule Birdiy.Ecto.Changeset do
   def put_random_filename(params, fields) do
     Enum.reduce(fields, params, fn field, params ->
       image = random_filename(params[field])
-      Map.put(params, field, image)
+
+      case image do
+        %Upload{} -> Map.put(params, field, image)
+        _ -> params
+      end
     end)
   end
 

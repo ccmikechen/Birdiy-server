@@ -45,16 +45,6 @@ defmodule Birdiy.Diy do
     |> Repo.insert()
   end
 
-  def update_project_category(%ProjectCategory{} = project_category, attrs) do
-    project_category
-    |> ProjectCategory.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_project_category(%ProjectCategory{} = project_category) do
-    Repo.delete(project_category)
-  end
-
   def list_projects do
     Repo.all(Project) |> with_undeleted()
   end
@@ -95,19 +85,19 @@ defmodule Birdiy.Diy do
 
   def get_project_materials!(%Project{} = project) do
     Ecto.assoc(project, :materials)
-    |> order_by(desc: :order)
+    |> order_by(:order)
     |> Repo.all()
   end
 
   def get_project_file_resources!(%Project{} = project) do
     Ecto.assoc(project, :file_resources)
-    |> order_by(desc: :order)
+    |> order_by(:order)
     |> Repo.all()
   end
 
   def get_project_methods!(%Project{} = project) do
     Ecto.assoc(project, :methods)
-    |> order_by(desc: :order)
+    |> order_by(:order)
     |> Repo.all()
   end
 
@@ -140,13 +130,17 @@ defmodule Birdiy.Diy do
   def update_project(%Project{} = project, %User{} = author, attrs) do
     result =
       Multi.new()
-      |> delete_project_materials_query(project)
       |> upsert_project_materials_query(project, attrs[:materials])
+      |> upsert_project_methods_query(project, attrs[:methods])
       |> update_project_query(project, author, attrs)
       |> Repo.transaction()
 
-    with {:ok, %{update_project: project}} = result do
-      {:ok, project}
+    case result do
+      {:ok, %{update_project: project}} ->
+        {:ok, project}
+
+      _ ->
+        nil
     end
   end
 
@@ -161,91 +155,68 @@ defmodule Birdiy.Diy do
 
   def get_project_material!(id), do: Repo.get!(ProjectMaterial, id)
 
-  def create_project_material(attrs \\ %{}) do
-    %ProjectMaterial{}
-    |> ProjectMaterial.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_project_material(%ProjectMaterial{} = project_material, attrs) do
-    project_material
-    |> ProjectMaterial.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def upsert_project_materials(%Project{} = project, params) do
-    Multi.new()
-    |> delete_project_materials_query(project)
-    |> upsert_project_materials_query(project, params)
-    |> Repo.transaction()
-  end
-
   defp upsert_project_materials_query(multi, %Project{} = project, params) do
+    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
+    multi = delete_project_items_not_in_list_query(multi, project, :materials, ids)
+
     params
     |> Enum.with_index()
     |> Enum.reduce(multi, fn {attrs, index}, multi ->
-      Multi.insert(
+      attrs = Map.merge(attrs, %{project_id: project.id})
+
+      changeset =
+        case attrs[:id] && get_project_material!(attrs[:id]) do
+          nil -> %ProjectMaterial{}
+          material -> material
+        end
+        |> ProjectMaterial.changeset(attrs)
+
+      Multi.insert_or_update(
         multi,
         "upsert_project_material_#{index}",
-        ProjectMaterial.changeset(
-          %ProjectMaterial{},
-          Map.merge(attrs, %{project_id: project.id, deleted_at: nil})
-        ),
-        on_conflict: :replace_all_except_primary_key,
-        conflict_target: :id
+        changeset
       )
     end)
   end
 
-  def delete_project_materials(%Project{} = project) do
-    Multi.new()
-    |> delete_project_materials_query(project)
-    |> Repo.transaction()
-  end
-
-  defp delete_project_materials_query(multi, %Project{} = project) do
-    materials_query = Ecto.assoc(project, :materials)
-    Helpers.Multi.soft_delete_all(multi, :delete_project_materials, materials_query)
-  end
-
-  def delete_project_material(%ProjectMaterial{} = project_material) do
-    Repo.soft_delete(project_material)
-  end
-
   def get_project_file_resource!(id), do: Repo.get!(ProjectFileResource, id)
-
-  def create_project_file_resource(attrs \\ %{}) do
-    %ProjectFileResource{}
-    |> ProjectFileResource.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_project_file_resource(%ProjectFileResource{} = project_file_resource, attrs) do
-    project_file_resource
-    |> ProjectFileResource.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_project_file_resource(%ProjectFileResource{} = project_file_resource) do
-    Repo.soft_delete(project_file_resource)
-  end
 
   def get_project_method!(id), do: Repo.get!(ProjectMethod, id)
 
-  def create_project_method(attrs \\ %{}) do
-    %ProjectMethod{}
-    |> ProjectMethod.changeset(attrs)
-    |> Repo.insert()
+  defp upsert_project_methods_query(multi, %Project{} = project, params) do
+    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
+    multi = delete_project_items_not_in_list_query(multi, project, :methods, ids)
+
+    params
+    |> Enum.with_index()
+    |> Enum.reduce(multi, fn {attrs, index}, multi ->
+      attrs = Map.merge(attrs, %{project_id: project.id})
+
+      changeset =
+        case attrs[:id] && get_project_method!(attrs[:id]) do
+          nil -> %ProjectMethod{}
+          method -> method
+        end
+        |> ProjectMethod.changeset(attrs)
+
+      Multi.insert_or_update(
+        multi,
+        "upsert_project_method_#{index}",
+        changeset
+      )
+    end)
   end
 
-  def update_project_method(%ProjectMethod{} = project_method, attrs) do
-    project_method
-    |> ProjectMethod.changeset(attrs)
-    |> Repo.update()
-  end
+  defp delete_project_items_not_in_list_query(multi, %Project{} = project, item, ids) do
+    delete_query =
+      Ecto.assoc(project, item)
+      |> where([m], m.id not in ^ids)
 
-  def delete_project_method(%ProjectMethod{} = project_method) do
-    Repo.soft_delete(project_method)
+    Helpers.Multi.soft_delete_all(
+      multi,
+      "delete_" <> Atom.to_string(item),
+      delete_query
+    )
   end
 
   def data do

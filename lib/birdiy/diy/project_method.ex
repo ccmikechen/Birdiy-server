@@ -24,8 +24,8 @@ defmodule Birdiy.Diy.ProjectMethod do
     attrs = put_random_filename(attrs, [:image])
 
     project_method
-    |> cast(attrs, [:title, :content, :order])
+    |> cast(attrs, [:title, :content, :order, :project_id])
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:content, :order, :project])
+    |> validate_required([:content, :order, :project_id])
   end
 end

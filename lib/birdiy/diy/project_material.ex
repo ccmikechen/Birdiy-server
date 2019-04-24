@@ -17,7 +17,7 @@ defmodule Birdiy.Diy.ProjectMaterial do
   @doc false
   def changeset(project_material, attrs) do
     project_material
-    |> cast(attrs, [:id, :name, :amount_unit, :url, :order, :project_id])
+    |> cast(attrs, [:name, :amount_unit, :url, :order, :project_id, :deleted_at])
     |> validate_required([:name, :amount_unit, :order, :project_id])
   end
 end

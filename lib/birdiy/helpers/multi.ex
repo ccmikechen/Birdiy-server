@@ -5,4 +5,8 @@ defmodule Birdiy.Helpers.Multi do
   def soft_delete_all(multi, name, queryable) do
     Multi.update_all(multi, name, queryable, set: [deleted_at: DateTime.utc_now()])
   end
+
+  def soft_undelete_all(multi, name, queryable) do
+    Multi.update_all(multi, name, queryable, set: [deleted_at: nil])
+  end
 end
