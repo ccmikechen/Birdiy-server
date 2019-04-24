@@ -3,6 +3,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   alias BirdiyWeb.Resolvers
+  alias Birdiy.ProjectPhoto
 
   node object(:project_category) do
     field :name, non_null(:string)
@@ -37,7 +38,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
   node object(:project_method) do
     field :title, :string
     field :content, non_null(:string)
-    field :image, :string
+    field :image, :string, resolve: ProjectPhoto.resolver(:image)
     field :order, non_null(:integer)
 
     field :project, :project do
@@ -59,7 +60,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :introduction, :string
     field :name, non_null(:string)
     field :tip, :string
-    field :image, non_null(:string)
+    field :image, :string, resolve: ProjectPhoto.resolver(:image)
     field :published_at, :datetime
 
     field :author, non_null(:user) do

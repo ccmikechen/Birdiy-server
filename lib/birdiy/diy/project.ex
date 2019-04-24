@@ -1,16 +1,19 @@
 defmodule Birdiy.Diy.Project do
   use Ecto.Schema
+  use Arc.Ecto.Schema
+
   import Ecto.Changeset
   import Ecto.SoftDelete.Schema
   import Ecto.SoftDelete.Query
+  import Birdiy.Ecto.Changeset
 
-  alias Birdiy.{Accounts, Diy, Timeline}
+  alias Birdiy.{Accounts, Diy, Timeline, ProjectPhoto}
 
   schema "projects" do
     field :introduction, :string
     field :name, :string
     field :tip, :string
-    field :image, :string
+    field :image, ProjectPhoto.Type
     field :published_at, :date
     belongs_to :author, Accounts.User
     belongs_to :category, Diy.ProjectCategory
@@ -44,9 +47,12 @@ defmodule Birdiy.Diy.Project do
 
   @doc false
   def changeset(project, author, attrs) do
+    attrs = put_random_filename(attrs, [:image])
+
     project
     |> draft_changeset(author, attrs)
     |> cast(attrs, [:introduction, :tip])
+    |> cast_attachments(attrs, [:image])
   end
 
   @doc false

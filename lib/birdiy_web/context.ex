@@ -12,7 +12,7 @@ defmodule BirdiyWeb.Context do
     Absinthe.Plug.put_options(conn, context: context)
   end
 
-  defp build_context(conn) do
+  defp build_context(_conn) do
     %{current_user: Repo.get(Accounts.User, 1)}
   end
 end

@@ -33,20 +33,35 @@ defmodule Birdiy.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # General
+      {:elixir_uuid, "~> 1.2"},
+      {:poison, "~> 3.1"},
+      {:jason, "~> 1.0"},
+
+      # Phoenix & Database
       {:phoenix, "~> 1.4.3"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:ecto_soft_delete, "~> 1.0"},
+
+      # Absinthe
       {:absinthe, "~> 1.4.16"},
       {:absinthe_plug, "~> 1.4.6"},
       {:absinthe_phoenix, "~> 1.4.3"},
       {:absinthe_relay, "~> 1.4.6"},
       {:dataloader, "~> 1.0.0"},
-      {:ecto_soft_delete, "~> 1.0"}
+
+      # S3
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.1"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"}
     ]
   end
 

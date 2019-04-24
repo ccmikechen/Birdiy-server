@@ -145,7 +145,7 @@ defmodule Birdiy.Diy do
       |> update_project_query(project, author, attrs)
       |> Repo.transaction()
 
-    with {:ok, %{update_project: project}} do
+    with {:ok, %{update_project: project}} = result do
       {:ok, project}
     end
   end

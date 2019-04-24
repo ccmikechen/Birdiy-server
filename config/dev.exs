@@ -54,3 +54,18 @@ config :birdiy, Birdiy.Repo,
   database: "birdiy_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configures Arc & S3
+config :arc,
+  bucket: "birdiy-dev-trail",
+  asset_host: "https://birdiy-dev-trail.sgp1.digitaloceanspaces.com/birdiy-dev-trail"
+
+config :ex_aws,
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role],
+  region: "sgp1",
+  s3: [
+    scheme: "https://",
+    host: "birdiy-dev-trail.sgp1.digitaloceanspaces.com",
+    region: "sgp1"
+  ]
