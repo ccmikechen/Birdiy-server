@@ -27,8 +27,16 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   node object(:project_file_resource) do
     field :name, non_null(:string)
-    field :url, non_null(:string)
+
+    field :url, non_null(:string) do
+      resolve(&Resolvers.Diy.file_resource_url/3)
+    end
+
     field :order, non_null(:integer)
+
+    field :type, :string do
+      resolve(&Resolvers.Diy.file_resource_type/3)
+    end
 
     field :project, :project do
       resolve(&Resolvers.Diy.file_resource_project/3)
@@ -138,7 +146,8 @@ defmodule BirdiyWeb.Schema.DiyTypes do
   input_object :project_file_resource_input do
     field :id, :id
     field :name, non_null(:string)
-    field :url, non_null(:string)
+    field :url, :string
+    field :file, :upload
     field :order, non_null(:integer)
   end
 

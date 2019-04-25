@@ -118,6 +118,7 @@ defmodule BirdiyWeb.Schema do
         input: [
           id: :project,
           materials: [id: :project_material],
+          file_resources: [id: :project_file_resource],
           methods: [id: :project_method]
         ]
       )

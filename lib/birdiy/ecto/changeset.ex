@@ -13,7 +13,7 @@ defmodule Birdiy.Ecto.Changeset do
   end
 
   defp random_filename(%Upload{filename: filename} = field) do
-    new_filename = UUID.uuid4(:hex) <> Path.extname(filename)
+    new_filename = "#{UUID.uuid4(:hex)}#{Path.extname(filename)}"
     %Upload{field | filename: new_filename}
   end
 

@@ -2,7 +2,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
   import Absinthe.Resolution.Helpers
 
   alias Absinthe.Relay.Connection
-  alias Birdiy.{Repo, Diy, Accounts}
+  alias Birdiy.{Repo, Diy, Accounts, ProjectFile}
   alias BirdiyWeb.Schema.Helpers
 
   def project_categories(pagination_args, _) do
@@ -68,6 +68,23 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def file_resources_for_project(project, _, _) do
     {:ok, Diy.get_project_file_resources!(project)}
+  end
+
+  def file_resource_url(file_resource, _, _) do
+    case file_resource.file do
+      nil ->
+        {:ok, file_resource.url}
+
+      _ ->
+        {:ok, ProjectFile.url({file_resource.file, file_resource})}
+    end
+  end
+
+  def file_resource_type(file_resource, _, _) do
+    case file_resource.file do
+      nil -> {:ok, "link"}
+      _ -> {:ok, "file"}
+    end
   end
 
   def method_project(method, _, _) do

@@ -131,6 +131,7 @@ defmodule Birdiy.Diy do
     result =
       Multi.new()
       |> upsert_project_materials_query(project, attrs[:materials])
+      |> upsert_project_file_resources_query(project, attrs[:file_resources])
       |> upsert_project_methods_query(project, attrs[:methods])
       |> update_project_query(project, author, attrs)
       |> Repo.transaction()
@@ -180,6 +181,30 @@ defmodule Birdiy.Diy do
   end
 
   def get_project_file_resource!(id), do: Repo.get!(ProjectFileResource, id)
+
+  defp upsert_project_file_resources_query(multi, %Project{} = project, params) do
+    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
+    multi = delete_project_items_not_in_list_query(multi, project, :file_resources, ids)
+
+    params
+    |> Enum.with_index()
+    |> Enum.reduce(multi, fn {attrs, index}, multi ->
+      attrs = Map.merge(attrs, %{project_id: project.id})
+
+      changeset =
+        case attrs[:id] && get_project_file_resource!(attrs[:id]) do
+          nil -> %ProjectFileResource{}
+          file_resource -> file_resource
+        end
+        |> ProjectFileResource.changeset(attrs)
+
+      Multi.insert_or_update(
+        multi,
+        "upsert_project_file_resource_#{index}",
+        changeset
+      )
+    end)
+  end
 
   def get_project_method!(id), do: Repo.get!(ProjectMethod, id)
 
