@@ -14,7 +14,7 @@ defmodule Birdiy.Diy.Project do
     field :name, :string
     field :tip, :string
     field :image, ProjectPhoto.Type
-    field :published_at, :date
+    field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
     belongs_to :category, Diy.ProjectCategory
     has_many :materials, Diy.ProjectMaterial, where: [deleted_at: nil]

@@ -37,6 +37,7 @@ defmodule Birdiy.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:poison, "~> 3.1"},
       {:jason, "~> 1.0"},
+      {:deep_merge, "~> 1.0"},
 
       # Phoenix & Database
       {:phoenix, "~> 1.4.3"},

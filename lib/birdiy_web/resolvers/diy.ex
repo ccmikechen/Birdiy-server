@@ -4,6 +4,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Diy, Accounts, ProjectFile}
   alias BirdiyWeb.Schema.Helpers
+  alias BirdiyWeb.Errors
 
   def project_categories(pagination_args, _) do
     Connection.from_query(
@@ -30,16 +31,27 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def create_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
-    with {:ok, project} <- Diy.create_project(current_user, params) do
-      {:ok, %{project: project}}
-    end
+    Diy.create_project(current_user, params)
   end
 
   def edit_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
-    with project = Diy.get_project!(params[:id]),
-         {:ok, project} <- Diy.update_project(project, current_user, params) do
-      {:ok, %{project: project}}
+    with project = Diy.get_project!(params[:id]) do
+      Diy.update_project(project, current_user, params)
     end
+  end
+
+  def delete_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
+    Diy.delete_project(project)
+  end
+
+  def publish_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
+    Diy.publish_project(project)
+  end
+
+  def unpublish_project(_, %{input: %{project: project}}, %{
+        context: %{current_user: current_user}
+      }) do
+    Diy.unpublish_project(project)
   end
 
   def project_author(project, _, _) do

@@ -3,6 +3,7 @@ defmodule Birdiy.Diy do
   The Diy context.
   """
 
+  import Ecto.Changeset, only: [change: 2]
   import Ecto.Query, warn: false
   import Ecto.SoftDelete.Query
 
@@ -148,6 +149,14 @@ defmodule Birdiy.Diy do
   defp update_project_query(multi, %Project{} = project, %User{} = author, attrs) do
     changeset = Project.changeset(project, author, attrs)
     Multi.update(multi, :update_project, changeset)
+  end
+
+  def publish_project(%Project{} = project) do
+    change(project, published_at: Helpers.DateTime.utc_now()) |> Repo.update()
+  end
+
+  def unpublish_project(%Project{} = project) do
+    change(project, published_at: nil) |> Repo.update()
   end
 
   def delete_project(%Project{} = project) do

@@ -112,9 +112,8 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
   end
 
-  object :project_result do
-    field :project, :project
-    field :errors, list_of(:input_error)
+  input_object :project_input do
+    field :id, non_null(:id)
   end
 
   input_object :create_project_input do

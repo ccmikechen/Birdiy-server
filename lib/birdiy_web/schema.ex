@@ -6,6 +6,11 @@ defmodule BirdiyWeb.Schema do
   alias Birdiy.{Accounts, Diy, Timeline}
   alias BirdiyWeb.Resolvers
 
+  alias BirdiyWeb.Schema.Middleware.{
+    ParseRecord,
+    AuthUser
+  }
+
   def plugins do
     [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
   end
@@ -105,13 +110,13 @@ defmodule BirdiyWeb.Schema do
   end
 
   mutation do
-    field :create_project, :project_result do
+    field :create_project, :project do
       arg(:input, non_null(:create_project_input))
 
       resolve(&Resolvers.Diy.create_project/3)
     end
 
-    field :edit_project, :project_result do
+    field :edit_project, :project do
       arg(:input, non_null(:edit_project_input))
 
       middleware(ParseIDs,
@@ -124,6 +129,33 @@ defmodule BirdiyWeb.Schema do
       )
 
       resolve(&Resolvers.Diy.edit_project/3)
+    end
+
+    field :delete_project, :project do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      middleware(ParseRecord, input: [id: {:project, Diy.Project}])
+      middleware(AuthUser, input: [project: :author_id])
+      resolve(&Resolvers.Diy.delete_project/3)
+    end
+
+    field :publish_project, :project do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      middleware(ParseRecord, input: [id: {:project, Diy.Project}])
+      middleware(AuthUser, input: [project: :author_id])
+      resolve(&Resolvers.Diy.publish_project/3)
+    end
+
+    field :unpublish_project, :project do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      middleware(ParseRecord, input: [id: {:project, Diy.Project}])
+      middleware(AuthUser, input: [project: :author_id])
+      resolve(&Resolvers.Diy.unpublish_project/3)
     end
   end
 
