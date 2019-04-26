@@ -54,6 +54,10 @@ defmodule BirdiyWeb.Resolvers.Diy do
     Diy.unpublish_project(project)
   end
 
+  def project_published(project, _, _) do
+    {:ok, !is_nil(project.published_at)}
+  end
+
   def project_author(project, _, _) do
     Helpers.batch_by_id(Accounts.User, project.author_id)
   end
