@@ -3,9 +3,10 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   alias BirdiyWeb.Resolvers
+  alias Birdiy.PostPhoto
 
   object :post_photo do
-    field :image, non_null(:string)
+    field :image, non_null(:string), resolve: PostPhoto.resolver(:image)
 
     field :post, non_null(:post) do
       resolve(&Resolvers.Timeline.photo_post/3)
@@ -34,5 +35,23 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     end
 
     field :inserted_at, :datetime
+  end
+
+  input_object :create_post_input do
+    field :related_project_type, non_null(:related_project_type)
+    field :related_project_id, :id
+    field :related_project_name, :string
+    field :message, non_null(:string)
+    field :photos, list_of(:post_photo_input)
+  end
+
+  input_object :post_photo_input do
+    field :image, :upload
+    field :order, non_null(:integer)
+  end
+
+  enum :related_project_type do
+    value(:custom)
+    value(:project)
   end
 end

@@ -42,4 +42,8 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   def thumbnail_for_post(post, _, _) do
     {:ok, Timeline.get_post_thumbnail!(post)}
   end
+
+  def create_post(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    Timeline.create_post(current_user, params)
+  end
 end

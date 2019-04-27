@@ -13,7 +13,7 @@ defmodule BirdiyWeb.Schema.Middleware.ParseRecord do
   defp parse(arguments, {id_field, {result_field, struct}}) do
     id = arguments[id_field]
 
-    case Repo.get(struct, id) do
+    case id && Repo.get(struct, id) do
       nil -> {result_field, nil}
       record -> {result_field, record}
     end

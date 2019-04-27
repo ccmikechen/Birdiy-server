@@ -157,6 +157,18 @@ defmodule BirdiyWeb.Schema do
       middleware(AuthUser, input: [project: :author_id])
       resolve(&Resolvers.Diy.unpublish_project/3)
     end
+
+    field :create_post, :post do
+      arg(:input, non_null(:create_post_input))
+
+      middleware(ParseIDs, input: [related_project_id: :project])
+
+      middleware(ParseRecord,
+        input: [related_project_id: {:related_project, Diy.Project}]
+      )
+
+      resolve(&Resolvers.Timeline.create_post/3)
+    end
   end
 
   object :input_error do

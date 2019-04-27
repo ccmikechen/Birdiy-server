@@ -9,7 +9,6 @@ defmodule Birdiy.Diy do
 
   alias Ecto.Multi
   alias Birdiy.Repo
-
   alias Birdiy.Helpers
 
   alias Birdiy.Diy.{

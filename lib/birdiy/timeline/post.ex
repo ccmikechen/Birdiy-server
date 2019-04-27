@@ -11,16 +11,29 @@ defmodule Birdiy.Timeline.Post do
     field :related_project_type, :string
     belongs_to :author, Accounts.User
     belongs_to :related_project, Diy.Project
-    has_many :photos, Timeline.PostPhoto
+    has_many :photos, Timeline.PostPhoto, where: [deleted_at: nil]
 
     soft_delete_schema()
     timestamps()
   end
 
   @doc false
-  def changeset(post, attrs) do
+  def changeset(post, author, attrs) do
     post
-    |> cast(attrs, [:related_project_type, :related_project_name, :message])
-    |> validate_required([:related_project_type])
+    |> cast(attrs, [:related_project_id, :related_project_name, :message])
+    |> put_related_project_type(attrs)
+    |> put_change(:author_id, author.id)
+    |> validate_required([:related_project_type, :author_id])
+  end
+
+  defp put_related_project_type(changeset, attrs) do
+    type =
+      case attrs[:related_project_type] do
+        :custom -> "custom"
+        :project -> "project"
+        _ -> nil
+      end
+
+    put_change(changeset, :related_project_type, type)
   end
 end
