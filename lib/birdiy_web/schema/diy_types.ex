@@ -150,6 +150,10 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :methods, list_of(:project_method_input)
   end
 
+  object :project_result do
+    field :project, non_null(:project)
+  end
+
   input_object :project_material_input do
     field :id, :id
     field :amount_unit, non_null(:string)

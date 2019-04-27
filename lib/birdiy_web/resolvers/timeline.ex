@@ -44,6 +44,9 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   end
 
   def create_post(_, %{input: params}, %{context: %{current_user: current_user}}) do
-    Timeline.create_post(current_user, params)
+    case Timeline.create_post(current_user, params) do
+      {:ok, post} -> {:ok, %{post: post}}
+      _ -> {:error, nil}
+    end
   end
 end

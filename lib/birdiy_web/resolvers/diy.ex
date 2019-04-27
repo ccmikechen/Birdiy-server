@@ -31,27 +31,57 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def create_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
-    Diy.create_project(current_user, params)
+    case Diy.create_project(current_user, params) do
+      {:ok, project} ->
+        {:ok, %{project: project}}
+
+      _ ->
+        {:error, nil}
+    end
   end
 
   def edit_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
     with project = Diy.get_project!(params[:id]) do
-      Diy.update_project(project, current_user, params)
+      case Diy.update_project(project, current_user, params) do
+        {:ok, project} ->
+          {:ok, %{project: project}}
+
+        _ ->
+          {:error, nil}
+      end
     end
   end
 
   def delete_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
-    Diy.delete_project(project)
+    case Diy.delete_project(project) do
+      {:ok, project} ->
+        {:ok, %{project: project}}
+
+      _ ->
+        {:error, nil}
+    end
   end
 
   def publish_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
-    Diy.publish_project(project)
+    case Diy.publish_project(project) do
+      {:ok, project} ->
+        {:ok, %{project: project}}
+
+      _ ->
+        {:error, nil}
+    end
   end
 
   def unpublish_project(_, %{input: %{project: project}}, %{
         context: %{current_user: current_user}
       }) do
-    Diy.unpublish_project(project)
+    case Diy.unpublish_project(project) do
+      {:ok, project} ->
+        {:ok, %{project: project}}
+
+      _ ->
+        {:error, nil}
+    end
   end
 
   def project_published(project, _, _) do

@@ -110,13 +110,13 @@ defmodule BirdiyWeb.Schema do
   end
 
   mutation do
-    field :create_project, :project do
+    field :create_project, :project_result do
       arg(:input, non_null(:create_project_input))
 
       resolve(&Resolvers.Diy.create_project/3)
     end
 
-    field :edit_project, :project do
+    field :edit_project, :project_result do
       arg(:input, non_null(:edit_project_input))
 
       middleware(ParseIDs,
@@ -131,42 +131,42 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.edit_project/3)
     end
 
-    field :view_project, :mutation_result do
+    field :view_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.view_project/3)
     end
 
-    field :like_project, :mutation_result do
+    field :like_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.like_project/3)
     end
 
-    field :cancel_like_project, :mutation_result do
+    field :cancel_like_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.cancel_like_project/3)
     end
 
-    field :favorite_project, :mutation_result do
+    field :favorite_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.favorite_project/3)
     end
 
-    field :cancel_favorite_project, :mutation_result do
+    field :cancel_favorite_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.cancel_favorite_project/3)
     end
 
-    field :delete_project, :project do
+    field :delete_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
@@ -175,7 +175,7 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.delete_project/3)
     end
 
-    field :publish_project, :project do
+    field :publish_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
@@ -184,7 +184,7 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.publish_project/3)
     end
 
-    field :unpublish_project, :project do
+    field :unpublish_project, :project_result do
       arg(:input, non_null(:project_input))
 
       middleware(ParseIDs, input: [id: :project])
@@ -193,7 +193,7 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.unpublish_project/3)
     end
 
-    field :create_post, :post do
+    field :create_post, :post_result do
       arg(:input, non_null(:create_post_input))
 
       middleware(ParseIDs, input: [related_project_id: :project])
@@ -209,10 +209,6 @@ defmodule BirdiyWeb.Schema do
   object :input_error do
     field :key, non_null(:string)
     field :message, non_null(:string)
-  end
-
-  object :mutation_result do
-    field :result, non_null(:result)
   end
 
   scalar :datetime do

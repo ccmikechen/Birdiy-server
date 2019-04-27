@@ -60,7 +60,7 @@ defmodule BirdiyWeb.Resolvers.Accounts do
 
   def favorite_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
     case Accounts.create_user_favorite_project(%{user_id: current_user.id, project_id: project_id}) do
-      {:ok, _} -> {:ok, %{result: :ok}}
+      {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end
   end
@@ -69,14 +69,14 @@ defmodule BirdiyWeb.Resolvers.Accounts do
         context: %{current_user: current_user}
       }) do
     case Accounts.delete_user_favorite_project(current_user.id, project_id) do
-      {:ok, _} -> {:ok, %{result: :ok}}
+      {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end
   end
 
   def like_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
     case Accounts.create_user_liked_project(%{user_id: current_user.id, project_id: project_id}) do
-      {:ok, _} -> {:ok, %{result: :ok}}
+      {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end
   end
@@ -85,14 +85,14 @@ defmodule BirdiyWeb.Resolvers.Accounts do
         context: %{current_user: current_user}
       }) do
     case Accounts.delete_user_liked_project(current_user.id, project_id) do
-      {:ok, _} -> {:ok, %{result: :ok}}
+      {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end
   end
 
   def view_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
     case Accounts.create_user_viewed_project(%{user_id: current_user.id, project_id: project_id}) do
-      {:ok, _} -> {:ok, %{result: :ok}}
+      {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end
   end

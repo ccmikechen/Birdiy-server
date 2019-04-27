@@ -50,6 +50,10 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     field :order, non_null(:integer)
   end
 
+  object :post_result do
+    field :post, non_null(:post)
+  end
+
   enum :related_project_type do
     value(:custom)
     value(:project)
