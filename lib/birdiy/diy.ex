@@ -78,6 +78,12 @@ defmodule Birdiy.Diy do
           join: c in assoc(q, :category),
           where: c.name in ^categories
         )
+
+      {:published, true}, query ->
+        from(q in query, where: not is_nil(q.published_at))
+
+      {:published, false}, query ->
+        from(q in query, where: is_nil(q.published_at))
     end)
   end
 

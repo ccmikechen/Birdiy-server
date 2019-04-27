@@ -57,6 +57,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
   input_object :project_filter do
     field :name, :string
     field :categories, list_of(:string)
+    field :published, :boolean
   end
 
   enum :project_order do

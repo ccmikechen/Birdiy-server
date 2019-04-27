@@ -60,6 +60,7 @@ defmodule Birdiy.Diy.Project do
     project
     |> cast(attrs, [:name])
     |> put_change(:author_id, author.id)
+    |> put_change(:image, nil)
     |> put_category(attrs[:category])
     |> validate_required([:author_id, :name, :category_id])
   end
