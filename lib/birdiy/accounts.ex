@@ -15,10 +15,6 @@ defmodule Birdiy.Accounts do
     UserViewedProject
   }
 
-  def list_users do
-    Repo.all(User)
-  end
-
   def get_user!(id), do: Repo.get!(User, id)
 
   def count_user_projects!(%User{} = user) do
@@ -72,55 +68,74 @@ defmodule Birdiy.Accounts do
 
   def get_user_favorite_project!(id), do: Repo.get!(UserFavoriteProject, id)
 
+  def get_user_favorite_project(user_id, project_id) do
+    Repo.get_by(UserFavoriteProject, user_id: user_id, project_id: project_id)
+  end
+
   def create_user_favorite_project(attrs \\ %{}) do
     %UserFavoriteProject{}
     |> UserFavoriteProject.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_user_favorite_project(%UserFavoriteProject{} = user_favorite_project, attrs) do
-    user_favorite_project
-    |> UserFavoriteProject.changeset(attrs)
-    |> Repo.update()
+    |> Repo.insert(
+      on_conflict: :replace_all_except_primary_key,
+      conflict_target: [:user_id, :project_id]
+    )
   end
 
   def delete_user_favorite_project(%UserFavoriteProject{} = user_favorite_project) do
     Repo.delete(user_favorite_project)
   end
 
+  def delete_user_favorite_project(user_id, project_id) do
+    case get_user_favorite_project(user_id, project_id) do
+      %UserFavoriteProject{} = u ->
+        delete_user_favorite_project(u)
+
+      _ ->
+        nil
+    end
+  end
+
   def get_user_liked_project!(id), do: Repo.get!(UserLikedProject, id)
+
+  def get_user_liked_project(user_id, project_id) do
+    Repo.get_by(UserLikedProject, user_id: user_id, project_id: project_id)
+  end
 
   def create_user_liked_project(attrs \\ %{}) do
     %UserLikedProject{}
     |> UserLikedProject.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_user_liked_project(%UserLikedProject{} = user_liked_project, attrs) do
-    user_liked_project
-    |> UserLikedProject.changeset(attrs)
-    |> Repo.update()
+    |> Repo.insert(
+      on_conflict: :replace_all_except_primary_key,
+      conflict_target: [:user_id, :project_id]
+    )
   end
 
   def delete_user_liked_project(%UserLikedProject{} = user_liked_project) do
     Repo.delete(user_liked_project)
   end
 
+  def delete_user_liked_project(user_id, project_id) do
+    case get_user_liked_project(user_id, project_id) do
+      %UserLikedProject{} = u ->
+        delete_user_liked_project(u)
+
+      _ ->
+        nil
+    end
+  end
+
   def get_user_viewed_project!(id), do: Repo.get!(UserViewedProject, id)
+
+  def get_user_viewed_project(user_id, project_id) do
+    Repo.get_by(UserViewedProject, user_id: user_id, project_id: project_id)
+  end
 
   def create_user_viewed_project(attrs \\ %{}) do
     %UserViewedProject{}
     |> UserViewedProject.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_user_viewed_project(%UserViewedProject{} = user_viewed_project, attrs) do
-    user_viewed_project
-    |> UserViewedProject.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_user_viewed_project(%UserViewedProject{} = user_viewed_project) do
-    Repo.delete(user_viewed_project)
+    |> Repo.insert(
+      on_conflict: :replace_all_except_primary_key,
+      conflict_target: [:user_id, :project_id]
+    )
   end
 end

@@ -1,5 +1,6 @@
 defmodule Birdiy.Accounts.UserViewedProject do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "user_viewed_projects" do
@@ -12,8 +13,8 @@ defmodule Birdiy.Accounts.UserViewedProject do
   @doc false
   def changeset(user_viewed_project, attrs) do
     user_viewed_project
-    |> cast(attrs, [])
-    |> validate_required([:user, :project])
-    |> unique_constraint([:user, :project])
+    |> cast(attrs, [:user_id, :project_id])
+    |> validate_required([:user_id, :project_id])
+    |> unique_constraint(:project_id)
   end
 end

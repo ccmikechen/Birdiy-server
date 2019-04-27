@@ -75,6 +75,18 @@ defmodule BirdiyWeb.Schema.DiyTypes do
       resolve(&Resolvers.Diy.project_published/3)
     end
 
+    field :viewed, :boolean do
+      resolve(&Resolvers.Diy.project_viewed/3)
+    end
+
+    field :liked, :boolean do
+      resolve(&Resolvers.Diy.project_liked/3)
+    end
+
+    field :favorite, :boolean do
+      resolve(&Resolvers.Diy.project_favorite/3)
+    end
+
     field :author, non_null(:user) do
       resolve(&Resolvers.Diy.project_author/3)
     end

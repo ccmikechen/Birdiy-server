@@ -24,16 +24,19 @@ defmodule Birdiy.Accounts.User do
 
     many_to_many :favorite_projects,
                  Diy.Project,
+                 where: [deleted_at: nil],
                  join_through: "user_favorite_projects",
                  on_replace: :delete
 
     many_to_many :liked_projects,
                  Diy.Project,
+                 where: [deleted_at: nil],
                  join_through: "user_liked_projects",
                  on_replace: :delete
 
     many_to_many :viewed_projects,
                  Diy.Project,
+                 where: [deleted_at: nil],
                  join_through: "user_viewed_projects",
                  on_replace: :delete
 

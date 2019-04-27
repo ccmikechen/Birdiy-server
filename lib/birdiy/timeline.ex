@@ -38,12 +38,6 @@ defmodule Birdiy.Timeline do
     end
   end
 
-  def update_post(%Post{} = post, attrs) do
-    post
-    |> Post.changeset(attrs)
-    |> Repo.update()
-  end
-
   def delete_post(%Post{} = post) do
     Repo.soft_delete(post)
   end

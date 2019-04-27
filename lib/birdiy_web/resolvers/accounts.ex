@@ -9,10 +9,6 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     {:ok, current_user}
   end
 
-  def users(_, _, _) do
-    {:ok, Accounts.list_users()}
-  end
-
   def following_users(user, _, _) do
     Helpers.assoc(user, :following_users)
   end
@@ -60,5 +56,44 @@ defmodule BirdiyWeb.Resolvers.Accounts do
       |> Diy.projects_query(pagination_args)
 
     Connection.from_query(query, &Repo.all/1, pagination_args)
+  end
+
+  def favorite_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
+    case Accounts.create_user_favorite_project(%{user_id: current_user.id, project_id: project_id}) do
+      {:ok, _} -> {:ok, %{result: :ok}}
+      _ -> {:error, nil}
+    end
+  end
+
+  def cancel_favorite_project(_, %{input: %{id: project_id}}, %{
+        context: %{current_user: current_user}
+      }) do
+    case Accounts.delete_user_favorite_project(current_user.id, project_id) do
+      {:ok, _} -> {:ok, %{result: :ok}}
+      _ -> {:error, nil}
+    end
+  end
+
+  def like_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
+    case Accounts.create_user_liked_project(%{user_id: current_user.id, project_id: project_id}) do
+      {:ok, _} -> {:ok, %{result: :ok}}
+      _ -> {:error, nil}
+    end
+  end
+
+  def cancel_like_project(_, %{input: %{id: project_id}}, %{
+        context: %{current_user: current_user}
+      }) do
+    case Accounts.delete_user_liked_project(current_user.id, project_id) do
+      {:ok, _} -> {:ok, %{result: :ok}}
+      _ -> {:error, nil}
+    end
+  end
+
+  def view_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
+    case Accounts.create_user_viewed_project(%{user_id: current_user.id, project_id: project_id}) do
+      {:ok, _} -> {:ok, %{result: :ok}}
+      _ -> {:error, nil}
+    end
   end
 end

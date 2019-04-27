@@ -131,6 +131,41 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.edit_project/3)
     end
 
+    field :view_project, :mutation_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Accounts.view_project/3)
+    end
+
+    field :like_project, :mutation_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Accounts.like_project/3)
+    end
+
+    field :cancel_like_project, :mutation_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Accounts.cancel_like_project/3)
+    end
+
+    field :favorite_project, :mutation_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Accounts.favorite_project/3)
+    end
+
+    field :cancel_favorite_project, :mutation_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Accounts.cancel_favorite_project/3)
+    end
+
     field :delete_project, :project do
       arg(:input, non_null(:project_input))
 
@@ -176,6 +211,10 @@ defmodule BirdiyWeb.Schema do
     field :message, non_null(:string)
   end
 
+  object :mutation_result do
+    field :result, non_null(:result)
+  end
+
   scalar :datetime do
     parse(fn input ->
       case NaiveDateTime.from_iso8601(input.value) do
@@ -191,5 +230,10 @@ defmodule BirdiyWeb.Schema do
 
   enum :rank_order do
     value(:name)
+  end
+
+  enum :result do
+    value(:ok)
+    value(:error)
   end
 end

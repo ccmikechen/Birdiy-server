@@ -58,6 +58,27 @@ defmodule BirdiyWeb.Resolvers.Diy do
     {:ok, !is_nil(project.published_at)}
   end
 
+  def project_viewed(project, _, %{context: %{current_user: current_user}}) do
+    case Accounts.get_user_viewed_project(current_user.id, project.id) do
+      %Accounts.UserViewedProject{} -> {:ok, true}
+      _ -> {:ok, false}
+    end
+  end
+
+  def project_liked(project, _, %{context: %{current_user: current_user}}) do
+    case Accounts.get_user_liked_project(current_user.id, project.id) do
+      %Accounts.UserLikedProject{} -> {:ok, true}
+      _ -> {:ok, false}
+    end
+  end
+
+  def project_favorite(project, _, %{context: %{current_user: current_user}}) do
+    case Accounts.get_user_favorite_project(current_user.id, project.id) do
+      %Accounts.UserFavoriteProject{} -> {:ok, true}
+      _ -> {:ok, false}
+    end
+  end
+
   def project_author(project, _, _) do
     Helpers.batch_by_id(Accounts.User, project.author_id)
   end
