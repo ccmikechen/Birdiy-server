@@ -197,12 +197,21 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:create_post_input))
 
       middleware(ParseIDs, input: [related_project_id: :project])
+      resolve(&Resolvers.Timeline.create_post/3)
+    end
 
-      middleware(ParseRecord,
-        input: [related_project_id: {:related_project, Diy.Project}]
+    field :edit_post, :post_result do
+      arg(:input, non_null(:edit_post_input))
+
+      middleware(ParseIDs,
+        input: [
+          id: :post,
+          related_project_id: :project,
+          photos: [id: :post_photo]
+        ]
       )
 
-      resolve(&Resolvers.Timeline.create_post/3)
+      resolve(&Resolvers.Timeline.edit_post/3)
     end
   end
 

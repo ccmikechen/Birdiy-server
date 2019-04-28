@@ -5,8 +5,9 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
   alias BirdiyWeb.Resolvers
   alias Birdiy.PostPhoto
 
-  object :post_photo do
+  node object(:post_photo) do
     field :image, non_null(:string), resolve: PostPhoto.resolver(:image)
+    field :order, non_null(:integer)
 
     field :post, non_null(:post) do
       resolve(&Resolvers.Timeline.photo_post/3)
@@ -45,7 +46,17 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     field :photos, list_of(:post_photo_input)
   end
 
+  input_object :edit_post_input do
+    field :id, non_null(:id)
+    field :related_project_type, non_null(:related_project_type)
+    field :related_project_id, :id
+    field :related_project_name, :string
+    field :message, non_null(:string)
+    field :photos, list_of(:post_photo_input)
+  end
+
   input_object :post_photo_input do
+    field :id, :id
     field :image, :upload
     field :order, non_null(:integer)
   end

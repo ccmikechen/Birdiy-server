@@ -10,6 +10,7 @@ defmodule Birdiy.Timeline.PostPhoto do
 
   schema "post_photos" do
     field :image, PostPhoto.Type
+    field :order, :decimal
     belongs_to :post, Timeline.Post
 
     soft_delete_schema()
@@ -21,8 +22,8 @@ defmodule Birdiy.Timeline.PostPhoto do
     attrs = put_random_filename(attrs, [:image])
 
     post_photo
-    |> cast(attrs, [:post_id])
+    |> cast(attrs, [:order, :post_id])
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:image, :post_id])
+    |> validate_required([:image, :order, :post_id])
   end
 end

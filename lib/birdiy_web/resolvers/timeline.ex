@@ -36,7 +36,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   end
 
   def photos_for_post(post, _, _) do
-    Helpers.assoc(post, :photos)
+    {:ok, Timeline.get_post_photos!(post)}
   end
 
   def thumbnail_for_post(post, _, _) do
@@ -47,6 +47,18 @@ defmodule BirdiyWeb.Resolvers.Timeline do
     case Timeline.create_post(current_user, params) do
       {:ok, post} -> {:ok, %{post: post}}
       _ -> {:error, nil}
+    end
+  end
+
+  def edit_post(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    with post = Timeline.get_post!(params[:id]) do
+      case Timeline.update_post(post, current_user, params) do
+        {:ok, post} ->
+          {:ok, %{post: post}}
+
+        _ ->
+          {:error, nil}
+      end
     end
   end
 end

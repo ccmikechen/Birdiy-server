@@ -38,14 +38,41 @@ defmodule Birdiy.Timeline do
     end
   end
 
+  def update_post(%Post{} = post, %User{} = author, attrs) do
+    result =
+      Multi.new()
+      |> upsert_post_photos_query(post, attrs[:photos])
+      |> update_post_query(post, author, attrs)
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{update_post: post}} ->
+        {:ok, post}
+
+      _ ->
+        nil
+    end
+  end
+
+  defp update_post_query(multi, %Post{} = post, %User{} = author, attrs) do
+    changeset = Post.changeset(post, author, attrs)
+    Multi.update(multi, :update_post, changeset)
+  end
+
   def delete_post(%Post{} = post) do
     Repo.soft_delete(post)
   end
 
   def get_post_photo!(id), do: Repo.get!(PostPhoto, id)
 
-  def get_post_thumbnail!(post) do
-    from(p in PostPhoto, where: p.post_id == ^post.id)
+  def get_post_photos!(%Post{} = post) do
+    Ecto.assoc(post, :photos)
+    |> order_by(:order)
+    |> Repo.all()
+  end
+
+  def get_post_thumbnail!(%Post{} = post) do
+    from(p in PostPhoto, where: p.post_id == ^post.id and is_nil(p.deleted_at))
     |> first()
     |> Repo.one()
   end
