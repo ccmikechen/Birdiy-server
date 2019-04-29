@@ -96,4 +96,12 @@ defmodule BirdiyWeb.Resolvers.Accounts do
       _ -> {:error, nil}
     end
   end
+
+  def posts_for_user(pagination_args, %{source: user}) do
+    query =
+      Ecto.assoc(user, :posts)
+      |> Timeline.posts_query(pagination_args)
+
+    Connection.from_query(query, &Repo.all/1, pagination_args)
+  end
 end

@@ -4,15 +4,30 @@ defmodule Birdiy.Timeline do
   """
 
   import Ecto.Query, warn: false
-  alias Birdiy.Repo
+  import Ecto.SoftDelete.Query
+
   alias Ecto.Multi
+  alias Birdiy.Repo
   alias Birdiy.Helpers
 
   alias Birdiy.Accounts.User
   alias Birdiy.Timeline.{Post, PostPhoto}
 
   def list_posts do
-    Repo.all(Post)
+    Repo.all(Post) |> with_undeleted()
+  end
+
+  def posts_query(args), do: posts_query(Post, args)
+
+  def posts_query(query, args) do
+    Enum.reduce(args, query, fn
+      {:order, :newest}, query ->
+        query |> order_by(desc: :inserted_at)
+
+      _, query ->
+        query
+    end)
+    |> with_undeleted()
   end
 
   def get_post!(id), do: Repo.get!(Post, id)

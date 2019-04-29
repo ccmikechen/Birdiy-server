@@ -5,6 +5,10 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
   alias BirdiyWeb.Resolvers
   alias Birdiy.PostPhoto
 
+  enum :post_order do
+    value(:newest)
+  end
+
   node object(:post_photo) do
     field :image, non_null(:string), resolve: PostPhoto.resolver(:image)
     field :order, non_null(:integer)
@@ -36,6 +40,10 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     end
 
     field :inserted_at, :datetime
+  end
+
+  input_object :post_input do
+    field :id, non_null(:id)
   end
 
   input_object :create_post_input do

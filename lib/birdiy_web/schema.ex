@@ -98,6 +98,8 @@ defmodule BirdiyWeb.Schema do
     end
 
     connection field :all_posts, node_type: :post do
+      arg(:order, type: :post_order, default_value: :newest)
+
       resolve(&Resolvers.Timeline.posts/2)
     end
 
@@ -128,6 +130,8 @@ defmodule BirdiyWeb.Schema do
         ]
       )
 
+      middleware(ParseRecord, input: [id: {:project, Diy.Project}])
+      middleware(AuthUser, input: [project: :author_id])
       resolve(&Resolvers.Diy.edit_project/3)
     end
 
@@ -211,7 +215,18 @@ defmodule BirdiyWeb.Schema do
         ]
       )
 
+      middleware(ParseRecord, input: [id: {:post, Timeline.Post}])
+      middleware(AuthUser, input: [post: :author_id])
       resolve(&Resolvers.Timeline.edit_post/3)
+    end
+
+    field :delete_post, :post_result do
+      arg(:input, non_null(:post_input))
+
+      middleware(ParseIDs, input: [id: :post])
+      middleware(ParseRecord, input: [id: {:post, Timeline.Post}])
+      middleware(AuthUser, input: [post: :author_id])
+      resolve(&Resolvers.Timeline.delete_post/3)
     end
   end
 

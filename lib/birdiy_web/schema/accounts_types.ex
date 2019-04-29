@@ -20,7 +20,9 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     end
 
     connection field :posts, node_type: :post do
-      resolve(&Resolvers.Timeline.posts_for_user/2)
+      arg(:order, type: :post_order, default_value: :newest)
+
+      resolve(&Resolvers.Accounts.posts_for_user/2)
     end
 
     field :following_users, list_of(:user) do

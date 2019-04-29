@@ -7,8 +7,11 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   alias BirdiyWeb.Schema.Helpers
 
   def posts(pagination_args, _) do
-    from(Timeline.Post, order_by: [desc: :inserted_at])
-    |> Connection.from_query(&Repo.all/1, pagination_args)
+    Connection.from_query(
+      Timeline.posts_query(pagination_args),
+      &Repo.all/1,
+      pagination_args
+    )
   end
 
   def post(_, %{id: id}, %{context: %{loader: loader}}) do
@@ -25,10 +28,6 @@ defmodule BirdiyWeb.Resolvers.Timeline do
 
   def post_related_project(post, _, _) do
     Helpers.batch_by_id(Diy.Project, post.related_project_id)
-  end
-
-  def posts_for_user(pagination_args, %{source: user}) do
-    Helpers.assoc_connection(user, :posts, pagination_args)
   end
 
   def photo_post(post_photo, _, _) do
@@ -59,6 +58,16 @@ defmodule BirdiyWeb.Resolvers.Timeline do
         _ ->
           {:error, nil}
       end
+    end
+  end
+
+  def delete_post(_, %{input: %{post: post}}, %{context: %{current_user: current_user}}) do
+    case Timeline.delete_post(post) do
+      {:ok, post} ->
+        {:ok, %{post: post}}
+
+      _ ->
+        {:error, nil}
     end
   end
 end
