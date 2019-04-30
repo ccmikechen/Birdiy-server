@@ -153,14 +153,18 @@ defmodule Birdiy.Diy do
   end
 
   defp update_project_query(multi, %Project{} = project, %User{} = author, attrs) do
-    changeset =
-      if is_nil(project.published_at) do
-        Project.changeset(project, author, attrs)
-      else
-        Project.publish_changeset(project, author, attrs)
-      end
+    if is_nil(project.published_at) do
+      changeset = Project.changeset(project, author, attrs)
+      Multi.update(multi, :update_project, changeset)
+    else
+      update_published_project_query(multi, project, author, attrs)
+    end
+  end
 
-    Multi.update(multi, :update_project, changeset)
+  defp update_published_project_query(multi, %Project{} = project, %User{} = author, attrs) do
+    Multi.run(multi, :update_project, fn _, _ ->
+      Project.publish_changeset(project, author, attrs) |> Repo.update()
+    end)
   end
 
   def publish_project(%Project{} = project, %User{} = author) do

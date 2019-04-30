@@ -34,4 +34,8 @@ defmodule BirdiyWeb.Errors do
   def update_post do
     {:error, code: 3002, message: "Can't update post"}
   end
+
+  def delete_post do
+    {:error, code: 3003, message: "Can't delete post"}
+  end
 end

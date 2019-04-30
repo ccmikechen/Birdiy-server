@@ -33,24 +33,24 @@ defmodule Birdiy.Timeline do
   def get_post!(id), do: Repo.get!(Post, id)
 
   def create_post(%User{} = author, attrs \\ %{}) do
-    {:ok, post} =
-      %Post{}
-      |> Post.changeset(author, attrs)
-      |> Repo.insert()
-
     result =
       Multi.new()
-      |> upsert_post_photos_query(post, attrs[:photos])
+      |> create_post_query(author, attrs)
+      |> create_post_photos_query(attrs[:photos])
       |> Repo.transaction()
 
     case result do
-      {:ok, _} ->
+      {:ok, %{create_post: post}} ->
         {:ok, post}
 
       _ ->
-        delete_post(post)
         nil
     end
+  end
+
+  defp create_post_query(multi, author, attrs) do
+    changeset = Post.changeset(%Post{}, author, attrs)
+    Multi.insert(multi, :create_post, changeset)
   end
 
   def update_post(%Post{} = post, %User{} = author, attrs) do
@@ -70,8 +70,10 @@ defmodule Birdiy.Timeline do
   end
 
   defp update_post_query(multi, %Post{} = post, %User{} = author, attrs) do
-    changeset = Post.changeset(post, author, attrs)
-    Multi.update(multi, :update_post, changeset)
+    Multi.run(multi, :update_post, fn _, _ ->
+      changeset = Post.update_changeset(post, author, attrs)
+      Repo.update(changeset)
+    end)
   end
 
   def delete_post(%Post{} = post) do
@@ -90,6 +92,24 @@ defmodule Birdiy.Timeline do
     from(p in PostPhoto, where: p.post_id == ^post.id and is_nil(p.deleted_at))
     |> first()
     |> Repo.one()
+  end
+
+  defp create_post_photos_query(multi, params) do
+    params
+    |> Enum.with_index()
+    |> Enum.reduce(multi, fn {attrs, index}, multi ->
+      Multi.run(
+        multi,
+        "create_post_photo_#{index}",
+        &create_post_photo_query(attrs, &1, &2)
+      )
+    end)
+  end
+
+  defp create_post_photo_query(attrs, _, %{create_post: post}) do
+    attrs = Map.merge(attrs, %{post_id: post.id})
+    changeset = PostPhoto.changeset(%PostPhoto{}, attrs)
+    Repo.insert(changeset)
   end
 
   defp upsert_post_photos_query(multi, %Post{} = post, params) do

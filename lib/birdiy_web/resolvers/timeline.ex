@@ -5,6 +5,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Timeline, Diy, Accounts}
   alias BirdiyWeb.Schema.Helpers
+  alias BirdiyWeb.Errors
 
   def posts(pagination_args, _) do
     Connection.from_query(
@@ -45,7 +46,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
   def create_post(_, %{input: params}, %{context: %{current_user: current_user}}) do
     case Timeline.create_post(current_user, params) do
       {:ok, post} -> {:ok, %{post: post}}
-      _ -> {:error, nil}
+      _ -> Errors.create_post()
     end
   end
 
@@ -56,7 +57,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
           {:ok, %{post: post}}
 
         _ ->
-          {:error, nil}
+          Errors.update_post()
       end
     end
   end
@@ -67,7 +68,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
         {:ok, %{post: post}}
 
       _ ->
-        {:error, nil}
+        Errors.delete_post()
     end
   end
 end
