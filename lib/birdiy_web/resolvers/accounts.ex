@@ -9,6 +9,13 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     {:ok, current_user}
   end
 
+  def user_followed(user, _, %{context: %{current_user: current_user}}) do
+    case Accounts.get_user_following(current_user.id, user.id) do
+      %Accounts.UserFollowing{} -> {:ok, true}
+      _ -> {:ok, false}
+    end
+  end
+
   def following_users(user, _, _) do
     Helpers.assoc(user, :following_users)
   end
@@ -44,6 +51,28 @@ defmodule BirdiyWeb.Resolvers.Accounts do
 
   def follower_count_for_user(user, _, _) do
     {:ok, Accounts.count_user_followers!(user)}
+  end
+
+  def follow_user(_, %{input: %{id: user_id}}, %{context: %{current_user: current_user}}) do
+    case Accounts.create_user_following(%{following_id: current_user.id, followed_id: user_id}) do
+      {:ok, _} ->
+        {:ok, %{following_user: current_user, followed_user: Accounts.get_user!(user_id)}}
+
+      _ ->
+        {:error, nil}
+    end
+  end
+
+  def cancel_follow_user(_, %{input: %{id: user_id}}, %{
+        context: %{current_user: current_user}
+      }) do
+    case Accounts.delete_user_following(current_user.id, user_id) do
+      {:ok, _} ->
+        {:ok, %{following_user: current_user, followed_user: Accounts.get_user!(user_id)}}
+
+      _ ->
+        {:error, nil}
+    end
   end
 
   def project_count_for_user(user, _, _) do

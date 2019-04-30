@@ -4,9 +4,13 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
 
   alias BirdiyWeb.Resolvers
 
-  object :user do
+  node object(:user) do
     field :image, :string
     field :name, non_null(:string)
+
+    field :following, non_null(:boolean) do
+      resolve(&Resolvers.Accounts.user_followed/3)
+    end
 
     connection field :projects, node_type: :project do
       arg(:filter, :project_filter)
@@ -56,5 +60,14 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :follower_count, :integer do
       resolve(&Resolvers.Accounts.follower_count_for_user/3)
     end
+  end
+
+  input_object :user_input do
+    field :id, non_null(:id)
+  end
+
+  object :follow_user_result do
+    field :following_user, non_null(:user)
+    field :followed_user, non_null(:user)
   end
 end

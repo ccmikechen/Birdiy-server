@@ -50,16 +50,33 @@ defmodule Birdiy.Accounts do
 
   def get_user_following!(id), do: Repo.get!(UserFollowing, id)
 
+  def get_user_following(followed_id, following_id) do
+    Repo.get_by(UserFollowing, followed_id: followed_id, following_id: following_id)
+  end
+
   def create_user_following(attrs \\ %{}) do
     %UserFollowing{}
     |> UserFollowing.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+      on_conflict: :replace_all_except_primary_key,
+      conflict_target: [:following_id, :followed_id]
+    )
   end
 
   def update_user_following(%UserFollowing{} = user_following, attrs) do
     user_following
     |> UserFollowing.changeset(attrs)
     |> Repo.update()
+  end
+
+  def delete_user_following(following_id, followed_id) do
+    case get_user_following(following_id, followed_id) do
+      %UserFollowing{} = u ->
+        delete_user_following(u)
+
+      _ ->
+        nil
+    end
   end
 
   def delete_user_following(%UserFollowing{} = user_following) do

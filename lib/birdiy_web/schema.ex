@@ -112,6 +112,20 @@ defmodule BirdiyWeb.Schema do
   end
 
   mutation do
+    field :follow_user, :follow_user_result do
+      arg(:input, non_null(:user_input))
+
+      middleware(ParseIDs, input: [id: :user])
+      resolve(&Resolvers.Accounts.follow_user/3)
+    end
+
+    field :cancel_follow_user, :follow_user_result do
+      arg(:input, non_null(:user_input))
+
+      middleware(ParseIDs, input: [id: :user])
+      resolve(&Resolvers.Accounts.cancel_follow_user/3)
+    end
+
     field :create_project, :project_result do
       arg(:input, non_null(:create_project_input))
 
