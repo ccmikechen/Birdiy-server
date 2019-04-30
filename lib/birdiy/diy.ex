@@ -37,6 +37,7 @@ defmodule Birdiy.Diy do
 
   def get_project_category!(id), do: Repo.get!(ProjectCategory, id)
 
+  def get_project_category_by_name!(nil), do: nil
   def get_project_category_by_name!(name), do: Repo.get_by!(ProjectCategory, name: name)
 
   def create_project_category(attrs \\ %{}) do
@@ -152,12 +153,25 @@ defmodule Birdiy.Diy do
   end
 
   defp update_project_query(multi, %Project{} = project, %User{} = author, attrs) do
-    changeset = Project.changeset(project, author, attrs)
+    changeset =
+      if is_nil(project.published_at) do
+        Project.changeset(project, author, attrs)
+      else
+        Project.publish_changeset(project, author, attrs)
+      end
+
     Multi.update(multi, :update_project, changeset)
   end
 
-  def publish_project(%Project{} = project) do
-    change(project, published_at: Helpers.DateTime.utc_now()) |> Repo.update()
+  def publish_project(%Project{} = project, %User{} = author) do
+    case project_publishable?(project, author) do
+      true -> change(project, published_at: Helpers.DateTime.utc_now()) |> Repo.update()
+      _ -> :error
+    end
+  end
+
+  defp project_publishable?(%Project{} = project, %User{} = author) do
+    Project.publish_changeset(project, author, %{}).valid?()
   end
 
   def unpublish_project(%Project{} = project) do

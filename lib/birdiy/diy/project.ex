@@ -7,7 +7,7 @@ defmodule Birdiy.Diy.Project do
   import Ecto.SoftDelete.Query
   import Birdiy.Ecto.Changeset
 
-  alias Birdiy.{Accounts, Diy, Timeline, ProjectPhoto}
+  alias Birdiy.{Repo, Accounts, Diy, Timeline, ProjectPhoto}
 
   schema "projects" do
     field :introduction, :string
@@ -46,12 +46,22 @@ defmodule Birdiy.Diy.Project do
   end
 
   @doc false
+  def publish_changeset(project, author, attrs) do
+    project
+    |> changeset(author, attrs)
+    |> validate_methods(project)
+    |> validate_required([:image, :introduction])
+  end
+
+  @doc false
   def changeset(project, author, attrs) do
     attrs = put_random_filename(attrs, [:image])
 
     project
     |> draft_changeset(author, attrs)
     |> cast(attrs, [:introduction, :tip])
+    |> validate_length(:introduction, max: 300)
+    |> validate_length(:tip, max: 300)
     |> cast_attachments(attrs, [:image])
   end
 
@@ -61,6 +71,7 @@ defmodule Birdiy.Diy.Project do
     |> cast(attrs, [:name])
     |> put_change(:author_id, author.id)
     |> put_category(attrs[:category])
+    |> validate_length(:name, max: 20)
     |> validate_required([:author_id, :name, :category_id])
   end
 
@@ -71,6 +82,15 @@ defmodule Birdiy.Diy.Project do
 
       _ ->
         struct
+    end
+  end
+
+  defp validate_methods(changeset, project) do
+    count = Ecto.assoc(project, :methods) |> Repo.aggregate(:count, :id)
+
+    cond do
+      count > 0 -> changeset
+      true -> add_error(changeset, :methods, "Can't be empty")
     end
   end
 end

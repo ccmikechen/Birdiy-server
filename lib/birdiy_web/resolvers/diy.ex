@@ -36,7 +36,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
         {:ok, %{project: project}}
 
       _ ->
-        {:error, nil}
+        Errors.create_project()
     end
   end
 
@@ -47,7 +47,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
           {:ok, %{project: project}}
 
         _ ->
-          {:error, nil}
+          Errors.update_project()
       end
     end
   end
@@ -58,17 +58,17 @@ defmodule BirdiyWeb.Resolvers.Diy do
         {:ok, %{project: project}}
 
       _ ->
-        {:error, nil}
+        Errors.delete_project()
     end
   end
 
   def publish_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
-    case Diy.publish_project(project) do
+    case Diy.publish_project(project, current_user) do
       {:ok, project} ->
         {:ok, %{project: project}}
 
       _ ->
-        {:error, nil}
+        Errors.publish_project()
     end
   end
 
@@ -80,7 +80,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
         {:ok, %{project: project}}
 
       _ ->
-        {:error, nil}
+        Errors.unpublish_project()
     end
   end
 

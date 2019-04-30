@@ -50,8 +50,8 @@ defmodule Birdiy.Accounts do
 
   def get_user_following!(id), do: Repo.get!(UserFollowing, id)
 
-  def get_user_following(followed_id, following_id) do
-    Repo.get_by(UserFollowing, followed_id: followed_id, following_id: following_id)
+  def get_user_following(following_id, followed_id) do
+    Repo.get_by(UserFollowing, following_id: following_id, followed_id: followed_id)
   end
 
   def create_user_following(attrs \\ %{}) do
