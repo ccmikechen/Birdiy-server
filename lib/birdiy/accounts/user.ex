@@ -7,8 +7,16 @@ defmodule Birdiy.Accounts.User do
   schema "users" do
     field :image, :string
     field :name, :string, size: 20
-    has_many :projects, Diy.Project, foreign_key: :author_id
-    has_many :posts, Timeline.Post, foreign_key: :author_id
+
+    has_many :projects,
+             Diy.Project,
+             foreign_key: :author_id,
+             where: [deleted_at: nil]
+
+    has_many :posts,
+             Timeline.Post,
+             foreign_key: :author_id,
+             where: [deleted_at: nil]
 
     many_to_many :following_users,
                  Accounts.User,
@@ -24,19 +32,19 @@ defmodule Birdiy.Accounts.User do
 
     many_to_many :favorite_projects,
                  Diy.Project,
-                 where: [deleted_at: nil],
+                 where: [deleted_at: nil, published_at: {:not, nil}],
                  join_through: "user_favorite_projects",
                  on_replace: :delete
 
     many_to_many :liked_projects,
                  Diy.Project,
-                 where: [deleted_at: nil],
+                 where: [deleted_at: nil, published_at: {:not, nil}],
                  join_through: "user_liked_projects",
                  on_replace: :delete
 
     many_to_many :viewed_projects,
                  Diy.Project,
-                 where: [deleted_at: nil],
+                 where: [deleted_at: nil, published_at: {:not, nil}],
                  join_through: "user_viewed_projects",
                  on_replace: :delete
 

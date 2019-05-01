@@ -76,7 +76,11 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   end
 
   def project_count_for_user(user, _, _) do
-    {:ok, Accounts.count_user_projects!(user)}
+    {:ok, Accounts.count_user_projects!(user, true)}
+  end
+
+  def project_count_for_viewer(viewer, _, _) do
+    {:ok, Accounts.count_user_projects!(viewer)}
   end
 
   def projects_for_user(pagination_args, %{source: user}) do
@@ -85,6 +89,11 @@ defmodule BirdiyWeb.Resolvers.Accounts do
       |> Diy.projects_query(pagination_args)
 
     Connection.from_query(query, &Repo.all/1, pagination_args)
+  end
+
+  def projects_for_user(pagination_args, context, published) when is_boolean(published) do
+    args = Map.put(pagination_args, :published, published)
+    projects_for_user(args, context)
   end
 
   def favorite_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do

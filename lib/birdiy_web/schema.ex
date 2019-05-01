@@ -73,7 +73,7 @@ defmodule BirdiyWeb.Schema do
       end)
     end
 
-    field :viewer, :user do
+    field :viewer, :profile do
       resolve(&Resolvers.Accounts.viewer/2)
     end
 

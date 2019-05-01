@@ -18,8 +18,26 @@ defmodule Birdiy.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   def count_user_projects!(%User{} = user) do
+    count_user_projects!(user, nil)
+  end
+
+  def count_user_projects!(%User{} = user, published) do
     Ecto.assoc(user, :projects)
+    |> user_projects_filter(published)
     |> Repo.aggregate(:count, :id)
+  end
+
+  defp user_projects_filter(query, published) do
+    case published do
+      true ->
+        from(q in query, where: not is_nil(q.published_at))
+
+      false ->
+        from(q in query, where: is_nil(q.published_at))
+
+      _ ->
+        query
+    end
   end
 
   def count_user_followings!(%User{} = user) do

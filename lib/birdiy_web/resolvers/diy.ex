@@ -15,8 +15,10 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def projects(pagination_args, _) do
+    args = Map.put(pagination_args, :published, true)
+
     Connection.from_query(
-      Diy.projects_query(pagination_args),
+      Diy.projects_query(args),
       &Repo.all/1,
       pagination_args
     )
