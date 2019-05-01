@@ -9,6 +9,10 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     {:ok, current_user}
   end
 
+  def user(_, %{user: user}, _) do
+    {:ok, user}
+  end
+
   def user_followed(user, _, %{context: %{current_user: current_user}}) do
     case Accounts.get_user_following(current_user.id, user.id) do
       %Accounts.UserFollowing{} -> {:ok, true}

@@ -4,6 +4,43 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
 
   alias BirdiyWeb.Resolvers
 
+  interface :profile do
+    field :id, non_null(:id)
+    field :image, :string
+    field :name, non_null(:string)
+    field :following, non_null(:boolean)
+    field :following_users, list_of(:user)
+    field :followed_users, list_of(:user)
+    field :following_count, :integer
+    field :follower_count, :integer
+
+    field :posts, :post_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+    end
+
+    field :projects, :project_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+      arg(:filter, :project_filter)
+      arg(:order, type: :project_order, default_value: :newest)
+    end
+
+    field :favorite_projects, :project_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+    end
+
+    field :liked_projects, :project_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+    end
+
+    resolve_type(fn
+      _, _ -> nil
+    end)
+  end
+
   object :user_fields do
     field :image, :string
     field :name, non_null(:string)
@@ -56,15 +93,16 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :project_count, :integer do
       resolve(&Resolvers.Accounts.project_count_for_user/3)
     end
+
+    interface(:profile)
   end
 
-  node object(:profile) do
+  node object(:viewer) do
     import_fields(:user_fields)
 
     connection field :projects, node_type: :project do
       arg(:filter, :project_filter)
       arg(:order, type: :project_order, default_value: :newest)
-      arg(:published, type: :boolean, default_value: nil)
 
       resolve(&Resolvers.Accounts.projects_for_user/2)
     end
@@ -80,6 +118,8 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     connection field :viewed_projects, node_type: :project do
       resolve(&Resolvers.Accounts.viewed_projects_for_user/2)
     end
+
+    interface(:profile)
   end
 
   input_object :user_input do

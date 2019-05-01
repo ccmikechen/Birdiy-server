@@ -73,8 +73,16 @@ defmodule BirdiyWeb.Schema do
       end)
     end
 
-    field :viewer, :profile do
+    field :viewer, :viewer do
       resolve(&Resolvers.Accounts.viewer/2)
+    end
+
+    field :user, :user do
+      arg(:id, non_null(:id))
+
+      middleware(ParseIDs, id: :user)
+      middleware(ParseRecord, id: {:user, Accounts.User})
+      resolve(&Resolvers.Accounts.user/3)
     end
 
     connection field :all_project_categories, node_type: :project_category do
