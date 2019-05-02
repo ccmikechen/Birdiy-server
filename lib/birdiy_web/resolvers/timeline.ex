@@ -39,6 +39,10 @@ defmodule BirdiyWeb.Resolvers.Timeline do
     {:ok, Timeline.get_post_photos!(post)}
   end
 
+  def photos_count_for_post(post, _, _) do
+    {:ok, Timeline.count_post_photos!(post)}
+  end
+
   def thumbnail_for_post(post, _, _) do
     {:ok, Timeline.get_post_thumbnail!(post)}
   end

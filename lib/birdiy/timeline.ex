@@ -35,6 +35,11 @@ defmodule Birdiy.Timeline do
 
   def get_post!(id), do: Repo.get!(Post, id)
 
+  def count_post_photos!(%Post{} = post) do
+    Ecto.assoc(post, :photos)
+    |> Repo.aggregate(:count, :id)
+  end
+
   def create_post(%User{} = author, attrs \\ %{}) do
     result =
       Multi.new()
