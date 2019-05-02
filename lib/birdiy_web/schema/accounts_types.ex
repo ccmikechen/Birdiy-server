@@ -2,7 +2,10 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
+  alias Absinthe.Relay.Node.ParseIDs
   alias BirdiyWeb.Resolvers
+  alias BirdiyWeb.Schema.Middleware.ParseRecord
+  alias Birdiy.Timeline
 
   interface :profile do
     field :id, non_null(:id)
@@ -17,6 +20,7 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :posts, :post_connection do
       arg(:first, :integer)
       arg(:after, :string)
+      arg(:before_id, :id)
     end
 
     field :projects, :project_connection do
@@ -51,7 +55,10 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
 
     connection field :posts, node_type: :post do
       arg(:order, type: :post_order, default_value: :newest)
+      arg(:before_id, :id)
 
+      middleware(ParseIDs, before_id: :post)
+      middleware(ParseRecord, before_id: {:before_post, Timeline.Post})
       resolve(&Resolvers.Accounts.posts_for_user/2)
     end
 

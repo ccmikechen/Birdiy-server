@@ -24,6 +24,9 @@ defmodule Birdiy.Timeline do
       {:order, :newest}, query ->
         query |> order_by(desc: :inserted_at)
 
+      {:before_post, %Post{} = post}, query ->
+        query |> where([p], p.id <= ^post.id)
+
       _, query ->
         query
     end)
