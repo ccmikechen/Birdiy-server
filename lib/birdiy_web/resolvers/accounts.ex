@@ -4,9 +4,17 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Accounts, Timeline, Diy}
   alias BirdiyWeb.Schema.Helpers
+  alias BirdiyWeb.Errors
 
   def viewer(_, %{context: %{current_user: current_user}}) do
     {:ok, current_user}
+  end
+
+  def edit_viewer(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    case Accounts.update_user(current_user, params) do
+      {:ok, user} -> {:ok, %{viewer: user}}
+      _ -> Errors.update_user()
+    end
   end
 
   def user(_, %{user: user}, _) do

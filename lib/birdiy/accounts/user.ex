@@ -1,11 +1,14 @@
 defmodule Birdiy.Accounts.User do
   use Ecto.Schema
-  import Ecto.Changeset
+  use Arc.Ecto.Schema
 
-  alias Birdiy.{Accounts, Diy, Timeline}
+  import Ecto.Changeset
+  import Birdiy.Ecto.Changeset
+
+  alias Birdiy.{Accounts, Diy, Timeline, Avatar}
 
   schema "users" do
-    field :image, :string
+    field :image, Avatar.Type
     field :name, :string, size: 20
 
     has_many :projects,
@@ -53,8 +56,11 @@ defmodule Birdiy.Accounts.User do
 
   @doc false
   def changeset(user, attrs) do
+    attrs = put_random_filename(attrs, [:image])
+
     user
     |> cast(attrs, [:name, :image])
+    |> cast_attachments(attrs, [:image])
     |> validate_required([:name])
   end
 end

@@ -5,7 +5,7 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
   alias Absinthe.Relay.Node.ParseIDs
   alias BirdiyWeb.Resolvers
   alias BirdiyWeb.Schema.Middleware.ParseRecord
-  alias Birdiy.Timeline
+  alias Birdiy.{Timeline, Avatar}
 
   interface :profile do
     field :id, non_null(:id)
@@ -46,7 +46,7 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
   end
 
   object :user_fields do
-    field :image, :string
+    field :image, :string, resolve: Avatar.resolver(:image)
     field :name, non_null(:string)
 
     field :following, non_null(:boolean) do
@@ -127,6 +127,15 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     end
 
     interface(:profile)
+  end
+
+  input_object :edit_user_input do
+    field :image, :upload
+    field :name, :string
+  end
+
+  object :viewer_result do
+    field :viewer, non_null(:viewer)
   end
 
   input_object :user_input do
