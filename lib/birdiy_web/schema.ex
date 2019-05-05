@@ -7,6 +7,7 @@ defmodule BirdiyWeb.Schema do
   alias BirdiyWeb.Resolvers
 
   alias BirdiyWeb.Schema.Middleware.{
+    Authorize,
     ParseRecord,
     AuthUser
   }
@@ -74,6 +75,7 @@ defmodule BirdiyWeb.Schema do
     end
 
     field :viewer, :viewer do
+      middleware(Authorize)
       resolve(&Resolvers.Accounts.viewer/2)
     end
 
@@ -123,12 +125,14 @@ defmodule BirdiyWeb.Schema do
     field :edit_viewer, :viewer_result do
       arg(:input, non_null(:edit_user_input))
 
+      middleware(Authorize)
       resolve(&Resolvers.Accounts.edit_viewer/3)
     end
 
     field :follow_user, :follow_user_result do
       arg(:input, non_null(:user_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :user])
       resolve(&Resolvers.Accounts.follow_user/3)
     end
@@ -136,6 +140,7 @@ defmodule BirdiyWeb.Schema do
     field :cancel_follow_user, :follow_user_result do
       arg(:input, non_null(:user_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :user])
       resolve(&Resolvers.Accounts.cancel_follow_user/3)
     end
@@ -143,11 +148,14 @@ defmodule BirdiyWeb.Schema do
     field :create_project, :project_result do
       arg(:input, non_null(:create_project_input))
 
+      middleware(Authorize)
       resolve(&Resolvers.Diy.create_project/3)
     end
 
     field :edit_project, :project_result do
       arg(:input, non_null(:edit_project_input))
+
+      middleware(Authorize)
 
       middleware(ParseIDs,
         input: [
@@ -166,6 +174,7 @@ defmodule BirdiyWeb.Schema do
     field :view_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.view_project/3)
     end
@@ -173,6 +182,7 @@ defmodule BirdiyWeb.Schema do
     field :like_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.like_project/3)
     end
@@ -180,6 +190,7 @@ defmodule BirdiyWeb.Schema do
     field :cancel_like_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.cancel_like_project/3)
     end
@@ -187,6 +198,7 @@ defmodule BirdiyWeb.Schema do
     field :favorite_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.favorite_project/3)
     end
@@ -194,6 +206,7 @@ defmodule BirdiyWeb.Schema do
     field :cancel_favorite_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.cancel_favorite_project/3)
     end
@@ -201,6 +214,7 @@ defmodule BirdiyWeb.Schema do
     field :delete_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -210,6 +224,7 @@ defmodule BirdiyWeb.Schema do
     field :publish_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -219,6 +234,7 @@ defmodule BirdiyWeb.Schema do
     field :unpublish_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -228,12 +244,15 @@ defmodule BirdiyWeb.Schema do
     field :create_post, :post_result do
       arg(:input, non_null(:create_post_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [related_project_id: :project])
       resolve(&Resolvers.Timeline.create_post/3)
     end
 
     field :edit_post, :post_result do
       arg(:input, non_null(:edit_post_input))
+
+      middleware(Authorize)
 
       middleware(ParseIDs,
         input: [
@@ -251,6 +270,7 @@ defmodule BirdiyWeb.Schema do
     field :delete_post, :post_result do
       arg(:input, non_null(:post_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :post])
       middleware(ParseRecord, input: [id: {:post, Timeline.Post}])
       middleware(AuthUser, input: [post: :author_id])

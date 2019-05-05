@@ -4,6 +4,7 @@ defmodule BirdiyWeb.Context do
   import Plug.Conn
 
   alias Birdiy.{Repo, Accounts}
+  alias BirdiyWeb.Auth
 
   def init(opts), do: opts
 
@@ -12,7 +13,12 @@ defmodule BirdiyWeb.Context do
     Absinthe.Plug.put_options(conn, context: context)
   end
 
-  defp build_context(_conn) do
-    %{current_user: Repo.get(Accounts.User, 1)}
+  defp build_context(conn) do
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
+         {:ok, data} <- Auth.verify(token) do
+      %{current_user: data}
+    else
+      _ -> %{}
+    end
   end
 end

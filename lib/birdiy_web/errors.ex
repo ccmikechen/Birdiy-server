@@ -1,10 +1,14 @@
 defmodule BirdiyWeb.Errors do
+  def unauthorized do
+    {:error, code: 1, message: "Unauthorized"}
+  end
+
   def permission_denied do
-    {:error, code: 1, message: "Permission denied"}
+    {:error, code: 2, message: "Permission denied"}
   end
 
   def record_not_found do
-    {:error, code: 2, message: "Record is not found"}
+    {:error, code: 3, message: "Record is not found"}
   end
 
   def create_project do
