@@ -17,6 +17,8 @@ defmodule Birdiy.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
   def get_or_create_user_by(%{} = attrs) do
     case Repo.get_by(User, attrs) do
       nil -> %User{}

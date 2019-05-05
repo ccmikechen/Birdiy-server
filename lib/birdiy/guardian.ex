@@ -10,7 +10,6 @@ defmodule Birdiy.Guardian do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    resource = Accounts.get_user!(id)
-    {:ok, resource}
+    {:ok, Accounts.get_user(id)}
   end
 end
