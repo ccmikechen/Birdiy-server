@@ -69,3 +69,8 @@ config :ex_aws,
     host: "birdiy-dev-trail.sgp1.digitaloceanspaces.com",
     region: "sgp1"
   ]
+
+# Configures Guardian
+config :birdiy, Birdiy.Guardian,
+  issuer: "birdiy",
+  secret_key: "z46Dp+Dy5xTYrNqiNqIjwtNfPyqwKCWzfsn9Wt1wodvnlRsBzQmWdY/GUcucdJKn"

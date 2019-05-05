@@ -20,7 +20,7 @@ defmodule Birdiy.MixProject do
   def application do
     [
       mod: {Birdiy.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :guardian]
     ]
   end
 
@@ -48,6 +48,9 @@ defmodule Birdiy.MixProject do
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
       {:ecto_soft_delete, "~> 1.0"},
+
+      # Authentication
+      {:guardian, "~> 1.0"},
 
       # Absinthe
       {:absinthe, "~> 1.4.16"},

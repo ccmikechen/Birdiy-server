@@ -10,6 +10,7 @@ defmodule Birdiy.Accounts.User do
   schema "users" do
     field :image, Avatar.Type
     field :name, :string, size: 20
+    field :access_key, :string, size: 8
 
     has_many :projects,
              Diy.Project,
