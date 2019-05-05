@@ -10,6 +10,15 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     {:ok, current_user}
   end
 
+  def login(_, %{input: params}, _) do
+    with {:ok, user} <- Accounts.get_or_create_user_by(params.method, params.credential),
+         {:ok, access_token, refresh_token} <- BirdiyWeb.Auth.sign(user) do
+      {:ok, %{access_token: access_token, refresh_token: refresh_token, user: user}}
+    else
+      _ -> Errors.invalid_credential()
+    end
+  end
+
   def edit_viewer(_, %{input: params}, %{context: %{current_user: current_user}}) do
     case Accounts.update_user(current_user, params) do
       {:ok, user} -> {:ok, %{viewer: user}}

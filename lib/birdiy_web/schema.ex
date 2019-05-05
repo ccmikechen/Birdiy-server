@@ -122,6 +122,12 @@ defmodule BirdiyWeb.Schema do
   end
 
   mutation do
+    field :login, :session do
+      arg(:input, non_null(:login_input))
+
+      resolve(&Resolvers.Accounts.login/3)
+    end
+
     field :edit_viewer, :viewer_result do
       arg(:input, non_null(:edit_user_input))
 

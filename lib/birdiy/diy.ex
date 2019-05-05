@@ -170,7 +170,7 @@ defmodule Birdiy.Diy do
   def publish_project(%Project{} = project, %User{} = author) do
     case project_publishable?(project, author) do
       true -> change(project, published_at: Helpers.DateTime.utc_now()) |> Repo.update()
-      _ -> :error
+      _ -> nil
     end
   end
 

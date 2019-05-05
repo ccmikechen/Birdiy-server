@@ -22,7 +22,7 @@ defmodule BirdiyWeb.Auth do
         {:ok, user}
 
       _ ->
-        :error
+        nil
     end
   end
 
@@ -33,7 +33,7 @@ defmodule BirdiyWeb.Auth do
         {:ok, new_token}
 
       _ ->
-        :error
+        nil
     end
   end
 end

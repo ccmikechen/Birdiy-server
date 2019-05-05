@@ -11,6 +11,18 @@ defmodule BirdiyWeb.Errors do
     {:error, code: 3, message: "Record is not found"}
   end
 
+  def invalid_credential do
+    {:error, code: 4, message: "Invalid credential"}
+  end
+
+  def create_user do
+    {:error, code: 1001, message: "Can't create user"}
+  end
+
+  def update_user do
+    {:error, code: 1002, message: "Can't update user"}
+  end
+
   def create_project do
     {:error, code: 2001, message: "Can't create project"}
   end
@@ -41,13 +53,5 @@ defmodule BirdiyWeb.Errors do
 
   def delete_post do
     {:error, code: 3003, message: "Can't delete post"}
-  end
-
-  def create_user do
-    {:error, code: 1001, message: "Can't create user"}
-  end
-
-  def update_user do
-    {:error, code: 1002, message: "Can't update user"}
   end
 end

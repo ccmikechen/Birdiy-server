@@ -5,7 +5,7 @@ defmodule Birdiy.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias Birdiy.Repo
+  alias Birdiy.{Repo, Auth}
 
   alias Birdiy.Accounts.{
     User,
@@ -16,6 +16,29 @@ defmodule Birdiy.Accounts do
   }
 
   def get_user!(id), do: Repo.get!(User, id)
+
+  def get_or_create_user_by(%{} = attrs) do
+    case Repo.get_by(User, attrs) do
+      nil -> %User{}
+      user -> user
+    end
+    |> User.changeset(attrs)
+    |> Repo.insert_or_update()
+  end
+
+  def get_or_create_user_by(:facebook, token) do
+    case Auth.Facebook.auth(token) do
+      {:ok, facebook_id} ->
+        get_or_create_user_by(%{facebook_id: facebook_id})
+
+      _ ->
+        nil
+    end
+  end
+
+  def get_or_create_user_by(method, _) do
+    {:error, "Unknown method: #{method}"}
+  end
 
   def count_user_projects!(%User{} = user) do
     count_user_projects!(user, nil)

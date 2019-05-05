@@ -38,6 +38,7 @@ defmodule Birdiy.MixProject do
       {:poison, "~> 3.1"},
       {:jason, "~> 1.0"},
       {:deep_merge, "~> 1.0"},
+      {:httpoison, "~> 1.4"},
 
       # Phoenix & Database
       {:phoenix, "~> 1.4.3"},

@@ -6,11 +6,13 @@ defmodule Birdiy.Accounts.User do
   import Birdiy.Ecto.Changeset
 
   alias Birdiy.{Accounts, Diy, Timeline, Avatar}
+  alias Birdiy.Helpers.Random
 
   schema "users" do
     field :image, Avatar.Type
     field :name, :string, size: 20
     field :access_key, :string, size: 8
+    field :facebook_id, :string
 
     has_many :projects,
              Diy.Project,
@@ -60,8 +62,29 @@ defmodule Birdiy.Accounts.User do
     attrs = put_random_filename(attrs, [:image])
 
     user
-    |> cast(attrs, [:name, :image])
+    |> cast(attrs, [:name, :image, :facebook_id])
+    |> put_random_name()
+    |> put_random_access_key()
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:name])
+    |> validate_required([:name, :access_key])
+    |> unique_constraint(:facebook_id)
+  end
+
+  defp put_random_name(changeset) do
+    with %{changes: changes, data: %{name: nil}} <- changeset,
+         nil <- changes[:name] do
+      put_change(changeset, :name, Random.string(6))
+    else
+      _ -> changeset
+    end
+  end
+
+  defp put_random_access_key(changeset) do
+    with %{changes: changes, data: %{access_key: nil}} <- changeset,
+         nil <- changes[:access_key] do
+      put_change(changeset, :access_key, Random.access_key())
+    else
+      _ -> changeset
+    end
   end
 end
