@@ -27,6 +27,7 @@ defmodule BirdiyWeb.Schema do
   end
 
   import_types(Absinthe.Plug.Types)
+  import_types(__MODULE__.SessionTypes)
   import_types(__MODULE__.AccountsTypes)
   import_types(__MODULE__.DiyTypes)
   import_types(__MODULE__.TimelineTypes)
@@ -125,7 +126,13 @@ defmodule BirdiyWeb.Schema do
     field :login, :session do
       arg(:input, non_null(:login_input))
 
-      resolve(&Resolvers.Accounts.login/3)
+      resolve(&Resolvers.Session.login/3)
+    end
+
+    field :refresh_session, :session do
+      arg(:input, non_null(:refresh_session_input))
+
+      resolve(&Resolvers.Session.refresh_session/3)
     end
 
     field :edit_viewer, :viewer_result do
