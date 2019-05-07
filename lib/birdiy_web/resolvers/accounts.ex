@@ -28,6 +28,10 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     end
   end
 
+  def user_followed(_, _, _) do
+    {:ok, false}
+  end
+
   def following_users(user, _, _) do
     Helpers.assoc(user, :following_users)
   end

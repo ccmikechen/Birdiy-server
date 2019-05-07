@@ -97,6 +97,10 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
+  def project_viewed(_, _, _) do
+    {:ok, false}
+  end
+
   def project_liked(project, _, %{context: %{current_user: current_user}}) do
     case Accounts.get_user_liked_project(current_user.id, project.id) do
       %Accounts.UserLikedProject{} -> {:ok, true}
@@ -104,11 +108,19 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
+  def project_liked(_, _, _) do
+    {:ok, false}
+  end
+
   def project_favorite(project, _, %{context: %{current_user: current_user}}) do
     case Accounts.get_user_favorite_project(current_user.id, project.id) do
       %Accounts.UserFavoriteProject{} -> {:ok, true}
       _ -> {:ok, false}
     end
+  end
+
+  def project_favorite(_, _, _) do
+    {:ok, false}
   end
 
   def project_author(project, _, _) do
