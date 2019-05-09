@@ -20,7 +20,7 @@ defmodule Birdiy.MixProject do
   def application do
     [
       mod: {Birdiy.Application, []},
-      extra_applications: [:logger, :runtime_tools, :guardian]
+      extra_applications: [:logger, :runtime_tools, :guardian, :edeliver]
     ]
   end
 
@@ -66,7 +66,11 @@ defmodule Birdiy.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+
+      # Deployment
+      {:edeliver, ">= 1.6.0"},
+      {:distillery, "~> 2.0", warn_missing: false}
     ]
   end
 
