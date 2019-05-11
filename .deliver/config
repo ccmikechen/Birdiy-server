@@ -1,10 +1,10 @@
 APP="birdiy"
 
-BUILD_HOST="stg.birdiy.com"
+BUILD_HOST=$BIRDIY_STAGING_HOST
 BUILD_USER="deploy"
 BUILD_AT="/tmp/edeliver/$APP/builds"
 
-STAGING_HOSTS="stg.birdiy.com"
+STAGING_HOSTS=$BIRDIY_STAGING_HOST
 STAGING_USER="deploy"
 DELIVER_TO="/home/deploy/apps"
 
