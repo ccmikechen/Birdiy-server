@@ -1,5 +1,5 @@
 defmodule BirdiyWeb.Resolvers.Session do
-  alias Birdiy.{Repo, Accounts}
+  alias Birdiy.Accounts
   alias BirdiyWeb.Errors
 
   def login(_, %{input: params}, _) do

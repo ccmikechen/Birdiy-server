@@ -24,8 +24,4 @@ defmodule BirdiyWeb.Schema.Middleware.ParseRecord do
     children = args |> Enum.map(&parse(children_arguments, &1)) |> Map.new()
     {parent, children}
   end
-
-  defp put_field(resolution, field, record) do
-    %{resolution | arguments: Map.put(resolution.arguments, field, record)}
-  end
 end

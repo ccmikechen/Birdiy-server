@@ -4,7 +4,6 @@ defmodule Birdiy.Diy.Project do
 
   import Ecto.Changeset
   import Ecto.SoftDelete.Schema
-  import Ecto.SoftDelete.Query
   import Birdiy.Ecto.Changeset
 
   alias Birdiy.{Repo, Accounts, Diy, Timeline, ProjectPhoto}

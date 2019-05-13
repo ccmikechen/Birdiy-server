@@ -3,7 +3,6 @@ defmodule BirdiyWeb.Context do
 
   import Plug.Conn
 
-  alias Birdiy.{Repo, Accounts}
   alias BirdiyWeb.Auth
 
   def init(opts), do: opts

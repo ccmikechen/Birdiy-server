@@ -54,7 +54,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def delete_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
+  def delete_project(_, %{input: %{project: project}}, _) do
     case Diy.delete_project(project) do
       {:ok, project} ->
         {:ok, %{project: project}}
@@ -74,9 +74,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def unpublish_project(_, %{input: %{project: project}}, %{
-        context: %{current_user: current_user}
-      }) do
+  def unpublish_project(_, %{input: %{project: project}}, _) do
     case Diy.unpublish_project(project) do
       {:ok, project} ->
         {:ok, %{project: project}}

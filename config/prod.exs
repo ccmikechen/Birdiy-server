@@ -8,7 +8,6 @@ config :birdiy, BirdiyWeb.Endpoint,
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true
 
-config :birdiy, Birdiy.Repo,
-  ssl: true
+config :birdiy, Birdiy.Repo, ssl: true
 
 import_config "prod.secret.exs"

@@ -1,5 +1,4 @@
 defmodule BirdiyWeb.Resolvers.Timeline do
-  import Ecto.Query
   import Absinthe.Resolution.Helpers
 
   alias Absinthe.Relay.Connection
@@ -66,7 +65,7 @@ defmodule BirdiyWeb.Resolvers.Timeline do
     end
   end
 
-  def delete_post(_, %{input: %{post: post}}, %{context: %{current_user: current_user}}) do
+  def delete_post(_, %{input: %{post: post}}, _) do
     case Timeline.delete_post(post) do
       {:ok, post} ->
         {:ok, %{post: post}}

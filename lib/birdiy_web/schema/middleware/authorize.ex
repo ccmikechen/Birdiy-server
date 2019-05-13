@@ -5,7 +5,7 @@ defmodule BirdiyWeb.Schema.Middleware.Authorize do
   alias BirdiyWeb.Errors
   alias Birdiy.Accounts.User
 
-  def call(resolution, config) do
+  def call(resolution, _) do
     case resolution.context do
       %{current_user: %User{}} ->
         resolution

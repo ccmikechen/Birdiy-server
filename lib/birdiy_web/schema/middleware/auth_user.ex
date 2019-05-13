@@ -2,7 +2,6 @@ defmodule BirdiyWeb.Schema.Middleware.AuthUser do
   @behaviour Absinthe.Middleware
 
   alias Absinthe.Resolution
-  alias Birdiy.Repo
   alias BirdiyWeb.Errors
 
   def call(resolution, config) do
