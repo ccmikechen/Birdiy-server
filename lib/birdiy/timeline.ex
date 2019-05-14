@@ -183,6 +183,18 @@ defmodule Birdiy.Timeline do
     Repo.soft_delete(post_photo)
   end
 
+  def activities_query(args), do: activities_query(Activity, args)
+
+  def activities_query(query, args) do
+    Enum.reduce(args, query, fn
+      {:order, :newest}, query ->
+        query |> order_by(desc: :inserted_at)
+
+      _, query ->
+        query
+    end)
+  end
+
   def get_activity!(id), do: Repo.get!(Activity, id)
 
   def create_activity(attrs) do

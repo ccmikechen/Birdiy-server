@@ -46,6 +46,9 @@ defmodule BirdiyWeb.Schema do
       %Timeline.Post{}, _ ->
         :post
 
+      %Timeline.Activity{}, _ ->
+        :activity
+
       _, _ ->
         nil
     end)
@@ -54,6 +57,7 @@ defmodule BirdiyWeb.Schema do
   connection(node_type: :project)
   connection(node_type: :project_category)
   connection(node_type: :post)
+  connection(node_type: :activity)
 
   query do
     node field do
@@ -119,6 +123,12 @@ defmodule BirdiyWeb.Schema do
 
       middleware(ParseIDs, id: :post)
       resolve(&Resolvers.Timeline.post/3)
+    end
+
+    connection field :all_activities, node_type: :activity do
+      arg(:order, type: :activity_order, default_value: :newest)
+
+      resolve(&Resolvers.Timeline.activities/2)
     end
   end
 

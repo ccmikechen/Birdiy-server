@@ -81,4 +81,20 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     value(:custom)
     value(:project)
   end
+
+  enum :activity_order do
+    value(:newest)
+  end
+
+  node object(:activity) do
+    field :project, :project do
+      resolve(&Resolvers.Timeline.activity_project/3)
+    end
+
+    field :post, :post do
+      resolve(&Resolvers.Timeline.activity_post/3)
+    end
+
+    field :inserted_at, :datetime
+  end
 end

@@ -74,4 +74,20 @@ defmodule BirdiyWeb.Resolvers.Timeline do
         Errors.delete_post()
     end
   end
+
+  def activities(pagination_args, _) do
+    Connection.from_query(
+      Timeline.activities_query(pagination_args),
+      &Repo.all/1,
+      pagination_args
+    )
+  end
+
+  def activity_project(activity, _, _) do
+    Helpers.batch_by_id(Diy.Project, activity.project_id)
+  end
+
+  def activity_post(activity, _, _) do
+    Helpers.batch_by_id(Timeline.Post, activity.post_id)
+  end
 end
