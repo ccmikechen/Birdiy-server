@@ -169,17 +169,19 @@ defmodule Birdiy.Diy do
   end
 
   def publish_project(%Project{} = project, %User{} = author) do
-    if !project_publishable?(project, author) do
-      nil
-    end
+    case project_publishable?(project, author) do
+      true ->
+        Multi.new()
+        |> publish_project_query(project)
+        |> upsert_project_activity_query(project)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{publish_project: project}} ->
+            {:ok, project}
 
-    Multi.new()
-    |> publish_project_query(project)
-    |> upsert_project_activity_query(project)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{publish_project: project}} ->
-        {:ok, project}
+          _ ->
+            nil
+        end
 
       _ ->
         nil

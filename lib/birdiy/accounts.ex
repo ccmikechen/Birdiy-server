@@ -15,6 +15,9 @@ defmodule Birdiy.Accounts do
     UserViewedProject
   }
 
+  alias Birdiy.Diy.Project
+  alias Birdiy.Timeline.{Post, Activity}
+
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user(id), do: Repo.get(User, id)
@@ -124,6 +127,27 @@ defmodule Birdiy.Accounts do
 
   def delete_user_following(%UserFollowing{} = user_following) do
     Repo.delete(user_following)
+  end
+
+  def get_user_following_posts_query(%User{} = user) do
+    from(p in Post,
+      join: u in UserFollowing,
+      where: u.followed_id == p.author_id and u.following_id == ^user.id,
+      order_by: [desc: :inserted_at]
+    )
+  end
+
+  def get_user_following_activities_query(%User{} = user) do
+    from(a in Activity,
+      left_join: post in Post,
+      on: a.post_id == post.id,
+      left_join: project in Project,
+      on: a.project_id == project.id,
+      join: u in UserFollowing,
+      where:
+        (u.followed_id == post.author_id or u.followed_id == project.author_id) and
+          u.following_id == ^user.id
+    )
   end
 
   def get_user_favorite_project!(id), do: Repo.get!(UserFavoriteProject, id)

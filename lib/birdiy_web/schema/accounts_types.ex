@@ -122,6 +122,12 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
       resolve(&Resolvers.Accounts.following_user_posts/2)
     end
 
+    connection field :following_user_activities, node_type: :activity do
+      arg(:order, type: :activity_order, default_value: :newest)
+
+      resolve(&Resolvers.Accounts.following_user_activities/2)
+    end
+
     connection field :viewed_projects, node_type: :project do
       resolve(&Resolvers.Accounts.viewed_projects_for_user/2)
     end

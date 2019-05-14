@@ -37,11 +37,13 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   end
 
   def following_user_posts(pagination_args, %{source: user}) do
-    from(p in Timeline.Post,
-      join: u in Accounts.UserFollowing,
-      where: u.followed_id == p.author_id and u.following_id == ^user.id,
-      order_by: [desc: :inserted_at]
-    )
+    Accounts.get_user_following_posts_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
+  end
+
+  def following_user_activities(pagination_args, %{source: user}) do
+    Accounts.get_user_following_activities_query(user)
+    |> Timeline.activities_query(pagination_args)
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
