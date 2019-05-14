@@ -135,4 +135,61 @@ defmodule Birdiy.TimelineTest do
       assert %Ecto.Changeset{} = Timeline.change_post_photo(post_photo)
     end
   end
+
+  describe "activities" do
+    alias Birdiy.Timeline.Activity
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def activity_fixture(attrs \\ %{}) do
+      {:ok, activity} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Timeline.create_activity()
+
+      activity
+    end
+
+    test "list_activities/0 returns all activities" do
+      activity = activity_fixture()
+      assert Timeline.list_activities() == [activity]
+    end
+
+    test "get_activity!/1 returns the activity with given id" do
+      activity = activity_fixture()
+      assert Timeline.get_activity!(activity.id) == activity
+    end
+
+    test "create_activity/1 with valid data creates a activity" do
+      assert {:ok, %Activity{} = activity} = Timeline.create_activity(@valid_attrs)
+    end
+
+    test "create_activity/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Timeline.create_activity(@invalid_attrs)
+    end
+
+    test "update_activity/2 with valid data updates the activity" do
+      activity = activity_fixture()
+      assert {:ok, %Activity{} = activity} = Timeline.update_activity(activity, @update_attrs)
+    end
+
+    test "update_activity/2 with invalid data returns error changeset" do
+      activity = activity_fixture()
+      assert {:error, %Ecto.Changeset{}} = Timeline.update_activity(activity, @invalid_attrs)
+      assert activity == Timeline.get_activity!(activity.id)
+    end
+
+    test "delete_activity/1 deletes the activity" do
+      activity = activity_fixture()
+      assert {:ok, %Activity{}} = Timeline.delete_activity(activity)
+      assert_raise Ecto.NoResultsError, fn -> Timeline.get_activity!(activity.id) end
+    end
+
+    test "change_activity/1 returns a activity changeset" do
+      activity = activity_fixture()
+      assert %Ecto.Changeset{} = Timeline.change_activity(activity)
+    end
+  end
 end

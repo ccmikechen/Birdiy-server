@@ -6,7 +6,7 @@ defmodule Birdiy.Diy.Project do
   import Ecto.SoftDelete.Schema
   import Birdiy.Ecto.Changeset
 
-  alias Birdiy.{Repo, Accounts, Diy, Timeline, ProjectPhoto}
+  alias Birdiy.{Repo, Accounts, Diy, Timeline, ProjectPhoto, Helpers}
 
   schema "projects" do
     field :introduction, :string
@@ -45,7 +45,7 @@ defmodule Birdiy.Diy.Project do
   end
 
   @doc false
-  def publish_changeset(project, author, attrs) do
+  def published_changeset(project, author, attrs) do
     project
     |> changeset(author, attrs)
     |> validate_methods(project)
@@ -72,6 +72,15 @@ defmodule Birdiy.Diy.Project do
     |> put_category(attrs[:category])
     |> validate_length(:name, max: 20)
     |> validate_required([:author_id, :name, :category_id])
+  end
+
+  @doc false
+  def publish_changeset(project) do
+    attrs = %{published_at: Helpers.DateTime.utc_now()}
+
+    project
+    |> cast(attrs, [:published_at])
+    |> validate_required([:published_at])
   end
 
   defp put_category(struct, category_name) do

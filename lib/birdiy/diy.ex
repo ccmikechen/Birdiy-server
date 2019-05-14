@@ -20,6 +20,7 @@ defmodule Birdiy.Diy do
   }
 
   alias Birdiy.Accounts.User
+  alias Birdiy.Timeline.Activity
 
   def list_project_categories do
     Repo.all(ProjectCategory)
@@ -163,19 +164,40 @@ defmodule Birdiy.Diy do
 
   defp update_published_project_query(multi, %Project{} = project, %User{} = author, attrs) do
     Multi.run(multi, :update_project, fn _, _ ->
-      Project.publish_changeset(project, author, attrs) |> Repo.update()
+      Project.published_changeset(project, author, attrs) |> Repo.update()
     end)
   end
 
   def publish_project(%Project{} = project, %User{} = author) do
-    case project_publishable?(project, author) do
-      true -> change(project, published_at: Helpers.DateTime.utc_now()) |> Repo.update()
-      _ -> nil
+    if !project_publishable?(project, author) do
+      nil
+    end
+
+    Multi.new()
+    |> publish_project_query(project)
+    |> upsert_project_activity_query(project)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{publish_project: project}} ->
+        {:ok, project}
+
+      _ ->
+        nil
     end
   end
 
   defp project_publishable?(%Project{} = project, %User{} = author) do
-    Project.publish_changeset(project, author, %{}).valid?()
+    Project.published_changeset(project, author, %{}).valid?()
+  end
+
+  defp publish_project_query(multi, %Project{} = project) do
+    changeset = Project.publish_changeset(project)
+    Multi.update(multi, :publish_project, changeset)
+  end
+
+  defp upsert_project_activity_query(multi, project) do
+    changeset = Activity.changeset(%Activity{}, %{project_id: project.id})
+    Multi.insert(multi, :upsert_project_activity, changeset, on_conflict: :nothing)
   end
 
   def unpublish_project(%Project{} = project) do

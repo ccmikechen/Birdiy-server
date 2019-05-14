@@ -11,7 +11,7 @@ defmodule Birdiy.Timeline do
   alias Birdiy.Helpers
 
   alias Birdiy.Accounts.User
-  alias Birdiy.Timeline.{Post, PostPhoto}
+  alias Birdiy.Timeline.{Post, PostPhoto, Activity}
 
   def list_posts do
     Repo.all(Post) |> with_undeleted()
@@ -45,6 +45,7 @@ defmodule Birdiy.Timeline do
       Multi.new()
       |> create_post_query(author, attrs)
       |> create_post_photos_query(attrs[:photos])
+      |> create_post_activity_query()
       |> Repo.transaction()
 
     case result do
@@ -59,6 +60,16 @@ defmodule Birdiy.Timeline do
   defp create_post_query(multi, author, attrs) do
     changeset = Post.changeset(%Post{}, author, attrs)
     Multi.insert(multi, :create_post, changeset)
+  end
+
+  defp create_post_activity_query(multi) do
+    Multi.run(
+      multi,
+      :create_post_activity,
+      fn _, %{create_post: post} ->
+        create_activity(%{post_id: post.id})
+      end
+    )
   end
 
   def update_post(%Post{} = post, %User{} = author, attrs) do
@@ -156,7 +167,7 @@ defmodule Birdiy.Timeline do
     )
   end
 
-  def create_post_photo(attrs \\ %{}) do
+  def create_post_photo(attrs) do
     %PostPhoto{}
     |> PostPhoto.changeset(attrs)
     |> Repo.insert()
@@ -172,11 +183,22 @@ defmodule Birdiy.Timeline do
     Repo.soft_delete(post_photo)
   end
 
+  def get_activity!(id), do: Repo.get!(Activity, id)
+
+  def create_activity(attrs) do
+    changeset = Activity.changeset(%Activity{}, attrs)
+    Repo.insert(changeset)
+  end
+
   def data do
     Dataloader.Ecto.new(Repo, query: &query/2)
   end
 
   def query(queryable, _) do
     queryable
+  end
+
+  def list_activities do
+    Repo.all(Activity)
   end
 end
