@@ -315,7 +315,9 @@ defmodule BirdiyWeb.Schema do
     end)
 
     serialize(fn date ->
-      NaiveDateTime.to_iso8601(date)
+      date
+      |> DateTime.from_naive!("Etc/UTC")
+      |> DateTime.to_unix()
     end)
   end
 

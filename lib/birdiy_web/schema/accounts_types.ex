@@ -21,6 +21,7 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
       arg(:first, :integer)
       arg(:after, :string)
       arg(:before_id, :id)
+      arg(:order, type: :post_order, default_value: :newest)
     end
 
     field :projects, :project_connection do
