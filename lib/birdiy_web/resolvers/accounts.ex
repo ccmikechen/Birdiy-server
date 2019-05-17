@@ -52,15 +52,18 @@ defmodule BirdiyWeb.Resolvers.Accounts do
   end
 
   def favorite_projects_for_user(pagination_args, %{source: user}) do
-    Helpers.assoc_connection(user, :favorite_projects, pagination_args)
+    Accounts.get_user_favorite_projects_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def liked_projects_for_user(pagination_args, %{source: user}) do
-    Helpers.assoc_connection(user, :liked_projects, pagination_args)
+    Accounts.get_user_liked_projects_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def viewed_projects_for_user(pagination_args, %{source: user}) do
-    Helpers.assoc_connection(user, :viewed_projects, pagination_args)
+    Accounts.get_user_viewed_projects_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def following_count_for_user(user, _, _) do

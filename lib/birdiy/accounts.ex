@@ -156,6 +156,12 @@ defmodule Birdiy.Accounts do
     Repo.get_by(UserFavoriteProject, user_id: user_id, project_id: project_id)
   end
 
+  def get_user_favorite_projects_query(%User{} = user) do
+    user
+    |> Ecto.assoc(:favorite_projects)
+    |> order_by(desc: :inserted_at)
+  end
+
   def create_user_favorite_project(attrs \\ %{}) do
     %UserFavoriteProject{}
     |> UserFavoriteProject.changeset(attrs)
@@ -185,6 +191,12 @@ defmodule Birdiy.Accounts do
     Repo.get_by(UserLikedProject, user_id: user_id, project_id: project_id)
   end
 
+  def get_user_liked_projects_query(%User{} = user) do
+    user
+    |> Ecto.assoc(:liked_projects)
+    |> order_by(desc: :inserted_at)
+  end
+
   def create_user_liked_project(attrs \\ %{}) do
     %UserLikedProject{}
     |> UserLikedProject.changeset(attrs)
@@ -212,6 +224,12 @@ defmodule Birdiy.Accounts do
 
   def get_user_viewed_project(user_id, project_id) do
     Repo.get_by(UserViewedProject, user_id: user_id, project_id: project_id)
+  end
+
+  def get_user_viewed_projects_query(%User{} = user) do
+    user
+    |> Ecto.assoc(:viewed_projects)
+    |> order_by(desc: :inserted_at)
   end
 
   def create_user_viewed_project(attrs \\ %{}) do
