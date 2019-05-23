@@ -194,6 +194,25 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.edit_project/3)
     end
 
+    field :edit_and_publish_project, :project_result do
+      arg(:input, non_null(:edit_project_input))
+
+      middleware(Authorize)
+
+      middleware(ParseIDs,
+        input: [
+          id: :project,
+          materials: [id: :project_material],
+          file_resources: [id: :project_file_resource],
+          methods: [id: :project_method]
+        ]
+      )
+
+      middleware(ParseRecord, input: [id: {:project, Diy.Project}])
+      middleware(AuthUser, input: [project: :author_id])
+      resolve(&Resolvers.Diy.edit_and_publish_project/3)
+    end
+
     field :view_project, :project_result do
       arg(:input, non_null(:project_input))
 

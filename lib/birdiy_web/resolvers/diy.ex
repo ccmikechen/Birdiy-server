@@ -43,14 +43,21 @@ defmodule BirdiyWeb.Resolvers.Diy do
   end
 
   def edit_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
-    with project = Diy.get_project!(params[:id]) do
-      case Diy.update_project(project, current_user, params) do
-        {:ok, project} ->
-          {:ok, %{project: project}}
+    case Diy.update_project(params[:project], current_user, params) do
+      {:ok, project} ->
+        {:ok, %{project: project}}
 
-        _ ->
-          Errors.update_project()
-      end
+      _ ->
+        Errors.update_project()
+    end
+  end
+
+  def edit_and_publish_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    with {:ok, project} <- Diy.update_project(params[:project], current_user, params),
+         {:ok, project} <- Diy.publish_project(project, current_user) do
+      {:ok, %{project: project}}
+    else
+      error -> error
     end
   end
 
