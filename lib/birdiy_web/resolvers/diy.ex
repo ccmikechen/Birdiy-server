@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Resolvers.Diy do
   import Absinthe.Resolution.Helpers
+  import Ecto.Query
 
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Diy, Accounts, ProjectFile}
@@ -14,7 +15,17 @@ defmodule BirdiyWeb.Resolvers.Diy do
     )
   end
 
-  def projects(pagination_args, _) do
+  def projects(%Diy.ProjectTopic{} = topic, pagination_args, _) do
+    new_args = Map.put(pagination_args, :filter, %{topics: [topic.name]})
+    projects(nil, new_args, nil)
+  end
+
+  def projects(%Diy.ProjectCategory{} = category, pagination_args, _) do
+    new_args = Map.put(pagination_args, :filter, %{categories: [category.name]})
+    projects(nil, new_args, nil)
+  end
+
+  def projects(_, pagination_args, _) do
     args = Map.put(pagination_args, :published, true)
 
     Connection.from_query(
@@ -132,12 +143,18 @@ defmodule BirdiyWeb.Resolvers.Diy do
     Helpers.batch_by_id(Accounts.User, project.author_id)
   end
 
-  def project_category(project, _, _) do
-    Helpers.batch_by_id(Diy.ProjectCategory, project.category_id)
+  def project_topic(project, _, _) do
+    Helpers.batch_by_id(Diy.ProjectTopic, project.topic_id)
   end
 
-  def projects_for_category(category, _, _) do
-    Helpers.assoc(category, :projects)
+  def topics_for_category(category, pagination_args, _) do
+    Ecto.assoc(category, :topics)
+    |> Diy.project_topics_query(pagination_args)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
+  end
+
+  def topic_category(topic, _, _) do
+    Helpers.batch_by_id(Diy.ProjectCategory, topic.category_id)
   end
 
   def material_project(material, _, _) do

@@ -13,6 +13,7 @@ defmodule Birdiy.Diy do
 
   alias Birdiy.Diy.{
     ProjectCategory,
+    ProjectTopic,
     Project,
     ProjectMaterial,
     ProjectFileResource,
@@ -47,6 +48,33 @@ defmodule Birdiy.Diy do
     |> Repo.insert()
   end
 
+  def list_project_topics do
+    Repo.all(ProjectTopic)
+  end
+
+  def project_topics_query(args), do: project_topics_query(ProjectTopic, args)
+
+  def project_topics_query(topics_query, args) do
+    Enum.reduce(args, topics_query, fn
+      {:order, order}, query ->
+        query |> order_by(asc: ^order)
+
+      _, query ->
+        query
+    end)
+  end
+
+  def get_project_topic!(id), do: Repo.get!(ProjectTopic, id)
+
+  def get_project_topic_by_name!(nil), do: nil
+  def get_project_topic_by_name!(name), do: Repo.get_by!(ProjectTopic, name: name)
+
+  def create_project_topic(attrs \\ %{}) do
+    %ProjectTopic{}
+    |> ProjectTopic.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def list_projects do
     Repo.all(Project) |> with_undeleted()
   end
@@ -78,12 +106,22 @@ defmodule Birdiy.Diy do
       {:name, name}, query ->
         from(q in query, where: ilike(q.name, ^"%#{name}%"))
 
+      {:topics, []}, query ->
+        query
+
+      {:topics, topics}, query ->
+        from(q in query,
+          join: t in assoc(q, :topic),
+          where: t.name in ^topics
+        )
+
       {:categories, []}, query ->
         query
 
       {:categories, categories}, query ->
         from(q in query,
-          join: c in assoc(q, :category),
+          join: t in assoc(q, :topic),
+          join: c in assoc(t, :category),
           where: c.name in ^categories
         )
     end)

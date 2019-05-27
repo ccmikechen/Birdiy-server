@@ -40,6 +40,9 @@ defmodule BirdiyWeb.Schema do
       %Diy.Project{}, _ ->
         :project
 
+      %Diy.ProjectTopic{}, _ ->
+        :project_topic
+
       %Diy.ProjectCategory{}, _ ->
         :project_category
 
@@ -55,6 +58,7 @@ defmodule BirdiyWeb.Schema do
   end
 
   connection(node_type: :project)
+  connection(node_type: :project_topic)
   connection(node_type: :project_category)
   connection(node_type: :post)
   connection(node_type: :activity)
@@ -67,6 +71,9 @@ defmodule BirdiyWeb.Schema do
 
         %{type: :project, id: local_id}, _ ->
           {:ok, Diy.get_project!(local_id)}
+
+        %{type: :project_topic, id: local_id}, _ ->
+          {:ok, Diy.get_project_topic!(local_id)}
 
         %{type: :project_category, id: local_id}, _ ->
           {:ok, Diy.get_project_category!(local_id)}
@@ -102,7 +109,7 @@ defmodule BirdiyWeb.Schema do
       arg(:filter, :project_filter)
       arg(:order, type: :project_order, default_value: :newest)
 
-      resolve(&Resolvers.Diy.projects/2)
+      resolve(&Resolvers.Diy.projects/3)
     end
 
     field :project, :project do

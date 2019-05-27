@@ -8,10 +8,9 @@ defmodule Birdiy.Diy.ProjectCategory do
     field :name, :string
     field :image, :string
 
-    has_many :projects,
-             Diy.Project,
-             foreign_key: :category_id,
-             where: [deleted_at: nil]
+    has_many :topics,
+             Diy.ProjectTopic,
+             foreign_key: :category_id
 
     timestamps()
   end

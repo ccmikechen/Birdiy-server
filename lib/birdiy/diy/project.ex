@@ -15,7 +15,7 @@ defmodule Birdiy.Diy.Project do
     field :image, ProjectPhoto.Type
     field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
-    belongs_to :category, Diy.ProjectCategory
+    belongs_to :topic, Diy.ProjectTopic
     has_many :materials, Diy.ProjectMaterial, where: [deleted_at: nil]
     has_many :file_resources, Diy.ProjectFileResource, where: [deleted_at: nil]
     has_many :methods, Diy.ProjectMethod, where: [deleted_at: nil]
@@ -69,9 +69,9 @@ defmodule Birdiy.Diy.Project do
     project
     |> cast(attrs, [:name])
     |> put_change(:author_id, author.id)
-    |> put_category(attrs[:category])
+    |> put_topic(attrs[:topic])
     |> validate_length(:name, max: 20)
-    |> validate_required([:author_id, :name, :category_id])
+    |> validate_required([:author_id, :name, :topic_id])
   end
 
   @doc false
@@ -83,10 +83,10 @@ defmodule Birdiy.Diy.Project do
     |> validate_required([:published_at])
   end
 
-  defp put_category(struct, category_name) do
-    case Diy.get_project_category_by_name!(category_name) do
-      %Diy.ProjectCategory{id: id} ->
-        put_change(struct, :category_id, id)
+  defp put_topic(struct, topic_name) do
+    case Diy.get_project_topic_by_name!(topic_name) do
+      %Diy.ProjectTopic{id: id} ->
+        put_change(struct, :topic_id, id)
 
       _ ->
         struct

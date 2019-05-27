@@ -9,8 +9,32 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :name, non_null(:string)
     field :image, :string
 
-    field :projects, list_of(:project) do
-      resolve(&Resolvers.Diy.projects_for_category/3)
+    connection field :topics, node_type: :project_topic do
+      arg(:order, type: :rank_order, default_value: :name)
+
+      resolve(&Resolvers.Diy.topics_for_category/3)
+    end
+
+    connection field :projects, node_type: :project do
+      arg(:filter, :project_filter)
+      arg(:order, type: :project_order, default_value: :newest)
+
+      resolve(&Resolvers.Diy.projects/3)
+    end
+  end
+
+  node object(:project_topic) do
+    field :name, non_null(:string)
+
+    field :category, non_null(:project_category) do
+      resolve(&Resolvers.Diy.topic_category/3)
+    end
+
+    connection field :projects, node_type: :project do
+      arg(:filter, :project_filter)
+      arg(:order, type: :project_order, default_value: :newest)
+
+      resolve(&Resolvers.Diy.projects/3)
     end
   end
 
@@ -56,6 +80,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   input_object :project_filter do
     field :name, :string
+    field :topics, list_of(:string)
     field :categories, list_of(:string)
   end
 
@@ -91,8 +116,8 @@ defmodule BirdiyWeb.Schema.DiyTypes do
       resolve(&Resolvers.Diy.project_author/3)
     end
 
-    field :category, non_null(:project_category) do
-      resolve(&Resolvers.Diy.project_category/3)
+    field :topic, non_null(:project_topic) do
+      resolve(&Resolvers.Diy.project_topic/3)
     end
 
     field :materials, list_of(:project_material) do
@@ -134,13 +159,13 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   input_object :create_project_input do
     field :name, non_null(:string)
-    field :category, non_null(:string)
+    field :topic, non_null(:string)
   end
 
   input_object :edit_project_input do
     field :id, non_null(:id)
     field :name, non_null(:string)
-    field :category, non_null(:string)
+    field :topic, non_null(:string)
     field :introduction, :string
     field :tip, :string
     field :image, :upload

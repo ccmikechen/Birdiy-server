@@ -366,4 +366,66 @@ defmodule Birdiy.DiyTest do
       assert %Ecto.Changeset{} = Diy.change_project_method(project_method)
     end
   end
+
+  describe "project_topics" do
+    alias Birdiy.Diy.ProjectTopic
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def project_topic_fixture(attrs \\ %{}) do
+      {:ok, project_topic} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Diy.create_project_topic()
+
+      project_topic
+    end
+
+    test "list_project_topics/0 returns all project_topics" do
+      project_topic = project_topic_fixture()
+      assert Diy.list_project_topics() == [project_topic]
+    end
+
+    test "get_project_topic!/1 returns the project_topic with given id" do
+      project_topic = project_topic_fixture()
+      assert Diy.get_project_topic!(project_topic.id) == project_topic
+    end
+
+    test "create_project_topic/1 with valid data creates a project_topic" do
+      assert {:ok, %ProjectTopic{} = project_topic} = Diy.create_project_topic(@valid_attrs)
+      assert project_topic.name == "some name"
+    end
+
+    test "create_project_topic/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Diy.create_project_topic(@invalid_attrs)
+    end
+
+    test "update_project_topic/2 with valid data updates the project_topic" do
+      project_topic = project_topic_fixture()
+
+      assert {:ok, %ProjectTopic{} = project_topic} =
+               Diy.update_project_topic(project_topic, @update_attrs)
+
+      assert project_topic.name == "some updated name"
+    end
+
+    test "update_project_topic/2 with invalid data returns error changeset" do
+      project_topic = project_topic_fixture()
+      assert {:error, %Ecto.Changeset{}} = Diy.update_project_topic(project_topic, @invalid_attrs)
+      assert project_topic == Diy.get_project_topic!(project_topic.id)
+    end
+
+    test "delete_project_topic/1 deletes the project_topic" do
+      project_topic = project_topic_fixture()
+      assert {:ok, %ProjectTopic{}} = Diy.delete_project_topic(project_topic)
+      assert_raise Ecto.NoResultsError, fn -> Diy.get_project_topic!(project_topic.id) end
+    end
+
+    test "change_project_topic/1 returns a project_topic changeset" do
+      project_topic = project_topic_fixture()
+      assert %Ecto.Changeset{} = Diy.change_project_topic(project_topic)
+    end
+  end
 end
