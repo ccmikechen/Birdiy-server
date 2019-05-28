@@ -13,6 +13,7 @@ defmodule Birdiy.Diy.Project do
     field :name, :string
     field :tip, :string
     field :image, ProjectPhoto.Type
+    field :video, :string
     field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
     belongs_to :topic, Diy.ProjectTopic
@@ -58,7 +59,7 @@ defmodule Birdiy.Diy.Project do
 
     project
     |> draft_changeset(author, attrs)
-    |> cast(attrs, [:introduction, :tip])
+    |> cast(attrs, [:introduction, :tip, :video])
     |> validate_length(:introduction, max: 300)
     |> validate_length(:tip, max: 300)
     |> cast_attachments(attrs, [:image])
