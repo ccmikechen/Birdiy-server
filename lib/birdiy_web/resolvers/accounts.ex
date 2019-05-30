@@ -1,6 +1,4 @@
 defmodule BirdiyWeb.Resolvers.Accounts do
-  import Ecto.Query
-
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Accounts, Timeline, Diy}
   alias BirdiyWeb.Schema.Helpers
@@ -149,8 +147,20 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     end
   end
 
-  def view_project(_, %{input: %{id: project_id}}, %{context: %{current_user: current_user}}) do
-    case Accounts.create_user_viewed_project(%{user_id: current_user.id, project_id: project_id}) do
+  def view_project(_, %{input: %{id: project_id}}, %{
+        context: %{current_user: current_user, remote_ip: ip}
+      }) do
+    with {:ok, _} <-
+           Accounts.create_user_viewed_project(%{user_id: current_user.id, project_id: project_id}),
+         {:ok, _} <- Diy.create_project_view(%{project_id: project_id, ip: ip}) do
+      {:ok, %{project: Diy.get_project!(project_id)}}
+    else
+      _ -> {:error, nil}
+    end
+  end
+
+  def view_project(_, %{input: %{id: project_id}}, %{context: %{remote_ip: ip}}) do
+    case Diy.create_project_view(%{project_id: project_id, ip: ip}) do
       {:ok, _} -> {:ok, %{project: Diy.get_project!(project_id)}}
       _ -> {:error, nil}
     end

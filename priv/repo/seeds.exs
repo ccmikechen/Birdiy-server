@@ -31,7 +31,7 @@ project_topics = %{
   "Workshop" => [
     "3D Printing",
     "Woodworking",
-    "Fornitures",
+    "Furnitures",
     "Cars",
     "Motorcycles",
     "CNC",
@@ -61,7 +61,7 @@ project_topics = %{
     "Software",
     "Wearables",
     "Wireless",
-    "Electric Art"
+    "Digital Art"
   ],
   "Living" => [
     "Cleaning",

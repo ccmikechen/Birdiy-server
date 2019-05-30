@@ -41,6 +41,8 @@ defmodule Birdiy.Diy.Project do
                  join_through: "user_viewed_projects",
                  on_replace: :delete
 
+    has_many :views, Diy.ProjectView
+
     soft_delete_schema()
     timestamps()
   end

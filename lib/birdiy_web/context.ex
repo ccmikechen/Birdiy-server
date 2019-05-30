@@ -8,7 +8,7 @@ defmodule BirdiyWeb.Context do
   def init(opts), do: opts
 
   def call(conn, _) do
-    context = build_context(conn)
+    context = build_context(conn) |> put_remote_ip(conn)
     Absinthe.Plug.put_options(conn, context: context)
   end
 
@@ -19,5 +19,10 @@ defmodule BirdiyWeb.Context do
     else
       _ -> %{}
     end
+  end
+
+  defp put_remote_ip(context, conn) do
+    %{remote_ip: {a1, a2, a3, a4}} = conn
+    Map.put(context, :remote_ip, "#{a1}.#{a2}.#{a3}.#{a4}")
   end
 end

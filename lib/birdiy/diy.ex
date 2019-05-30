@@ -17,7 +17,8 @@ defmodule Birdiy.Diy do
     Project,
     ProjectMaterial,
     ProjectFileResource,
-    ProjectMethod
+    ProjectMethod,
+    ProjectView
   }
 
   alias Birdiy.Accounts.User
@@ -153,7 +154,7 @@ defmodule Birdiy.Diy do
   end
 
   def count_project_views!(%Project{} = project) do
-    Ecto.assoc(project, :viewed_users)
+    Ecto.assoc(project, :views)
     |> Repo.aggregate(:count, :id)
   end
 
@@ -336,6 +337,16 @@ defmodule Birdiy.Diy do
       "delete_" <> Atom.to_string(item),
       delete_query
     )
+  end
+
+  def get_project_view(project_id, ip) do
+    Repo.get_by(ProjectView, project_id: project_id, ip: ip)
+  end
+
+  def create_project_view(attrs \\ %{}) do
+    %ProjectView{}
+    |> ProjectView.changeset(attrs)
+    |> Repo.insert(on_conflict: :nothing)
   end
 
   def data do

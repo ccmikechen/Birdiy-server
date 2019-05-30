@@ -1,6 +1,5 @@
 defmodule BirdiyWeb.Resolvers.Diy do
   import Absinthe.Resolution.Helpers
-  import Ecto.Query
 
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Diy, Accounts, ProjectFile}
@@ -113,8 +112,11 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def project_viewed(_, _, _) do
-    {:ok, false}
+  def project_viewed(project, _, %{context: %{remote_ip: ip}}) do
+    case Diy.get_project_view(project.id, ip) do
+      %Diy.ProjectView{} -> {:ok, true}
+      _ -> {:ok, false}
+    end
   end
 
   def project_liked(project, _, %{context: %{current_user: current_user}}) do

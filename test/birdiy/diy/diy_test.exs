@@ -428,4 +428,66 @@ defmodule Birdiy.DiyTest do
       assert %Ecto.Changeset{} = Diy.change_project_topic(project_topic)
     end
   end
+
+  describe "project_views" do
+    alias Birdiy.Diy.ProjectView
+
+    @valid_attrs %{ip: "some ip"}
+    @update_attrs %{ip: "some updated ip"}
+    @invalid_attrs %{ip: nil}
+
+    def project_view_fixture(attrs \\ %{}) do
+      {:ok, project_view} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Diy.create_project_view()
+
+      project_view
+    end
+
+    test "list_project_views/0 returns all project_views" do
+      project_view = project_view_fixture()
+      assert Diy.list_project_views() == [project_view]
+    end
+
+    test "get_project_view!/1 returns the project_view with given id" do
+      project_view = project_view_fixture()
+      assert Diy.get_project_view!(project_view.id) == project_view
+    end
+
+    test "create_project_view/1 with valid data creates a project_view" do
+      assert {:ok, %ProjectView{} = project_view} = Diy.create_project_view(@valid_attrs)
+      assert project_view.ip == "some ip"
+    end
+
+    test "create_project_view/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Diy.create_project_view(@invalid_attrs)
+    end
+
+    test "update_project_view/2 with valid data updates the project_view" do
+      project_view = project_view_fixture()
+
+      assert {:ok, %ProjectView{} = project_view} =
+               Diy.update_project_view(project_view, @update_attrs)
+
+      assert project_view.ip == "some updated ip"
+    end
+
+    test "update_project_view/2 with invalid data returns error changeset" do
+      project_view = project_view_fixture()
+      assert {:error, %Ecto.Changeset{}} = Diy.update_project_view(project_view, @invalid_attrs)
+      assert project_view == Diy.get_project_view!(project_view.id)
+    end
+
+    test "delete_project_view/1 deletes the project_view" do
+      project_view = project_view_fixture()
+      assert {:ok, %ProjectView{}} = Diy.delete_project_view(project_view)
+      assert_raise Ecto.NoResultsError, fn -> Diy.get_project_view!(project_view.id) end
+    end
+
+    test "change_project_view/1 returns a project_view changeset" do
+      project_view = project_view_fixture()
+      assert %Ecto.Changeset{} = Diy.change_project_view(project_view)
+    end
+  end
 end
