@@ -87,6 +87,14 @@ defmodule Birdiy.Diy do
       {:order, :newest}, query ->
         query |> order_by(desc: :inserted_at)
 
+      {:order, :hotest}, query ->
+        from(p in query,
+          left_join: v in ProjectView,
+          on: p.id == v.project_id,
+          group_by: p.id,
+          order_by: [desc: count(v.id)]
+        )
+
       {:filter, filter}, query ->
         query |> project_filter_with(filter)
 
