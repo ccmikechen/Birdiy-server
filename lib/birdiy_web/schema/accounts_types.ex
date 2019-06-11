@@ -12,10 +12,18 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :image, :string
     field :name, non_null(:string)
     field :following, non_null(:boolean)
-    field :following_users, list_of(:user)
-    field :followed_users, list_of(:user)
     field :following_count, :integer
     field :follower_count, :integer
+
+    field :following_users, :user_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+    end
+
+    field :followed_users, :user_connection do
+      arg(:first, :integer)
+      arg(:after, :string)
+    end
 
     field :posts, :post_connection do
       arg(:first, :integer)
@@ -63,12 +71,12 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
       resolve(&Resolvers.Accounts.posts_for_user/2)
     end
 
-    field :following_users, list_of(:user) do
-      resolve(&Resolvers.Accounts.following_users/3)
+    connection field :following_users, node_type: :user do
+      resolve(&Resolvers.Accounts.following_users_for_user/2)
     end
 
-    field :followed_users, list_of(:user) do
-      resolve(&Resolvers.Accounts.followed_users/3)
+    connection field :followed_users, node_type: :user do
+      resolve(&Resolvers.Accounts.followed_users_for_user/2)
     end
 
     connection field :favorite_projects, node_type: :project do
@@ -107,6 +115,12 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
 
   node object(:viewer) do
     import_fields(:user_fields)
+
+    field :user, :user do
+      resolve(fn _, _, %{context: %{current_user: current_user}} ->
+        {:ok, current_user}
+      end)
+    end
 
     connection field :projects, node_type: :project do
       arg(:filter, :project_filter)

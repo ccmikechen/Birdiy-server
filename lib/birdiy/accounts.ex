@@ -100,6 +100,18 @@ defmodule Birdiy.Accounts do
     Repo.get_by(UserFollowing, following_id: following_id, followed_id: followed_id)
   end
 
+  def get_user_following_users_query(%User{} = user) do
+    user
+    |> Ecto.assoc(:following_users)
+    |> order_by(desc: :inserted_at)
+  end
+
+  def get_user_followed_users_query(%User{} = user) do
+    user
+    |> Ecto.assoc(:followed_users)
+    |> order_by(desc: :inserted_at)
+  end
+
   def create_user_following(attrs \\ %{}) do
     %UserFollowing{}
     |> UserFollowing.changeset(attrs)

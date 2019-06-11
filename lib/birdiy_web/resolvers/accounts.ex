@@ -30,8 +30,9 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     {:ok, false}
   end
 
-  def following_users(user, _, _) do
-    Helpers.assoc(user, :following_users)
+  def following_users_for_user(pagination_args, %{source: user}) do
+    Accounts.get_user_following_users_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def following_user_posts(pagination_args, %{source: user}) do
@@ -45,8 +46,9 @@ defmodule BirdiyWeb.Resolvers.Accounts do
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
-  def followed_users(user, _, _) do
-    Helpers.assoc(user, :followed_users)
+  def followed_users_for_user(pagination_args, %{source: user}) do
+    Accounts.get_user_followed_users_query(user)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
   def favorite_projects_for_user(pagination_args, %{source: user}) do

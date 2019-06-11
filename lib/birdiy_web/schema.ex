@@ -57,6 +57,7 @@ defmodule BirdiyWeb.Schema do
     end)
   end
 
+  connection(node_type: :user)
   connection(node_type: :project)
   connection(node_type: :project_topic)
   connection(node_type: :project_category)
