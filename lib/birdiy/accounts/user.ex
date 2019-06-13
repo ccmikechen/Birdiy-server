@@ -13,6 +13,7 @@ defmodule Birdiy.Accounts.User do
     field :name, :string, size: 20
     field :access_key, :string, size: 8
     field :facebook_id, :string
+    field :google_id, :string
 
     has_many :projects,
              Diy.Project,
@@ -62,12 +63,13 @@ defmodule Birdiy.Accounts.User do
     attrs = put_random_filename(attrs, [:image])
 
     user
-    |> cast(attrs, [:name, :image, :facebook_id])
+    |> cast(attrs, [:name, :image, :facebook_id, :google_id])
     |> put_random_name()
     |> put_random_access_key()
     |> cast_attachments(attrs, [:image])
     |> validate_required([:name, :access_key])
     |> unique_constraint(:facebook_id)
+    |> unique_constraint(:google_id)
   end
 
   defp put_random_name(changeset) do

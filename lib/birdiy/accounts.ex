@@ -41,6 +41,16 @@ defmodule Birdiy.Accounts do
     end
   end
 
+  def get_or_create_user_by(:google, token) do
+    case Auth.Google.auth(token) do
+      {:ok, google_id} ->
+        get_or_create_user_by(%{google_id: google_id})
+
+      _ ->
+        nil
+    end
+  end
+
   def get_or_create_user_by(method, _) do
     {:error, "Unknown method: #{method}"}
   end
