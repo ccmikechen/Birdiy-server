@@ -10,7 +10,7 @@ defmodule Birdiy.Diy.Project do
 
   schema "projects" do
     field :introduction, :string
-    field :name, :string
+    field :name, :string, size: 100
     field :tip, :string
     field :image, ProjectPhoto.Type
     field :video, :string
@@ -73,7 +73,7 @@ defmodule Birdiy.Diy.Project do
     |> cast(attrs, [:name])
     |> put_change(:author_id, author.id)
     |> put_topic(attrs[:topic])
-    |> validate_length(:name, max: 20)
+    |> validate_length(:name, max: 100)
     |> validate_required([:author_id, :name, :topic_id])
   end
 
