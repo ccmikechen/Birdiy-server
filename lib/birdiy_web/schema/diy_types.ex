@@ -96,6 +96,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :image, :string, resolve: ProjectPhoto.resolver(:image)
     field :video, :string
     field :published_at, :datetime
+    field :deleted_at, :datetime
 
     field :published, :boolean do
       resolve(&Resolvers.Diy.project_published/3)
