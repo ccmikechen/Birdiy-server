@@ -15,6 +15,10 @@ defmodule BirdiyWeb.Errors do
     {:error, code: 4, message: "Invalid credential"}
   end
 
+  def banned do
+    {:error, code: 5, message: "User has been banned"}
+  end
+
   def create_user do
     {:error, code: 1001, message: "Can't create user"}
   end

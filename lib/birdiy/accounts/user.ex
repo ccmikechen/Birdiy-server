@@ -14,6 +14,7 @@ defmodule Birdiy.Accounts.User do
     field :access_key, :string, size: 8
     field :facebook_id, :string
     field :google_id, :string
+    field :banned_at, :utc_datetime
 
     has_many :projects,
              Diy.Project,

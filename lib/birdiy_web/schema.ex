@@ -9,7 +9,8 @@ defmodule BirdiyWeb.Schema do
   alias BirdiyWeb.Schema.Middleware.{
     Authorize,
     ParseRecord,
-    AuthUser
+    AuthUser,
+    ValidateUser
   }
 
   def plugins do
@@ -157,6 +158,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:edit_user_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       resolve(&Resolvers.Accounts.edit_viewer/3)
     end
 
@@ -180,6 +182,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:create_project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       resolve(&Resolvers.Diy.create_project/3)
     end
 
@@ -187,6 +190,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:edit_project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
 
       middleware(ParseIDs,
         input: [
@@ -206,6 +210,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:edit_project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
 
       middleware(ParseIDs,
         input: [
@@ -264,6 +269,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -274,6 +280,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -284,6 +291,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:project_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       middleware(ParseIDs, input: [id: :project])
       middleware(ParseRecord, input: [id: {:project, Diy.Project}])
       middleware(AuthUser, input: [project: :author_id])
@@ -294,6 +302,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:create_post_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       middleware(ParseIDs, input: [related_project_id: :project])
       resolve(&Resolvers.Timeline.create_post/3)
     end
@@ -302,6 +311,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:edit_post_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
 
       middleware(ParseIDs,
         input: [
@@ -320,6 +330,7 @@ defmodule BirdiyWeb.Schema do
       arg(:input, non_null(:post_input))
 
       middleware(Authorize)
+      middleware(ValidateUser)
       middleware(ParseIDs, input: [id: :post])
       middleware(ParseRecord, input: [id: {:post, Timeline.Post}])
       middleware(AuthUser, input: [post: :author_id])
