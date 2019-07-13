@@ -6,7 +6,7 @@ defmodule Birdiy.Timeline.Post do
   alias Birdiy.{Repo, Accounts, Diy, Timeline}
 
   schema "posts" do
-    field :message, :string
+    field :message, :string, size: 1000
     field :related_project_name, :string
     field :related_project_type, :string
     belongs_to :author, Accounts.User

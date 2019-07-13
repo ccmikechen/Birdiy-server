@@ -9,10 +9,10 @@ defmodule Birdiy.Diy.ProjectMethod do
   alias Birdiy.{Diy, ProjectPhoto}
 
   schema "project_methods" do
-    field :content, :string
+    field :content, :string, size: 1000
     field :image, ProjectPhoto.Type
     field :order, :decimal
-    field :title, :string
+    field :title, :string, size: 50
     belongs_to :project, Diy.Project
 
     soft_delete_schema()

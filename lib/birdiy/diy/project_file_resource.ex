@@ -9,7 +9,7 @@ defmodule Birdiy.Diy.ProjectFileResource do
   alias Birdiy.{Diy, ProjectFile}
 
   schema "project_file_resources" do
-    field :name, :string
+    field :name, :string, size: 50
     field :url, :string
     field :file, ProjectFile.Type
     field :order, :decimal

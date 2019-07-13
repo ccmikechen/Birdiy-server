@@ -4,8 +4,8 @@ defmodule Birdiy.Diy.ProjectMaterial do
   import Ecto.SoftDelete.Schema
 
   schema "project_materials" do
-    field :amount_unit, :string
-    field :name, :string
+    field :amount_unit, :string, size: 20
+    field :name, :string, size: 50
     field :url, :string
     field :order, :decimal
     belongs_to :project, Birdiy.Diy.Project

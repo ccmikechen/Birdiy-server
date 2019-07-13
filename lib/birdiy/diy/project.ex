@@ -9,9 +9,9 @@ defmodule Birdiy.Diy.Project do
   alias Birdiy.{Repo, Accounts, Diy, Timeline, ProjectPhoto, Helpers}
 
   schema "projects" do
-    field :introduction, :string
+    field :introduction, :string, size: 2000
     field :name, :string, size: 100
-    field :tip, :string
+    field :tip, :string, size: 1000
     field :image, ProjectPhoto.Type
     field :video, :string
     field :published_at, :utc_datetime
