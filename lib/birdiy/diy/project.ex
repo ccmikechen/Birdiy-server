@@ -11,6 +11,7 @@ defmodule Birdiy.Diy.Project do
   schema "projects" do
     field :introduction, :string, size: 2000
     field :name, :string, size: 100
+    field :source, :string
     field :tip, :string, size: 1000
     field :image, ProjectPhoto.Type
     field :video, :string
@@ -61,7 +62,7 @@ defmodule Birdiy.Diy.Project do
 
     project
     |> draft_changeset(author, attrs)
-    |> cast(attrs, [:introduction, :tip, :video])
+    |> cast(attrs, [:introduction, :tip, :source, :video])
     |> validate_length(:introduction, max: 300)
     |> validate_length(:tip, max: 300)
     |> cast_attachments(attrs, [:image])

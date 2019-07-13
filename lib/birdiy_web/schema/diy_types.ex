@@ -93,6 +93,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :introduction, :string
     field :name, non_null(:string)
     field :tip, :string
+    field :source, :string
     field :image, :string, resolve: ProjectPhoto.resolver(:image)
     field :video, :string
     field :published_at, :datetime
@@ -169,6 +170,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :name, non_null(:string)
     field :topic, non_null(:string)
     field :introduction, :string
+    field :source, :string
     field :tip, :string
     field :image, :upload
     field :video, :string
