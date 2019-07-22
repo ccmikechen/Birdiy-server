@@ -67,7 +67,8 @@ defmodule BirdiyWeb.Resolvers.Diy do
          {:ok, project} <- Diy.publish_project(project, current_user) do
       {:ok, %{project: project}}
     else
-      error -> error
+      _ ->
+        Errors.update_project()
     end
   end
 
