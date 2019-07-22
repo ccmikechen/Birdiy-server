@@ -12,6 +12,7 @@ defmodule Birdiy.Timeline do
 
   alias Birdiy.Accounts.User
   alias Birdiy.Timeline.{Post, PostPhoto, Activity}
+  alias Birdiy.Diy.Project
 
   def list_posts do
     Repo.all(Post) |> with_undeleted()
@@ -186,13 +187,25 @@ defmodule Birdiy.Timeline do
   def activities_query(args), do: activities_query(Activity, args)
 
   def activities_query(query, args) do
-    Enum.reduce(args, query, fn
-      {:order, :newest}, query ->
-        query |> order_by(desc: :inserted_at)
+    q =
+      Enum.reduce(args, query, fn
+        {:order, :newest}, query ->
+          query |> order_by(desc: :inserted_at)
 
-      _, query ->
-        query
-    end)
+        _, query ->
+          query
+      end)
+
+    from(a in q,
+      left_join: post in Post,
+      on: a.post_id == post.id,
+      left_join: project in Project,
+      on: a.project_id == project.id,
+      where:
+        (not is_nil(post.id) and is_nil(post.deleted_at)) or
+          (not is_nil(project.id) and is_nil(project.deleted_at) and
+             not is_nil(project.published_at))
+    )
   end
 
   def get_activity!(id), do: Repo.get!(Activity, id)

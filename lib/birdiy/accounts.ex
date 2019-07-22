@@ -167,8 +167,11 @@ defmodule Birdiy.Accounts do
       on: a.project_id == project.id,
       join: u in UserFollowing,
       where:
-        (u.followed_id == post.author_id or u.followed_id == project.author_id) and
-          u.following_id == ^user.id
+        (not is_nil(post.id) and is_nil(post.deleted_at)) or
+          (not is_nil(project.id) and is_nil(project.deleted_at) and
+             not is_nil(project.published_at)),
+      where: u.followed_id == post.author_id or u.followed_id == project.author_id,
+      where: u.following_id == ^user.id
     )
   end
 
