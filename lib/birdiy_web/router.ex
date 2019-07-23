@@ -1,17 +1,35 @@
 defmodule BirdiyWeb.Router do
   use BirdiyWeb, :router
 
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug BirdiyWeb.Context
   end
 
-  scope "/" do
+  scope "/", BirdiyWeb do
+    pipe_through :browser
+
+    get "/", PageController, :index
+  end
+
+  scope "/api" do
     pipe_through :api
 
-    forward "/api", Absinthe.Plug, schema: BirdiyWeb.Schema
+    forward "/", Absinthe.Plug, schema: BirdiyWeb.Schema
+  end
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
+  scope "/graphiql" do
+    pipe_through :api
+
+    forward "/", Absinthe.Plug.GraphiQL,
       schema: BirdiyWeb.Schema,
       socket: BirdiyWeb.UserSocket
   end
