@@ -1,0 +1,9 @@
+<header id="header" class="header">
+  <div class="header-content">
+    <div class="container">
+      <%= render "brand.html" %>
+      <%= render "search.html" %>
+      <%= render "download.html" %>
+    </div>
+  </div>
+</header>

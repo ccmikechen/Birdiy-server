@@ -1,4 +1,4 @@
-defmodule BirdiyWeb.PageController do
+defmodule BirdiyWeb.HomeController do
   use BirdiyWeb, :controller
 
   def index(conn, _params) do

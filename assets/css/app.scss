@@ -1,1 +1,92 @@
-@import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/mdbootstrap/css/mdb.min.css";
+
+header {
+  padding: 50px 0;
+  background-color: #fff;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+section {
+  padding: 150px 0;
+}
+
+.bg-app {
+  background-color: #003991;
+}
+
+.bg-trans {
+  background-color: rgba(0,0,0,0);
+}
+
+.brand {
+  padding-bottom: 50px;
+}
+
+.brand_logo {
+  width: 300px;
+}
+
+.logo-image {
+  width: 120px;
+  height: 30px;
+}
+
+.navbar {
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+
+.nav-link {
+  color: #a3a090;
+}
+
+.search {
+  padding-bottom: 50px;
+  max-width: 800px;
+}
+
+.search-btn {
+  font-size: 1rem;
+  padding: 0;
+  height: 3rem;
+  border-radius: 0.3rem;
+}
+
+.form-control:focus {
+  outline: none;
+}
+
+.download-image {
+  height: 50px;
+}
+
+.home-content {
+  padding: 0 100px;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.social-icon {
+  color: #fff;
+  transition: all .2s ease-in-out;
+}
+
+.social-icon:hover {
+  color: #aaa;
+}

@@ -1,0 +1,45 @@
+<!-- Footer -->
+<footer class="page-footer font-small elegant-color">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+    <!-- Grid row-->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-12 py-5">
+        <div class="mb-5 flex-center">
+
+          <!-- Facebook -->
+          <a class="fb-ic" href="https://www.facebook.com/birdiytw/">
+            <i class="fab fa-facebook-f fa-lg mr-md-5 mr-3 fa-2x social-icon"> </i>
+          </a>
+          <!--Instagram-->
+          <a class="ins-ic">
+            <i class="fab fa-instagram fa-lg mr-md-5 mr-3 fa-2x social-icon"> </i>
+          </a>
+          <!-- Youtube -->
+          <a class="yt-ic" href="https://www.youtube.com/channel/UCldxbvEifzP_x_G2PriR2-Q">
+            <i class="fab fa-youtube fa-lg mr-md-5 mr-3 fa-2x social-icon"> </i>
+          </a>
+          <!--Pinterest-->
+          <a class="pin-ic" href="https://www.pinterest.com/birdiytw/">
+            <i class="fab fa-pinterest fa-lg fa-2x social-icon"> </i>
+          </a>
+        </div>
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row-->
+
+  </div>
+  <!-- Footer Elements -->
+
+  <!-- Copyright -->
+  <div class="text-center py-3">© 2019 Birdiy 保留所有權利</div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->

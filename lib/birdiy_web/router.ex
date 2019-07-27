@@ -17,7 +17,7 @@ defmodule BirdiyWeb.Router do
   scope "/", BirdiyWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", HomeController, :index
   end
 
   scope "/api" do
