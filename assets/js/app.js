@@ -18,3 +18,15 @@ import "phoenix_html"
 
 import $ from "jquery"
 import "bootstrap"
+
+$('a[data-toggle="tooltip"]').tooltip({
+  animated: 'fade',
+  placement: 'bottom'
+})
+
+$('#search').submit((e) => {
+  const searchText = $('#search-text').val()
+  window.location.href = `/search/${searchText}`
+
+  return false
+})

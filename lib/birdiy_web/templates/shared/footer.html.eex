@@ -38,7 +38,11 @@
   <!-- Footer Elements -->
 
   <!-- Copyright -->
-  <div class="text-center py-3">© 2019 Birdiy 保留所有權利</div>
+  <div class="text-center py-3 grey-text">2019 © Birdiy 保留所有權利。|
+    <a class="footer-link"> 隱私條款 </a>|
+    <a class="footer-link"> 合約條款 </a>|
+     如繼續使用本網站與服務，即表示您接受我們的隱私條款。
+  </div>
   <!-- Copyright -->
 
 </footer>

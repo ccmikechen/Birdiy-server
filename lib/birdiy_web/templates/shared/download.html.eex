@@ -1,0 +1,6 @@
+<div class="row justify-content-center">
+  <div class="text-center">
+    <a class="mr-3" href='http://play.google.com/store/'><img class="download-image" alt='Google Play立即下載' src='/images/google-play-download.svg'></a>
+    <a class="ml-3" data-toggle="tooltip" title="近期上架！"><img class="download-image download-soon-image" alt='App Store 下載' src='/images/app-store-download.svg'></a>
+  </div>
+</div>

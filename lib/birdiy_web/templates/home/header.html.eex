@@ -3,7 +3,7 @@
     <div class="container">
       <%= render "brand.html" %>
       <%= render "search.html" %>
-      <%= render "download.html" %>
+      <%= render BirdiyWeb.SharedView, "download.html" %>
     </div>
   </div>
 </header>

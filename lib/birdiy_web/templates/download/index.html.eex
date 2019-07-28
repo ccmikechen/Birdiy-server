@@ -1,0 +1,12 @@
+<header class="header">
+  <div class="row justify-content-center download-text">
+    <div class="col-10 justify-content-center text-center">
+      <div>立刻下載 Birdiy APP！</div>
+      <%= if assigns[:search] do %>
+        <div>於APP內搜尋「<span class="blue-text"><%= assigns[:search] %></span>」。</div>
+      <% end %>
+    </div>
+  </div>
+  <%= render BirdiyWeb.SharedView, "download.html" %>
+</header>
+
