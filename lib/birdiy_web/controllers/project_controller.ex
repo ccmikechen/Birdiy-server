@@ -30,6 +30,7 @@ defmodule BirdiyWeb.ProjectController do
         ]
 
         render(conn, "show.html",
+          current_url: "https://birdiy.com" <> current_path(conn, %{}),
           project: project,
           description: project.introduction,
           meta_attrs: attrs
