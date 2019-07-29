@@ -1,2 +1,2 @@
-<%= render "header.html" %>
-<%= render "content.html" %>
+<%= render "_header.html" %>
+<%= render "_content.html" %>

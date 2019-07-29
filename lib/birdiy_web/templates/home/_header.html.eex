@@ -1,0 +1,9 @@
+<header id="header" class="header">
+  <div class="header-content">
+    <div class="container">
+      <%= render "_brand.html" %>
+      <%= render "_search.html" %>
+      <%= render BirdiyWeb.SharedView, "_download.html" %>
+    </div>
+  </div>
+</header>

@@ -19,3 +19,27 @@ section {
 .button {
   cursor: pointer;
 }
+
+@media(max-width: 767px) {
+  .container {
+    padding: 0;
+  }
+}
+
+.btn-outline-facebook {
+  border: 2px solid #3b5998!important;
+  background-color: transparent!important;
+  color: #3b5998!important;
+}
+
+.btn-outline-twitter {
+  border: 2px solid #00acee!important;
+  background-color: transparent!important;
+  color: #00acee!important;
+}
+
+.btn-outline-pinterest {
+  border: 2px solid #c8232c!important;
+  background-color: transparent!important;
+  color: #c8232c!important;
+}

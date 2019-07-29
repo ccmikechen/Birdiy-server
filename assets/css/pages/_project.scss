@@ -1,6 +1,4 @@
 .project-container {
-  padding: 30px 0;
-
   .section {
     background-color: #fff;
     padding: 16px;
@@ -28,89 +26,137 @@
         padding: 0;
       }
     }
+
+    .project-image {
+      max-width: 100%;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .project-name {
+      color: #222;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .project-like-btn {
+      font-size: 1.5rem;
+    }
+
+    .project-like-btn:hover {
+      color: #c62828;
+    }
+
+    .project-countings {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .project-author {
+      .avatar {
+        width: 50px;
+        height: 50px;
+      }
+
+      .name {
+        color: #222;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+
+    .project-options {
+      .btn {
+        font-size: 1rem;
+        padding: .2rem 1rem!important;
+      }
+    }
+
+    .project-material {
+      font-size: 1rem;
+
+      .name {
+        color: #444;
+      }
+
+      .amount {
+        color: #888;
+      }
+
+      .check-btn:hover .fa-circle:before {
+        content: "\f058";
+      }
+
+      .check-btn:active .fa-circle:before {
+        color: #007bff;
+      }
+    }
+
+    .project-file {
+      font-size: 1rem;
+    }
+
+    .project-method {
+      .title {
+        color: #222;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .description {
+        color: #444;
+        font-size: 1.1rem;
+        overflow-y: auto;
+      }
+    }
+
+    @media(max-width: 767px) {
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      .section-content {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+      
+      .project-name {
+        font-size: 1.4rem;
+      }
+
+      .project-countings {
+        font-size: .8rem;
+      }
+
+      .project-author {
+        .avatar {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      .project-method {
+        .title {
+          font-size: 1rem;
+        }
+
+        .description {
+          font-size: .9rem;
+        }
+      }
+    }
   }
 }
 
 @media(min-width: 768px) {
   .project-container {
     max-width: 700px;
+    padding: 30px 0;
   }
 }
 
 @media(max-width: 767px) {
   .project-container {
     max-width: 100%;
-  }
-}
-
-.project-image {
-  max-width: 100%;
-  overflow: hidden;
-  padding: 0;
-}
-
-.project-name {
-  color: #222;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.project-like-btn {
-  font-size: 1.5rem;
-}
-
-.project-countings {
-  color: #666;
-  font-size: 1rem;
-}
-
-.project-author {
-  .avatar {
-    width: 50px;
-    height: 50px;
-  }
-
-  .name {
-    color: #222;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-}
-
-.project-material {
-  font-size: 1rem;
-
-  .name {
-    color: #444;
-  }
-
-  .amount {
-    color: #888;
-  }
-
-  .check-btn:hover .fa-circle:before {
-    content: "\f058";
-  }
-
-  .check-btn:active .fa-circle:before {
-    color: #007bff;
-  }
-}
-
-.project-file {
-  font-size: 1rem;
-}
-
-.project-method {
-  .title {
-    color: #222;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-
-  .description {
-    color: #444;
-    font-size: 1.1rem;
-    overflow-y: auto;
   }
 }

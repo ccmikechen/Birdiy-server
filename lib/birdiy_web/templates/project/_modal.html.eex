@@ -1,0 +1,22 @@
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row justify-content-center">
+          此功能尚未於網頁版開放。
+        </div>
+        <div class="row justify-content-center">
+          立即下載Birdiy APP使用所有功能！
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <%= render BirdiyWeb.SharedView, "_download.html" %>
+      </div>
+    </div>
+  </div>
+</div>
