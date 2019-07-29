@@ -35,7 +35,7 @@
       <button type="button" class="btn btn-outline-blue-grey waves-effect" data-toggle="modal" data-target="#downloadModal"><i class="fa fa-folder-plus pr-2" aria-hidden="true" ></i>收藏</button>
       <div class="d-none d-md-block">
         <a class="btn btn-outline-facebook waves-effect" href="https://www.facebook.com/sharer/sharer.php?u=<%= @current_url %>" target="_blank" onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"><i class="fab fa-facebook-square pr-2" aria-hidden="true" ></i>分享</a>
-        <a class="btn btn-outline-twitter waves-effect"><i class="fab fa-twitter pr-2" aria-hidden="true"></i>分享</a>
+        <a class="btn btn-outline-twitter waves-effect" href="https://twitter.com/intent/tweet?url=<%= @current_url %>" onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"><i class="fab fa-twitter pr-2" aria-hidden="true"></i>分享</a>
         <a class="btn btn-outline-pinterest waves-effect"><i class="fab fa-pinterest pr-2" aria-hidden="true"></i>分享</a>
       </div>
       <div class="d-md-none">
