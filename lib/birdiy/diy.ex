@@ -11,6 +11,9 @@ defmodule Birdiy.Diy do
   alias Birdiy.Repo
   alias Birdiy.Helpers
 
+  alias Birdiy.ProjectPhoto
+  alias Birdiy.ProjectFile
+
   alias Birdiy.Diy.{
     ProjectCategory,
     ProjectTopic,
@@ -26,6 +29,16 @@ defmodule Birdiy.Diy do
 
   def list_project_categories do
     Repo.all(ProjectCategory)
+  end
+
+  def project_from_global_id(global_id) do
+    case Absinthe.Relay.Node.from_global_id(global_id, BirdiyWeb.Schema) do
+      {:ok, %{id: id, type: :project}} ->
+        {:ok, Repo.get(Project, id)}
+
+      {:error, error} ->
+        {:error, error}
+    end
   end
 
   def project_categories_query(args) do
@@ -144,6 +157,10 @@ defmodule Birdiy.Diy do
     |> Repo.all()
   end
 
+  def file_url(%ProjectFileResource{} = file) do
+    ProjectFile.url_from(file)
+  end
+
   def get_project_file_resources!(%Project{} = project) do
     Ecto.assoc(project, :file_resources)
     |> order_by(:order)
@@ -180,6 +197,10 @@ defmodule Birdiy.Diy do
     %Project{}
     |> Project.draft_changeset(author, attrs)
     |> Repo.insert()
+  end
+
+  def project_image_url(%Project{} = project) do
+    ProjectPhoto.url_from(project)
   end
 
   def update_project(%Project{} = project, %User{} = author, attrs) do
@@ -310,6 +331,10 @@ defmodule Birdiy.Diy do
   end
 
   def get_project_method!(id), do: Repo.get!(ProjectMethod, id)
+
+  def project_method_image_url(%ProjectMethod{} = method) do
+    ProjectPhoto.url_from(method)
+  end
 
   defp upsert_project_methods_query(multi, %Project{} = project, params) do
     ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)

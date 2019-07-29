@@ -18,9 +18,10 @@ defmodule BirdiyWeb.Router do
     pipe_through :browser
 
     get "/", HomeController, :index
+    get "/download/", DownloadController, :index
     get "/search", SearchController, :index
     get "/search/:text", SearchController, :show
-    get "/download/", DownloadController, :index
+    get "/project/:id", ProjectController, :show
   end
 
   scope "/api" do

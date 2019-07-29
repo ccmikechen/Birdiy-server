@@ -6,6 +6,6 @@ defmodule BirdiyWeb.SearchController do
   end
 
   def show(conn, %{"text" => text}) do
-    redirect(conn, to: Routes.download_path(conn, :index, search: text))
+    render(conn, "show.html", search_text: text)
   end
 end

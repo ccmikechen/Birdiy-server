@@ -7,6 +7,8 @@ defmodule Birdiy.Accounts do
 
   alias Birdiy.{Repo, Auth}
 
+  alias Birdiy.Avatar
+
   alias Birdiy.Accounts.{
     User,
     UserFollowing,
@@ -264,5 +266,9 @@ defmodule Birdiy.Accounts do
       on_conflict: :replace_all_except_primary_key,
       conflict_target: [:user_id, :project_id]
     )
+  end
+
+  def avatar_url(%User{} = user) do
+    Avatar.url_from(user)
   end
 end

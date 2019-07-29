@@ -26,4 +26,12 @@ defmodule Birdiy.ProjectFile do
       content_disposition: "attachment; filename=\"#{filename}\""
     ]
   end
+
+  def url_from(%{file: nil, url: url}) do
+    url
+  end
+
+  def url_from(file = %{file: %{file_name: file_name}}) do
+    url({file_name, file})
+  end
 end
