@@ -1,11 +1,18 @@
 APP="birdiy"
 
-BUILD_HOST=$BIRDIY_STAGING_HOST
+START_DEPLOY=true
+CLEAN_DEPLOY=true
+
+BUILD_HOST=$BIRDIY_HOST
 BUILD_USER="deploy"
 BUILD_AT="/tmp/edeliver/$APP/builds"
 
+PRODUCTION_HOSTS=$BIRDIY_HOST
+PRODUCTION_USER="deploy"
+
 STAGING_HOSTS=$BIRDIY_STAGING_HOST
 STAGING_USER="deploy"
+
 DELIVER_TO="/home/deploy/apps"
 
 # For *Phoenix* projects, symlink prod.secret.exs to our tmp source
@@ -19,4 +26,34 @@ pre_erlang_get_and_update_deps() {
       ln -sfn '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
     "
   fi
+}
+
+pre_erlang_clean_compile() {
+  status "Running yarn install"
+    __sync_remote "
+      [ -f ~/.profile ] && source ~/.profile
+      set -e
+      cd '$BUILD_AT'/assets
+      yarn install
+    "
+
+  status "Compiling assets"
+    __sync_remote "
+      [ -f ~/.profile ] && source ~/.profile
+      set -e
+      cd '$BUILD_AT'/assets
+      node_modules/.bin/webpack --mode production --silent
+    "
+
+  status "Running phoenix.digest" # log output prepended with "----->"
+  __sync_remote " # runs the commands on the build host
+    [ -f ~/.profile ] && source ~/.profile # load profile (optional)
+    set -e # fail if any command fails (recommended)
+    cd '$BUILD_AT' # enter the build directory on the build host (required)
+    # prepare something
+    mkdir -p priv/static # required by the phoenix.digest task
+    # run your custom task
+    APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest $SILENCE
+    APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest.clean $SILENCE
+  "
 }
