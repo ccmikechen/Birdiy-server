@@ -1,19 +1,47 @@
-# Birdiy
+# Birdiy Server
 
-To start your Phoenix server:
+## Development
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
+### Start dev server
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+```bash
+mix phx.server
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Start dev server with iex console
 
-## Learn more
+```bash
+iex -S mix.phx server
+```
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Deployment
+
+### Ping
+
+```bash
+mix edeliver ping [staging|production]
+```
+
+### Check status
+
+```bash
+mix edeliver status [staging|production]
+```
+
+### Build release
+
+```bash
+mix edeliver build release [staging|production] --branch=[branch]
+```
+
+### Deploy
+
+```bash
+mix edeliver deploy release [staging|production]
+```
+
+### Migrate
+
+```bash
+mix edeliver migrate
+```
