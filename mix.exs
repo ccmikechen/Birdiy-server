@@ -36,31 +36,31 @@ defmodule Birdiy.MixProject do
       # General
       {:elixir_uuid, "~> 1.2"},
       {:poison, "~> 3.1"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1.2"},
       {:deep_merge, "~> 1.0"},
-      {:httpoison, "~> 1.4"},
+      {:httpoison, "~> 1.5.1"},
 
       # Phoenix & Database
-      {:phoenix, "~> 1.4.3"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.4.9"},
+      {:phoenix_pubsub, "~> 1.1.2"},
       {:phoenix_ecto, "~> 4.0"},
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.1.6"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.11"},
+      {:phoenix_html, "~> 2.13.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 2.0"},
-      {:ecto_soft_delete, "~> 1.0"},
+      {:gettext, "~> 0.17"},
+      {:plug_cowboy, "~> 2.1"},
+      {:ecto_soft_delete, "~> 1.1"},
 
       # Authentication
-      {:guardian, "~> 1.0"},
+      {:guardian, "~> 1.2.1"},
 
       # Absinthe
       {:absinthe, "~> 1.4.16"},
-      {:absinthe_plug, "~> 1.4.6"},
-      {:absinthe_phoenix, "~> 1.4.3"},
+      {:absinthe_plug, "~> 1.4.7"},
+      {:absinthe_phoenix, "~> 1.4.4"},
       {:absinthe_relay, "~> 1.4.6"},
-      {:dataloader, "~> 1.0.0"},
+      {:dataloader, "~> 1.0.6"},
 
       # S3
       {:arc, "~> 0.11.0"},
@@ -71,8 +71,8 @@ defmodule Birdiy.MixProject do
       {:sweet_xml, "~> 0.6"},
 
       # Deployment
-      {:edeliver, ">= 1.6.0"},
-      {:distillery, "~> 2.0", warn_missing: false}
+      {:edeliver, ">= 1.7.0"},
+      {:distillery, "~> 2.1", warn_missing: false}
     ]
   end
 
