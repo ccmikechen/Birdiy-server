@@ -30,11 +30,13 @@ defmodule BirdiyWeb.Router do
     forward "/", Absinthe.Plug, schema: BirdiyWeb.Schema
   end
 
-  scope "/graphiql" do
-    pipe_through :api
+  if Mix.env == :dev do
+    scope "/graphiql" do
+      pipe_through :api
 
-    forward "/", Absinthe.Plug.GraphiQL,
-      schema: BirdiyWeb.Schema,
-      socket: BirdiyWeb.UserSocket
+      forward "/", Absinthe.Plug.GraphiQL,
+        schema: BirdiyWeb.Schema,
+        socket: BirdiyWeb.UserSocket
+    end
   end
 end
