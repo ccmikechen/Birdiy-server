@@ -75,7 +75,7 @@ defmodule Birdiy.MixProject do
       {:distillery, "~> 2.1", warn_missing: false},
 
       # Admin
-      {:ex_admin, github: "sublimecoder/ex_admin"}
+      {:ex_admin, github: "ccmikechen/ex_admin"}
     ]
   end
 

@@ -64,7 +64,7 @@ defmodule Birdiy.Accounts.User do
     attrs = put_random_filename(attrs, [:image])
 
     user
-    |> cast(attrs, [:name, :image, :facebook_id, :google_id])
+    |> cast(attrs, [:name, :image, :facebook_id, :google_id, :banned_at])
     |> put_random_name()
     |> put_random_access_key()
     |> cast_attachments(attrs, [:image])

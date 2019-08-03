@@ -48,4 +48,3 @@ config :gettext, default_locale: "en/us"
 import_config "#{Mix.env()}.exs"
 
 config :xain, :after_callback, {Phoenix.HTML, :raw}
-
