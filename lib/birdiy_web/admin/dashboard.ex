@@ -1,4 +1,4 @@
-defmodule BirdiyWeb.ExAdmin.Dashboard do
+defmodule BirdiyWeb.Admin.Dashboard do
   use ExAdmin.Register
 
   register_page "Dashboard" do

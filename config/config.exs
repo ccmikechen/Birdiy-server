@@ -31,7 +31,13 @@ config :ex_admin,
   repo: Birdiy.Repo,
   module: BirdiyWeb,
   modules: [
-    BirdiyWeb.ExAdmin.Dashboard,
+    BirdiyWeb.Admin.Dashboard,
+    BirdiyWeb.Admin.Accounts.User,
+    BirdiyWeb.Admin.Diy.Project,
+    BirdiyWeb.Admin.Diy.ProjectCategory,
+    BirdiyWeb.Admin.Diy.ProjectTopic,
+    BirdiyWeb.Admin.Timeline.Post,
+    BirdiyWeb.Admin.Timeline.Activity
   ],
   skin_color: :black
 
