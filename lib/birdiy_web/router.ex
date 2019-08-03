@@ -1,5 +1,6 @@
 defmodule BirdiyWeb.Router do
   use BirdiyWeb, :router
+  use ExAdmin.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -22,6 +23,11 @@ defmodule BirdiyWeb.Router do
     get "/search", SearchController, :index
     get "/search/:text", SearchController, :show
     get "/project/:id", ProjectController, :show
+  end
+
+  scope "/admin", ExAdmin do
+    pipe_through :browser
+    admin_routes()
   end
 
   scope "/api" do

@@ -72,7 +72,10 @@ defmodule Birdiy.MixProject do
 
       # Deployment
       {:edeliver, ">= 1.7.0"},
-      {:distillery, "~> 2.1", warn_missing: false}
+      {:distillery, "~> 2.1", warn_missing: false},
+
+      # Admin
+      {:ex_admin, github: "sublimecoder/ex_admin"}
     ]
   end
 

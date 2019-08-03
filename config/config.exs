@@ -25,6 +25,21 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Admin
+
+config :ex_admin,
+  repo: Birdiy.Repo,
+  module: BirdiyWeb,
+  modules: [
+    BirdiyWeb.ExAdmin.Dashboard,
+  ],
+  skin_color: :black
+
+config :gettext, default_locale: "en/us"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :xain, :after_callback, {Phoenix.HTML, :raw}
+
