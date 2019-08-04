@@ -20,6 +20,7 @@ defmodule BirdiyWeb.Admin.Accounts.User do
 
       column(:facebook_id)
       column(:google_id)
+      column(:inserted_at)
       column(:banned_at)
       actions()
     end
@@ -39,9 +40,7 @@ defmodule BirdiyWeb.Admin.Accounts.User do
       end
 
       panel "Projects" do
-        projects = Birdiy.Repo.preload(user.projects, :topic)
-
-        table_for projects do
+        table_for user.projects do
           column(:image, fn project ->
             img(src: Birdiy.ProjectPhoto.url_from(project), style: "height: 60px; width: 80px")
           end)
@@ -65,9 +64,7 @@ defmodule BirdiyWeb.Admin.Accounts.User do
       end
 
       panel "Posts" do
-        posts = Birdiy.Repo.preload(user.posts, :related_project)
-
-        table_for posts do
+        table_for user.posts do
           column(:id, fn post ->
             ExAdmin.Utils.link_to(post.id, "/admin/posts/#{post.id}")
           end)
@@ -83,12 +80,16 @@ defmodule BirdiyWeb.Admin.Accounts.User do
 
     form user do
       inputs do
-        input(user, :name, maxolength: 100)
+        input(user, :name, maxlength: 100)
         input(user, :image)
         input(user, :facebook_id)
         input(user, :google_id)
         input(user, :banned_at)
       end
+    end
+
+    query do
+      %{show: [preload: [projects: :topic, posts: :related_project]]}
     end
   end
 end

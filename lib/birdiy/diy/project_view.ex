@@ -14,7 +14,8 @@ defmodule Birdiy.Diy.ProjectView do
   def changeset(project_view, attrs) do
     project_view
     |> cast(attrs, [:ip, :project_id])
-    |> validate_required([:ip, :project_id])
+    |> validate_required([:ip])
+    |> assoc_constraint(:project)
     |> unique_constraint(:project_id)
   end
 end
