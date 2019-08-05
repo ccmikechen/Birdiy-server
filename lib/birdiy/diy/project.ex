@@ -84,7 +84,7 @@ defmodule Birdiy.Diy.Project do
 
     project
     |> draft_changeset(attrs)
-    |> cast(attrs, [:introduction, :tip, :source, :video])
+    |> cast(attrs, [:deleted_at, :introduction, :tip, :source, :video])
     |> validate_length(:introduction, max: 300)
     |> validate_length(:tip, max: 300)
     |> cast_attachments(attrs, [:image])

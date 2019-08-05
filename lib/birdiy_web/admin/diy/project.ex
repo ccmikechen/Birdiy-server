@@ -58,6 +58,12 @@ defmodule BirdiyWeb.Admin.Diy.Project do
         end)
 
         row(:id)
+
+        row(:global_id, fn project ->
+          global_id = Absinthe.Relay.Node.to_global_id("Project", project.id)
+          ExAdmin.Utils.link_to(global_id, "/project/#{global_id}", target: "_blank")
+        end)
+
         row(:name)
         row(:topic)
         row(:author)

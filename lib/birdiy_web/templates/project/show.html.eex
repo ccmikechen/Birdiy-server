@@ -106,16 +106,18 @@
       <div class="section-content project-method">
         <%= for method <- @project.methods do %>
           <div class="row py-3 border-bottom">
-            <div class="title">
+            <div class="col-12 title">
               步驟 <%= method.order %>
               <%= if method.title do %>
                 ：<%= method.title %>
               <% end %>
             </div>
-            <div class="mt-3">
-              <img class="w-100" src="<%= Diy.project_method_image_url(method) %>">
-            </div>
-            <div class="my-3">
+            <%= if method.image do %>
+              <div class="col-12 mt-3">
+                <img class="w-100" src="<%= Diy.project_method_image_url(method) %>">
+              </div>
+            <% end %>
+            <div class="col-12 my-3">
               <div class="description">
                 <%= method.content %>
               </div>
