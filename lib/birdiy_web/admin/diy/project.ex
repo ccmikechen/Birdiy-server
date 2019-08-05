@@ -148,7 +148,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
             end
         )
 
-        input(project, :image)
+        input(project, :image, type: :image, aspect: 4 / 3)
         input(project, :topic, collection: Repo.all(ProjectTopic))
         input(project, :introduction)
         input(project, :video)
@@ -179,7 +179,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
       inputs "Methods" do
         has_many project, :methods, fn method ->
           input(method, :order)
-          input(method, :image, type: :file)
+          input(method, :image, type: :image, aspect: 4 / 3)
           input(method, :title)
           input(method, :content)
         end

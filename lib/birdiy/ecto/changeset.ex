@@ -1,8 +1,6 @@
 defmodule Birdiy.Ecto.Changeset do
   import Ecto.Changeset
 
-  alias Plug.Upload
-
   def validate_required_inclusion(changeset, fields) do
     if Enum.any?(fields, &present?(changeset, &1)) do
       changeset
@@ -21,18 +19,41 @@ defmodule Birdiy.Ecto.Changeset do
       image = random_filename(params[field])
 
       case image do
-        %Upload{} -> Map.put(params, field, image)
+        %{} -> Map.put(params, field, image)
         _ -> params
       end
     end)
   end
 
-  defp random_filename(%Upload{filename: filename} = field) do
+  defp random_filename(%{filename: filename} = field) do
     new_filename = "#{UUID.uuid4(:hex)}#{Path.extname(filename)}"
-    %Upload{field | filename: new_filename}
+    %{field | filename: new_filename}
   end
 
   defp random_filename(field) do
+    field
+  end
+
+  def decode_base64_image(params, fields) do
+    Enum.reduce(fields, params, fn field, params ->
+      image = decode_base64(params[field])
+
+      case image do
+        %{} -> Map.put(params, field, image)
+        _ -> params
+      end
+    end)
+  end
+
+  defp decode_base64(%{filename: filename, base64: "data:image/png;base64," <> base64} = field) do
+    %{
+      __struct__: Plug.Upload,
+      binary: Base.decode64!(base64),
+      filename: filename
+    }
+  end
+
+  defp decode_base64(field) do
     field
   end
 end

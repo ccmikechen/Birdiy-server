@@ -25,7 +25,10 @@ defmodule Birdiy.Diy.ProjectMethod do
 
   @doc false
   def changeset(project_method, attrs) do
-    attrs = put_random_filename(attrs, [:image])
+    attrs =
+      attrs
+      |> put_random_filename([:image])
+      |> decode_base64_image([:image])
 
     project_method
     |> cast(attrs, [:_destroy, :title, :content, :order, :project_id])

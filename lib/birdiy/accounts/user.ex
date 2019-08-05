@@ -61,7 +61,10 @@ defmodule Birdiy.Accounts.User do
 
   @doc false
   def changeset(user, attrs) do
-    attrs = put_random_filename(attrs, [:image])
+    attrs =
+      attrs
+      |> put_random_filename([:image])
+      |> decode_base64_image([:image])
 
     user
     |> cast(attrs, [:name, :image, :facebook_id, :google_id, :banned_at])

@@ -81,7 +81,7 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
       inputs do
         has_many post, :photos, fn photo ->
           input(photo, :order)
-          input(photo, :image, type: :file)
+          input(photo, :image, type: :image, aspect: 4 / 3)
         end
       end
     end

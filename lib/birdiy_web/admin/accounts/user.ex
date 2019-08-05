@@ -81,7 +81,7 @@ defmodule BirdiyWeb.Admin.Accounts.User do
     form user do
       inputs do
         input(user, :name, maxlength: 100)
-        input(user, :image)
+        input(user, :image, type: :image, aspect: 1)
         input(user, :facebook_id)
         input(user, :google_id)
         input(user, :banned_at)

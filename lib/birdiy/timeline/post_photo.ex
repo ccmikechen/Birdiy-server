@@ -23,7 +23,10 @@ defmodule Birdiy.Timeline.PostPhoto do
 
   @doc false
   def changeset(post_photo, attrs) do
-    attrs = put_random_filename(attrs, [:image])
+    attrs =
+      attrs
+      |> put_random_filename([:image])
+      |> decode_base64_image([:image])
 
     post_photo
     |> cast(attrs, [:_destroy, :order, :post_id])

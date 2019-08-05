@@ -77,7 +77,10 @@ defmodule Birdiy.Diy.Project do
 
   @doc false
   def changeset(project, attrs) do
-    attrs = put_random_filename(attrs, [:image])
+    attrs =
+      attrs
+      |> put_random_filename([:image])
+      |> decode_base64_image([:image])
 
     project
     |> draft_changeset(attrs)
