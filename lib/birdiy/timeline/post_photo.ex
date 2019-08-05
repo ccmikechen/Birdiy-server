@@ -9,6 +9,7 @@ defmodule Birdiy.Timeline.PostPhoto do
   alias Birdiy.{Timeline, PostPhoto}
 
   schema "post_photos" do
+    field(:_destroy, :boolean, virtual: true)
     field :image, PostPhoto.Type
     field :order, :decimal
     belongs_to :post, Timeline.Post
@@ -18,12 +19,25 @@ defmodule Birdiy.Timeline.PostPhoto do
   end
 
   @doc false
+  def changeset(post_photo), do: changeset(post_photo, %{})
+
+  @doc false
   def changeset(post_photo, attrs) do
     attrs = put_random_filename(attrs, [:image])
 
     post_photo
-    |> cast(attrs, [:order, :post_id])
+    |> cast(attrs, [:_destroy, :order, :post_id])
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:image, :order, :post_id])
+    |> validate_required([:image, :order])
+    |> assoc_constraint(:post)
+    |> mark_for_deletion()
+  end
+
+  defp mark_for_deletion(changeset) do
+    if get_change(changeset, :_destroy) do
+      %{changeset | action: :delete}
+    else
+      changeset
+    end
   end
 end

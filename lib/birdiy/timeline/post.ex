@@ -11,37 +11,45 @@ defmodule Birdiy.Timeline.Post do
     field :related_project_type, :string
     belongs_to :author, Accounts.User
     belongs_to :related_project, Diy.Project
-    has_many :photos, Timeline.PostPhoto, where: [deleted_at: nil]
+    has_one :activity, Timeline.Activity, on_delete: :delete_all
+    has_many :photos, Timeline.PostPhoto, where: [deleted_at: nil], on_delete: :delete_all
 
     soft_delete_schema()
     timestamps()
   end
 
   @doc false
-  def changeset(post, author, attrs) do
+  def changeset(post), do: changeset(post, %{})
+
+  @doc false
+  def changeset(post, attrs) do
     post
-    |> cast(attrs, [:related_project_id, :related_project_name, :message])
+    |> cast(attrs, [:author_id, :related_project_id, :related_project_name, :message])
+    |> assoc_constraint(:author)
+    |> assoc_constraint(:related_project)
     |> put_related_project_type(attrs)
-    |> put_change(:author_id, author.id)
-    |> validate_required([:related_project_type, :author_id])
+    |> cast_assoc(:photos)
   end
 
   @doc false
-  def update_changeset(post, author, attrs) do
+  def update_changeset(post, attrs) do
     post
-    |> changeset(author, attrs)
+    |> changeset(attrs)
     |> validate_photos(post)
   end
 
   defp put_related_project_type(changeset, attrs) do
-    type =
-      case attrs[:related_project_type] do
-        :custom -> "custom"
-        :project -> "project"
-        _ -> nil
-      end
+    cond do
+      get_change(changeset, :related_project) ||
+          get_change(changeset, :related_project_id) ->
+        put_change(changeset, :related_project_type, "project")
 
-    put_change(changeset, :related_project_type, type)
+      get_change(changeset, :related_project_name) ->
+        put_change(changeset, :related_project_type, "custom")
+
+      true ->
+        changeset
+    end
   end
 
   defp validate_photos(changeset, post) do

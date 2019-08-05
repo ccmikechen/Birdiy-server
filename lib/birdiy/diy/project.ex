@@ -18,33 +18,48 @@ defmodule Birdiy.Diy.Project do
     field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
     belongs_to :topic, Diy.ProjectTopic
-    has_many :materials, Diy.ProjectMaterial, where: [deleted_at: nil], on_replace: :delete
+    has_one :activity, Timeline.Activity, on_delete: :delete_all
 
-    has_many :file_resources, Diy.ProjectFileResource,
-      where: [deleted_at: nil],
-      on_replace: :delete
+    has_many :materials,
+             Diy.ProjectMaterial,
+             where: [deleted_at: nil],
+             on_replace: :delete,
+             on_delete: :delete_all
 
-    has_many :methods, Diy.ProjectMethod, where: [deleted_at: nil], on_replace: :delete
+    has_many :file_resources,
+             Diy.ProjectFileResource,
+             where: [deleted_at: nil],
+             on_replace: :delete
+
+    has_many :methods,
+             Diy.ProjectMethod,
+             where: [deleted_at: nil],
+             on_replace: :delete,
+             on_delete: :delete_all
 
     has_many :related_posts,
              Timeline.Post,
              foreign_key: :related_project_id,
-             where: [deleted_at: nil]
+             where: [deleted_at: nil],
+             on_delete: :delete_all
 
     many_to_many :favorite_users,
                  Accounts.User,
                  join_through: "user_favorite_projects",
-                 on_replace: :delete
+                 on_replace: :delete,
+                 on_delete: :delete_all
 
     many_to_many :liked_users,
                  Accounts.User,
                  join_through: "user_liked_projects",
-                 on_replace: :delete
+                 on_replace: :delete,
+                 on_delete: :delete_all
 
     many_to_many :viewed_users,
                  Accounts.User,
                  join_through: "user_viewed_projects",
-                 on_replace: :delete
+                 on_replace: :delete,
+                 on_delete: :delete_all
 
     has_many :views, Diy.ProjectView
 
@@ -83,7 +98,8 @@ defmodule Birdiy.Diy.Project do
     |> put_topic(attrs[:topic_name])
     |> assoc_constraint(:topic)
     |> validate_length(:name, max: 100)
-    |> validate_required([:author_id, :name])
+    |> validate_required([:name])
+    |> assoc_constraint(:author)
   end
 
   @doc false

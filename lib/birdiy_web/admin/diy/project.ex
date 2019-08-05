@@ -123,6 +123,16 @@ defmodule BirdiyWeb.Admin.Diy.Project do
           column(:content)
         end
       end
+
+      panel "Related Posts" do
+        sortable_table_for project, :related_posts do
+          column(:id, fn post ->
+            ExAdmin.Utils.link_to(post.id, "/admin/posts/#{post.id}")
+          end)
+
+          column(:message)
+        end
+      end
     end
 
     form project do

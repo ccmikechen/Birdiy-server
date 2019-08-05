@@ -193,13 +193,8 @@ defmodule Birdiy.Diy do
     |> Repo.aggregate(:count, :id)
   end
 
-  def create_project(%User{} = author, attrs) do
-    attrs = Map.merge(attrs, %{author_id: author.id})
-    create_project(attrs)
-  end
-
-  def create_project(attrs \\ %{}) do
-    %Project{}
+  def create_project(%User{} = author, attrs \\ %{}) do
+    %Project{author: author}
     |> Project.draft_changeset(attrs)
     |> Repo.insert()
   end
@@ -229,7 +224,7 @@ defmodule Birdiy.Diy do
   end
 
   defp update_project_query(multi, %Project{} = project, %User{} = author, attrs) do
-    attrs = Map.merge(attrs, %{author_id: author.id})
+    attrs = Map.merge(attrs, %{author: author})
     update_project_query(multi, project, attrs)
   end
 
