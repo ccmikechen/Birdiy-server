@@ -54,6 +54,7 @@ defmodule Birdiy.MixProject do
 
       # Authentication
       {:guardian, "~> 1.2.1"},
+      {:pow, "~> 1.0.11"},
 
       # Absinthe
       {:absinthe, "~> 1.4.16"},
