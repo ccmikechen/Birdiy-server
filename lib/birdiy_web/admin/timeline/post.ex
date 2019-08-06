@@ -48,6 +48,8 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
 
       panel "Photos" do
         sortable_table_for post, :photos do
+          sort_handle_column()
+
           column(:id)
           column(:order)
 

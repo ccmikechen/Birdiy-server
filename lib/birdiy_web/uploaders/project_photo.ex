@@ -3,8 +3,6 @@ defmodule Birdiy.ProjectPhoto do
   use Arc.Ecto.Definition
   use Birdiy.Arc.Resolver
 
-  alias Birdiy.Diy.Project
-
   @acl :public_read
   @versions [:original]
 

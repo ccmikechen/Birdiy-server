@@ -27,7 +27,7 @@ defmodule Birdiy.Timeline.Post do
     |> cast(attrs, [:author_id, :related_project_id, :related_project_name, :message])
     |> assoc_constraint(:author)
     |> assoc_constraint(:related_project)
-    |> put_related_project_type(attrs)
+    |> put_related_project_type()
     |> cast_assoc(:photos)
   end
 
@@ -38,7 +38,7 @@ defmodule Birdiy.Timeline.Post do
     |> validate_photos(post)
   end
 
-  defp put_related_project_type(changeset, attrs) do
+  defp put_related_project_type(changeset) do
     cond do
       get_change(changeset, :related_project) ||
           get_change(changeset, :related_project_id) ->

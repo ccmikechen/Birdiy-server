@@ -45,7 +45,7 @@ defmodule Birdiy.Ecto.Changeset do
     end)
   end
 
-  defp decode_base64(%{filename: filename, base64: "data:image/png;base64," <> base64} = field) do
+  defp decode_base64(%{filename: filename, base64: "data:image/png;base64," <> base64}) do
     %{
       __struct__: Plug.Upload,
       binary: Base.decode64!(base64),

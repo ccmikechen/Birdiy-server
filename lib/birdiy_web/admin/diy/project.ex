@@ -6,10 +6,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
   alias Birdiy.Diy.{
     Project,
-    ProjectTopic,
-    ProjectMaterial,
-    ProjectFileResource,
-    ProjectMethod
+    ProjectTopic
   }
 
   register_resource Project do
@@ -85,6 +82,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
       panel "Materials" do
         sortable_table_for project, :materials do
+          sort_handle_column()
+
           column(:order)
           column(:name)
           column(:amount_unit)
@@ -97,6 +96,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
       panel "File resources" do
         sortable_table_for project, :file_resources do
+          sort_handle_column()
+
           column(:order)
           column(:name)
 
@@ -116,6 +117,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
       panel "Methods" do
         sortable_table_for project, :methods do
+          sort_handle_column()
+
           column(:order)
 
           column(:image, fn method ->
@@ -132,6 +135,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
       panel "Related Posts" do
         sortable_table_for project, :related_posts do
+          sort_handle_column()
+
           column(:id, fn post ->
             ExAdmin.Utils.link_to(post.id, "/admin/posts/#{post.id}")
           end)
