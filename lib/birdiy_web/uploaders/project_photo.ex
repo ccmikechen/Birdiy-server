@@ -3,8 +3,6 @@ defmodule Birdiy.ProjectPhoto do
   use Arc.Ecto.Definition
   use Birdiy.Arc.Resolver
 
-  alias Birdiy.Diy.Project
-
   @acl :public_read
   @versions [:original]
 
@@ -22,5 +20,9 @@ defmodule Birdiy.ProjectPhoto do
 
   def url_from(parent = %{image: %{file_name: file_name}}) do
     url({file_name, parent})
+  end
+
+  def url_from(_) do
+    nil
   end
 end

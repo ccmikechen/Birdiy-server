@@ -34,4 +34,8 @@ defmodule Birdiy.ProjectFile do
   def url_from(file = %{file: %{file_name: file_name}}) do
     url({file_name, file})
   end
+
+  def url_from(_) do
+    nil
+  end
 end

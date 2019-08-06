@@ -1,7 +1,6 @@
 defmodule BirdiyWeb.Resolvers.Accounts do
   alias Absinthe.Relay.Connection
   alias Birdiy.{Repo, Accounts, Timeline, Diy}
-  alias BirdiyWeb.Schema.Helpers
   alias BirdiyWeb.Errors
 
   def viewer(_, %{context: %{current_user: current_user}}) do

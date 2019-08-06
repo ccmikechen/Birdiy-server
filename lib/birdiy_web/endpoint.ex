@@ -43,5 +43,7 @@ defmodule BirdiyWeb.Endpoint do
     key: "_birdiy_key",
     signing_salt: "j2iUAq3o"
 
+  plug Pow.Plug.Session, otp_app: :birdiy
+
   plug BirdiyWeb.Router
 end

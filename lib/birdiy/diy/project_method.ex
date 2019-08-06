@@ -9,6 +9,7 @@ defmodule Birdiy.Diy.ProjectMethod do
   alias Birdiy.{Diy, ProjectPhoto}
 
   schema "project_methods" do
+    field(:_destroy, :boolean, virtual: true)
     field :content, :string, size: 1000
     field :image, ProjectPhoto.Type
     field :order, :decimal
@@ -20,12 +21,28 @@ defmodule Birdiy.Diy.ProjectMethod do
   end
 
   @doc false
+  def changeset(project_method), do: changeset(project_method, %{})
+
+  @doc false
   def changeset(project_method, attrs) do
-    attrs = put_random_filename(attrs, [:image])
+    attrs =
+      attrs
+      |> put_random_filename([:image])
+      |> decode_base64_image([:image])
 
     project_method
-    |> cast(attrs, [:title, :content, :order, :project_id])
+    |> cast(attrs, [:_destroy, :title, :content, :order, :project_id])
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:content, :order, :project_id])
+    |> validate_required([:content, :order])
+    |> assoc_constraint(:project)
+    |> mark_for_deletion()
+  end
+
+  defp mark_for_deletion(changeset) do
+    if get_change(changeset, :_destroy) do
+      %{changeset | action: :delete}
+    else
+      changeset
+    end
   end
 end

@@ -59,7 +59,7 @@ defmodule Birdiy.Timeline do
   end
 
   defp create_post_query(multi, author, attrs) do
-    changeset = Post.changeset(%Post{}, author, attrs)
+    changeset = Post.changeset(%Post{author: author}, attrs)
     Multi.insert(multi, :create_post, changeset)
   end
 
@@ -91,7 +91,8 @@ defmodule Birdiy.Timeline do
 
   defp update_post_query(multi, %Post{} = post, %User{} = author, attrs) do
     Multi.run(multi, :update_post, fn _, _ ->
-      changeset = Post.update_changeset(post, author, attrs)
+      attrs = Map.merge(attrs, %{author: author})
+      changeset = Post.update_changeset(post, attrs)
       Repo.update(changeset)
     end)
   end

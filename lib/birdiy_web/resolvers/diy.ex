@@ -64,7 +64,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def edit_and_publish_project(_, %{input: params}, %{context: %{current_user: current_user}}) do
     with {:ok, project} <- Diy.update_project(params[:project], current_user, params),
-         {:ok, project} <- Diy.publish_project(project, current_user) do
+         {:ok, project} <- Diy.publish_project(project) do
       {:ok, %{project: project}}
     else
       _ ->
@@ -82,8 +82,8 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def publish_project(_, %{input: %{project: project}}, %{context: %{current_user: current_user}}) do
-    case Diy.publish_project(project, current_user) do
+  def publish_project(_, %{input: %{project: project}}, _) do
+    case Diy.publish_project(project) do
       {:ok, project} ->
         {:ok, %{project: project}}
 

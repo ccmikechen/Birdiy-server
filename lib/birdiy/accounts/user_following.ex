@@ -13,7 +13,8 @@ defmodule Birdiy.Accounts.UserFollowing do
   def changeset(user_following, attrs) do
     user_following
     |> cast(attrs, [:following_id, :followed_id])
-    |> validate_required([:following_id, :followed_id])
+    |> assoc_constraint(:following)
+    |> assoc_constraint(:followed)
     |> unique_constraint(:followed_id)
   end
 end

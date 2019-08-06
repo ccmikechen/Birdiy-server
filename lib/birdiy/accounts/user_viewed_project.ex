@@ -14,7 +14,8 @@ defmodule Birdiy.Accounts.UserViewedProject do
   def changeset(user_viewed_project, attrs) do
     user_viewed_project
     |> cast(attrs, [:user_id, :project_id])
-    |> validate_required([:user_id, :project_id])
+    |> assoc_constraint(:user)
+    |> assoc_constraint(:project)
     |> unique_constraint(:project_id)
   end
 end

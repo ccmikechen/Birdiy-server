@@ -77,7 +77,8 @@ config :birdiy, Birdiy.Repo,
 # Configures Arc & S3
 config :arc,
   bucket: "birdiy-dev-trail",
-  asset_host: "https://birdiy-dev-trail.sgp1.digitaloceanspaces.com/birdiy-dev-trail"
+  asset_host: "https://birdiy-dev-trail.sgp1.digitaloceanspaces.com/birdiy-dev-trail",
+  version_timeout: 150_000
 
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],

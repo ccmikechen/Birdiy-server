@@ -162,13 +162,13 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   input_object :create_project_input do
     field :name, non_null(:string)
-    field :topic, non_null(:string)
+    field :topic_name, non_null(:string)
   end
 
   input_object :edit_project_input do
     field :id, non_null(:id)
     field :name, non_null(:string)
-    field :topic, non_null(:string)
+    field :topic_name, non_null(:string)
     field :introduction, :string
     field :source, :string
     field :tip, :string

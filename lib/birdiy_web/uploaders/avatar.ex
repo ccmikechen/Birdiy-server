@@ -21,4 +21,8 @@ defmodule Birdiy.Avatar do
   def url_from(parent = %{image: %{file_name: file_name}}) do
     url({file_name, parent})
   end
+
+  def url_from(_) do
+    nil
+  end
 end

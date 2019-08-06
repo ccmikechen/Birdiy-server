@@ -4,7 +4,7 @@ defmodule Birdiy.MixProject do
   def project do
     [
       app: :birdiy,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -54,6 +54,7 @@ defmodule Birdiy.MixProject do
 
       # Authentication
       {:guardian, "~> 1.2.1"},
+      {:pow, "~> 1.0.11"},
 
       # Absinthe
       {:absinthe, "~> 1.4.16"},
@@ -72,7 +73,10 @@ defmodule Birdiy.MixProject do
 
       # Deployment
       {:edeliver, ">= 1.7.0"},
-      {:distillery, "~> 2.1", warn_missing: false}
+      {:distillery, "~> 2.1", warn_missing: false},
+
+      # Admin
+      {:ex_admin, github: "ccmikechen/ex_admin"}
     ]
   end
 

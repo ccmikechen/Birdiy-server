@@ -21,7 +21,8 @@ defmodule Birdiy.Diy.ProjectTopic do
   def changeset(project_topic, attrs) do
     project_topic
     |> cast(attrs, [:name, :category_id])
-    |> validate_required([:name, :category_id])
+    |> validate_required([:name])
+    |> assoc_constraint(:category)
     |> unique_constraint(:name)
   end
 end

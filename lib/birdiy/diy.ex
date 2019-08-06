@@ -80,8 +80,8 @@ defmodule Birdiy.Diy do
 
   def get_project_topic!(id), do: Repo.get!(ProjectTopic, id)
 
-  def get_project_topic_by_name!(nil), do: nil
-  def get_project_topic_by_name!(name), do: Repo.get_by!(ProjectTopic, name: name)
+  def get_project_topic_by_name(nil), do: nil
+  def get_project_topic_by_name(name), do: Repo.get_by(ProjectTopic, name: name)
 
   def create_project_topic(attrs \\ %{}) do
     %ProjectTopic{}
@@ -194,8 +194,8 @@ defmodule Birdiy.Diy do
   end
 
   def create_project(%User{} = author, attrs \\ %{}) do
-    %Project{}
-    |> Project.draft_changeset(author, attrs)
+    %Project{author: author}
+    |> Project.draft_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -204,6 +204,8 @@ defmodule Birdiy.Diy do
   end
 
   def update_project(%Project{} = project, %User{} = author, attrs) do
+    project = Repo.preload(project, [:topic, :materials, :file_resources, :methods])
+
     result =
       Multi.new()
       |> upsert_project_materials_query(project, attrs[:materials])
@@ -222,22 +224,27 @@ defmodule Birdiy.Diy do
   end
 
   defp update_project_query(multi, %Project{} = project, %User{} = author, attrs) do
+    attrs = Map.merge(attrs, %{author: author})
+    update_project_query(multi, project, attrs)
+  end
+
+  defp update_project_query(multi, %Project{} = project, attrs) do
     if is_nil(project.published_at) do
-      changeset = Project.changeset(project, author, attrs)
+      changeset = Project.changeset(project, attrs)
       Multi.update(multi, :update_project, changeset)
     else
-      update_published_project_query(multi, project, author, attrs)
+      update_published_project_query(multi, project, attrs)
     end
   end
 
-  defp update_published_project_query(multi, %Project{} = project, %User{} = author, attrs) do
+  defp update_published_project_query(multi, %Project{} = project, attrs) do
     Multi.run(multi, :update_project, fn _, _ ->
-      Project.published_changeset(project, author, attrs) |> Repo.update()
+      Project.published_changeset(project, attrs) |> Repo.update()
     end)
   end
 
-  def publish_project(%Project{} = project, %User{} = author) do
-    case project_publishable?(project, author) do
+  def publish_project(%Project{} = project) do
+    case project_publishable?(project) do
       true ->
         Multi.new()
         |> publish_project_query(project)
@@ -256,8 +263,8 @@ defmodule Birdiy.Diy do
     end
   end
 
-  defp project_publishable?(%Project{} = project, %User{} = author) do
-    Project.published_changeset(project, author, %{}).valid?()
+  defp project_publishable?(%Project{} = project) do
+    Project.published_changeset(project, %{}).valid?()
   end
 
   defp publish_project_query(multi, %Project{} = project) do
