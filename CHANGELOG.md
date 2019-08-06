@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2019-08-06
+### Changed
+- Fix deployment issue that deployed app still using old assets.
+
 ## [0.0.2] - 2019-08-06
 ### Added
 - Admin panel.
