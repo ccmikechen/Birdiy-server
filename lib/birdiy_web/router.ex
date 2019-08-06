@@ -1,6 +1,7 @@
 defmodule BirdiyWeb.Router do
   use BirdiyWeb, :router
   use ExAdmin.Router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -15,6 +16,11 @@ defmodule BirdiyWeb.Router do
     plug BirdiyWeb.Context
   end
 
+  pipeline :protected_admin do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
   scope "/", BirdiyWeb do
     pipe_through :browser
 
@@ -25,8 +31,13 @@ defmodule BirdiyWeb.Router do
     get "/project/:id", ProjectController, :show
   end
 
-  scope "/admin", ExAdmin do
+  scope "/admin" do
     pipe_through :browser
+    pow_session_routes()
+  end
+
+  scope "/admin", ExAdmin do
+    pipe_through [:browser, :protected_admin]
     admin_routes()
   end
 

@@ -32,6 +32,7 @@ config :ex_admin,
   module: BirdiyWeb,
   modules: [
     BirdiyWeb.Admin.Dashboard,
+    BirdiyWeb.Admin.Accounts.Admin,
     BirdiyWeb.Admin.Accounts.User,
     BirdiyWeb.Admin.Diy.Project,
     BirdiyWeb.Admin.Diy.ProjectCategory,
@@ -40,6 +41,11 @@ config :ex_admin,
     BirdiyWeb.Admin.Timeline.Activity
   ],
   skin_color: :black
+
+config :birdiy, :pow,
+  user: Birdiy.Accounts.Admin,
+  repo: Birdiy.Repo,
+  web_module: BirdiyWeb
 
 config :gettext, default_locale: "en/us"
 
