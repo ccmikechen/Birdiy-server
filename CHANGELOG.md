@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar logo.
 - RWD for website components.
 - Favicons.
+- robots.txt
 
 ## [0.0.4] - 2019-08-08
 ### Added
