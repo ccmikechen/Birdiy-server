@@ -5,7 +5,7 @@ config :birdiy, BirdiyWeb.Endpoint,
   server: true,
   code_reloader: false,
   root: ".",
-  version: Mix.Project.config[:version]
+  version: Mix.Project.config()[:version]
 
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true

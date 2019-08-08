@@ -161,10 +161,10 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
         input(project, :image, type: :image, aspect: 4 / 3)
         input(project, :topic, collection: Repo.all(ProjectTopic))
-        input(project, :introduction)
+        input(project, :introduction, maxlength: 2000)
         input(project, :video)
         input(project, :source)
-        input(project, :tip)
+        input(project, :tip, maxlength: 1000)
         input(project, :published_at)
         input(project, :deleted_at)
       end
@@ -172,8 +172,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
       inputs "Materials" do
         has_many project, :materials, fn material ->
           input(material, :order)
-          input(material, :name)
-          input(material, :amount_unit)
+          input(material, :name, maxlength: 50)
+          input(material, :amount_unit, maxlength: 20)
           input(material, :url)
         end
       end
@@ -181,7 +181,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
       inputs "File resources" do
         has_many project, :file_resources, fn file ->
           input(file, :order)
-          input(file, :name)
+          input(file, :name, maxlength: 50)
           input(file, :file, type: :file)
           input(file, :url)
         end
@@ -191,8 +191,8 @@ defmodule BirdiyWeb.Admin.Diy.Project do
         has_many project, :methods, fn method ->
           input(method, :order)
           input(method, :image, type: :image, aspect: 4 / 3)
-          input(method, :title)
-          input(method, :content)
+          input(method, :title, maxlength: 50)
+          input(method, :content, maxlength: 1000)
         end
       end
     end
