@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-custom bg-white static-top">
+<nav class="navbar navbar-expand-md navbar-custom bg-white static-top<%= if !assigns[:hide_logo], do: " border-bottom" %>">
   <a class="navbar-brand" href="/">
     <%= if !assigns[:hide_logo] do %>
       <img src="/images/logo-125x30.png" height="24" alt="Birdiy">
