@@ -161,7 +161,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
 
         input(project, :image, type: :image, aspect: 4 / 3)
         input(project, :topic, collection: Repo.all(ProjectTopic))
-        input(project, :introduction, maxlength: 2000)
+        input(project, :introduction, type: :text, maxlength: 2000, rows: 10)
         input(project, :video)
         input(project, :source)
         input(project, :tip, maxlength: 1000)
@@ -192,7 +192,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
           input(method, :order)
           input(method, :image, type: :image, aspect: 4 / 3)
           input(method, :title, maxlength: 50)
-          input(method, :content, maxlength: 1000)
+          input(method, :content, type: :text, maxlength: 1000)
         end
       end
     end

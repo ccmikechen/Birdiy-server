@@ -65,7 +65,7 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
 
     form post do
       inputs do
-        input(post, :message, maxlength: 1000)
+        input(post, :message, type: :text, maxlength: 1000)
 
         input(post, :author,
           collection:

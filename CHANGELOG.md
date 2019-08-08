@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fix text maxlength limitation of resource input field in admin panel.
 - Fix project publishing function in admin panel.
+- Fix textarea input type in admin panel.
 
 ## [0.0.3] - 2019-08-06
 ### Changed

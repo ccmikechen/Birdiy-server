@@ -52,7 +52,7 @@
     <div class="section-title">介紹</div>
     <div class="section-content">
       <div class="row">
-        <%= @project.introduction %>
+        <%= text_to_html(@project.introduction) %>
       </div>
       <%= if @project.source do %>
         <div class="row mt-5">
@@ -119,7 +119,7 @@
             <% end %>
             <div class="col-12 my-3">
               <div class="description">
-                <%= method.content %>
+                <%= text_to_html(method.content) %>
               </div>
             </div>
           </div>
