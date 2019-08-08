@@ -18,6 +18,10 @@ defmodule Birdiy.ProjectPhoto do
     [content_type: MIME.from_path(file.file_name)]
   end
 
+  def transform(:original, _) do
+    {:convert, "-strip -thumbnail 700x525^ -gravity center -extent 700x525 -format jpg", :jpg}
+  end
+
   def url_from(parent = %{image: %{file_name: file_name}}) do
     url({file_name, parent})
   end

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- ImageMagick transforming of ProjectPhoto and Avatar
+
 ### Changed
 - Fix text maxlength limitation of resource input field in admin panel.
 
