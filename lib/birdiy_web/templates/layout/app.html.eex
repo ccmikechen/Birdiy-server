@@ -14,6 +14,7 @@
     <title><%= @view_module.title(@view_template, assigns) %></title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <%= render "_favicon.html" %>
   </head>
   <body class="elegant-color" data-spy="scroll" data-target=".fixed-top">
     <%= render BirdiyWeb.SharedView, "_nav.html", assigns %>
