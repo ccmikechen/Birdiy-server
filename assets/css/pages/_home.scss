@@ -6,11 +6,20 @@
   padding-bottom: 50px;
 }
 
-.brand_logo {
-  width: 300px;
-}
-
 .logo-image {
   width: 120px;
   height: 30px;
+}
+
+@media(min-width: 768px) {
+  .brand-logo {
+    width: 300px;
+  }
+}
+
+@media(max-width: 767px) {
+  .brand-logo {
+    max-width: 300px;
+    width: 80%;
+  }
 }

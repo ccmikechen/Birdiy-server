@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="search w-100">
     <form id="search" class="d-flex form-inline justify-content-center">
-      <div class="form-group has-search w-50 col-10">
+      <div class="form-group has-search w-50 col-10 px-0">
         <span class="fa fa-search form-control-feedback"></span>
         <input type="text" id="search-text" class="form-control form-control-lg w-100 z-depth-1" placeholder="輸入專案名稱">
       </div>
-      <button class="btn btn-indigo search-btn ml-2 px-3 col-2" type="submit">搜尋專案</button>
+      <button class="btn btn-indigo search-btn ml-2 col-1" type="submit">搜尋專案</button>
     </form>
   </div>
 </div>

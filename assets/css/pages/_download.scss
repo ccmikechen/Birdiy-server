@@ -2,3 +2,9 @@
   padding-bottom: 30px;
   font-size: 1.5rem;
 }
+
+@media(max-width: 767px) {
+  .download-text {
+    font-size: 1.3rem;
+  }
+}

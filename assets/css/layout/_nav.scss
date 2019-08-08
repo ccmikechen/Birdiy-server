@@ -3,6 +3,19 @@
   box-shadow: none!important;
 }
 
+@media(max-width: 300px) {
+  .logo-text {
+    display: none;
+  }
+}
+
+.logo-text {
+  color: #003991;
+  font-size: 1rem;
+  font-weight: 600;
+  vertical-align: bottom;
+}
+
 .nav-link {
   color: #a3a090;
 }

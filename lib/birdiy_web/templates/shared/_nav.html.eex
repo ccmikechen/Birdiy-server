@@ -1,5 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-custom bg-white static-top">
-  
+  <a class="navbar-brand" href="/">
+    <%= if !assigns[:hide_logo] do %>
+      <img src="/images/logo-125x30.png" height="24" alt="Birdiy">
+      <span class="logo-text ml-2">DIY社群平台</span>
+    <% end %>
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-awesome fas fa-bars"></span>
   </button>

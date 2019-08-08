@@ -11,6 +11,12 @@
   min-width: 100px;
 }
 
+@media(max-width: 575px) {
+  .search-btn {
+    display: none;
+  }
+}
+
 .has-search .form-control {
   padding-left: 2.375rem;
 }
