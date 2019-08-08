@@ -100,7 +100,7 @@
       </div>
     </div>
   <% end %>
-  <%= if length(@project.materials) > 0 do %>
+  <%= if length(@project.methods) > 0 do %>
     <div class="section">
       <div class="section-title">作法</div>
       <div class="section-content project-method">
