@@ -229,42 +229,22 @@ defmodule Birdiy.Diy do
   end
 
   defp update_project_query(multi, %Project{} = project, attrs) do
-    if is_nil(project.published_at) do
-      changeset = Project.changeset(project, attrs)
-      Multi.update(multi, :update_project, changeset)
-    else
-      update_published_project_query(multi, project, attrs)
-    end
-  end
-
-  defp update_published_project_query(multi, %Project{} = project, attrs) do
-    Multi.run(multi, :update_project, fn _, _ ->
-      Project.published_changeset(project, attrs) |> Repo.update()
-    end)
+    changeset = Project.changeset(project, attrs)
+    Multi.update(multi, :update_project, changeset)
   end
 
   def publish_project(%Project{} = project) do
-    case project_publishable?(project) do
-      true ->
-        Multi.new()
-        |> publish_project_query(project)
-        |> upsert_project_activity_query(project)
-        |> Repo.transaction()
-        |> case do
-          {:ok, %{publish_project: project}} ->
-            {:ok, project}
-
-          _ ->
-            nil
-        end
+    Multi.new()
+    |> publish_project_query(project)
+    |> upsert_project_activity_query(project)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{publish_project: project}} ->
+        {:ok, project}
 
       _ ->
         nil
     end
-  end
-
-  defp project_publishable?(%Project{} = project) do
-    Project.published_changeset(project, %{}).valid?()
   end
 
   defp publish_project_query(multi, %Project{} = project) do

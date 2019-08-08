@@ -68,14 +68,6 @@ defmodule Birdiy.Diy.Project do
   end
 
   @doc false
-  def published_changeset(project, attrs) do
-    project
-    |> changeset(attrs)
-    |> validate_methods(project)
-    |> validate_required([:image, :introduction])
-  end
-
-  @doc false
   def changeset(project, attrs) do
     attrs =
       attrs
@@ -84,7 +76,7 @@ defmodule Birdiy.Diy.Project do
 
     project
     |> draft_changeset(attrs)
-    |> cast(attrs, [:deleted_at, :introduction, :tip, :source, :video])
+    |> cast(attrs, [:deleted_at, :published_at, :introduction, :tip, :source, :video])
     |> validate_length(:introduction, max: 300)
     |> validate_length(:tip, max: 300)
     |> cast_attachments(attrs, [:image])
@@ -92,6 +84,7 @@ defmodule Birdiy.Diy.Project do
     |> cast_assoc(:materials)
     |> cast_assoc(:file_resources)
     |> cast_assoc(:methods)
+    |> validate_published(project)
   end
 
   @doc false
@@ -107,10 +100,8 @@ defmodule Birdiy.Diy.Project do
 
   @doc false
   def publish_changeset(project) do
-    attrs = %{published_at: Helpers.DateTime.utc_now()}
-
     project
-    |> cast(attrs, [:published_at])
+    |> changeset(%{published_at: Helpers.DateTime.utc_now()})
     |> validate_required([:published_at])
   end
 
@@ -132,6 +123,18 @@ defmodule Birdiy.Diy.Project do
     cond do
       count > 0 -> changeset
       true -> add_error(changeset, :methods, "Can't be empty")
+    end
+  end
+
+  defp validate_published(changeset, project) do
+    cond do
+      get_change(changeset, :published_at) || project.published_at ->
+        changeset
+        |> validate_methods(project)
+        |> validate_required([:image, :introduction])
+
+      true ->
+        changeset
     end
   end
 end

@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="row project-author">
-      <a class="pr-3" data-toggle="modal" data-target="#downloadModal"><img src="<%= Accounts.avatar_url(@project.author) %>" alt="Avatar" class="avatar rounded-circle"></a>
+      <a class="pr-3" data-toggle="modal" data-target="#downloadModal"><img src="<%= Accounts.avatar_url(@project.author) %>" alt="<%= avatar_alt(@project) %>" class="avatar rounded-circle"></a>
       <div class="col">
         <a class="text-break name" data-toggle="modal" data-target="#downloadModal">
           <%= @project.author.name %>

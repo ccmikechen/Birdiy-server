@@ -12,4 +12,8 @@ defmodule BirdiyWeb.ProjectView do
   def source_host(%Diy.Project{source: source}) do
     URI.parse(source) |> Map.get(:host)
   end
+
+  def avatar_alt(%Diy.Project{author: %Accounts.User{name: author_name}}) do
+    String.first(author_name)
+  end
 end
