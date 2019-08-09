@@ -11,9 +11,17 @@ defmodule Birdiy.Application do
       # Start the Ecto repository
       Birdiy.Repo,
       # Start the endpoint when the application starts
-      BirdiyWeb.Endpoint
+      BirdiyWeb.Endpoint,
       # Starts a worker by calling: Birdiy.Worker.start_link(arg)
       # {Birdiy.Worker, arg},
+      {
+        ConCache,
+        [
+          name: :project_view,
+          ttl_check_interval: :timer.seconds(10),
+          global_ttl: :timer.minutes(10)
+        ]
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

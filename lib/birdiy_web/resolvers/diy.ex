@@ -34,13 +34,20 @@ defmodule BirdiyWeb.Resolvers.Diy do
     )
   end
 
-  def project(_, %{id: id}, %{context: %{loader: loader}}) do
+  def project(_, %{id: id}, %{context: %{loader: loader, remote_ip: ip}}) do
     loader
     |> Dataloader.load(Diy, Diy.Project, id)
     |> on_load(fn loader ->
-      Diy.increase_project_view_count(id)
+      increase_project_view_count(ip, id)
       {:ok, Dataloader.get(loader, Diy, Diy.Project, id)}
     end)
+  end
+
+  defp increase_project_view_count(ip, project_id) do
+    if !ConCache.get(:project_view, {ip, project_id}) do
+      Diy.increase_project_view_count(project_id)
+      ConCache.put(:project_view, {ip, project_id}, true)
+    end
   end
 
   def create_project(_, %{input: params}, %{context: %{current_user: current_user}}) do

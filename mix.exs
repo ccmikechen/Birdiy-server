@@ -20,7 +20,13 @@ defmodule Birdiy.MixProject do
   def application do
     [
       mod: {Birdiy.Application, []},
-      extra_applications: [:logger, :runtime_tools, :guardian, :edeliver]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :guardian,
+        :edeliver,
+        :con_cache
+      ]
     ]
   end
 
@@ -39,6 +45,7 @@ defmodule Birdiy.MixProject do
       {:jason, "~> 1.1.2"},
       {:deep_merge, "~> 1.0"},
       {:httpoison, "~> 1.5.1"},
+      {:con_cache, "~> 0.13"},
 
       # Phoenix & Database
       {:phoenix, "~> 1.4.9"},

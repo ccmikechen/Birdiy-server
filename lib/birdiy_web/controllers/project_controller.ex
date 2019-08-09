@@ -5,10 +5,10 @@ defmodule BirdiyWeb.ProjectController do
 
   alias Birdiy.{Repo, Diy}
 
-  def show(conn, %{"id" => id}) do
+  def show(%Plug.Conn{remote_ip: ip} = conn, %{"id" => id}) do
     case Diy.project_from_global_id(id) do
       {:ok, %Diy.Project{deleted_at: nil, published_at: %DateTime{}} = project} ->
-        Diy.increase_project_view_count(project)
+        increase_project_view_count(ip, project.id)
 
         project =
           Repo.preload(project, [
@@ -26,6 +26,13 @@ defmodule BirdiyWeb.ProjectController do
 
       _ ->
         redirect(conn, to: "/")
+    end
+  end
+
+  defp increase_project_view_count(ip, project_id) do
+    if !ConCache.get(:project_view, {ip, project_id}) do
+      Diy.increase_project_view_count(project_id)
+      ConCache.put(:project_view, {ip, project_id}, true)
     end
   end
 end
