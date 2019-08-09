@@ -208,9 +208,6 @@ defmodule Birdiy.Diy do
 
     result =
       Multi.new()
-      |> upsert_project_materials_query(project, attrs[:materials])
-      |> upsert_project_file_resources_query(project, attrs[:file_resources])
-      |> upsert_project_methods_query(project, attrs[:methods])
       |> update_project_query(project, author, attrs)
       |> Repo.transaction()
 
@@ -267,96 +264,12 @@ defmodule Birdiy.Diy do
 
   def get_project_material!(id), do: Repo.get!(ProjectMaterial, id)
 
-  defp upsert_project_materials_query(multi, %Project{} = project, params) do
-    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
-    multi = delete_project_items_not_in_list_query(multi, project, :materials, ids)
-
-    params
-    |> Enum.with_index()
-    |> Enum.reduce(multi, fn {attrs, index}, multi ->
-      attrs = Map.merge(attrs, %{project_id: project.id})
-
-      changeset =
-        case attrs[:id] && get_project_material!(attrs[:id]) do
-          nil -> %ProjectMaterial{}
-          material -> material
-        end
-        |> ProjectMaterial.changeset(attrs)
-
-      Multi.insert_or_update(
-        multi,
-        "upsert_project_material_#{index}",
-        changeset
-      )
-    end)
-  end
-
   def get_project_file_resource!(id), do: Repo.get!(ProjectFileResource, id)
-
-  defp upsert_project_file_resources_query(multi, %Project{} = project, params) do
-    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
-    multi = delete_project_items_not_in_list_query(multi, project, :file_resources, ids)
-
-    params
-    |> Enum.with_index()
-    |> Enum.reduce(multi, fn {attrs, index}, multi ->
-      attrs = Map.merge(attrs, %{project_id: project.id})
-
-      changeset =
-        case attrs[:id] && get_project_file_resource!(attrs[:id]) do
-          nil -> %ProjectFileResource{}
-          file_resource -> file_resource
-        end
-        |> ProjectFileResource.changeset(attrs)
-
-      Multi.insert_or_update(
-        multi,
-        "upsert_project_file_resource_#{index}",
-        changeset
-      )
-    end)
-  end
 
   def get_project_method!(id), do: Repo.get!(ProjectMethod, id)
 
   def project_method_image_url(%ProjectMethod{} = method) do
     ProjectPhoto.url_from(method)
-  end
-
-  defp upsert_project_methods_query(multi, %Project{} = project, params) do
-    ids = params |> Enum.map(& &1[:id]) |> Enum.reject(&is_nil/1)
-    multi = delete_project_items_not_in_list_query(multi, project, :methods, ids)
-
-    params
-    |> Enum.with_index()
-    |> Enum.reduce(multi, fn {attrs, index}, multi ->
-      attrs = Map.merge(attrs, %{project_id: project.id})
-
-      changeset =
-        case attrs[:id] && get_project_method!(attrs[:id]) do
-          nil -> %ProjectMethod{}
-          method -> method
-        end
-        |> ProjectMethod.changeset(attrs)
-
-      Multi.insert_or_update(
-        multi,
-        "upsert_project_method_#{index}",
-        changeset
-      )
-    end)
-  end
-
-  defp delete_project_items_not_in_list_query(multi, %Project{} = project, item, ids) do
-    delete_query =
-      Ecto.assoc(project, item)
-      |> where([m], m.id not in ^ids)
-
-    Helpers.Multi.soft_delete_all(
-      multi,
-      "delete_" <> Atom.to_string(item),
-      delete_query
-    )
   end
 
   def get_project_view(project_id, ip) do

@@ -12,7 +12,11 @@ defmodule Birdiy.Timeline.Post do
     belongs_to :author, Accounts.User
     belongs_to :related_project, Diy.Project
     has_one :activity, Timeline.Activity, on_delete: :delete_all
-    has_many :photos, Timeline.PostPhoto, where: [deleted_at: nil], on_delete: :delete_all
+
+    has_many :photos, Timeline.PostPhoto,
+      where: [deleted_at: nil],
+      on_replace: :delete,
+      on_delete: :delete_all
 
     soft_delete_schema()
     timestamps()
