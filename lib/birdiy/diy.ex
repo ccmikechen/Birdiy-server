@@ -102,12 +102,7 @@ defmodule Birdiy.Diy do
         query |> order_by(desc: :inserted_at)
 
       {:order, :hotest}, query ->
-        from(p in query,
-          left_join: v in ProjectView,
-          on: p.id == v.project_id,
-          group_by: p.id,
-          order_by: [desc: count(v.id)]
-        )
+        query |> order_by(desc: :view_count)
 
       {:filter, filter}, query ->
         query |> project_filter_with(filter)
@@ -176,11 +171,6 @@ defmodule Birdiy.Diy do
 
   def count_project_related_posts!(%Project{} = project) do
     Ecto.assoc(project, :related_posts)
-    |> Repo.aggregate(:count, :id)
-  end
-
-  def count_project_views!(%Project{} = project) do
-    Ecto.assoc(project, :views)
     |> Repo.aggregate(:count, :id)
   end
 
@@ -256,6 +246,18 @@ defmodule Birdiy.Diy do
     Multi.update(multi, :publish_project, changeset)
   end
 
+  def increase_project_view_count(%Project{} = project) do
+    increase_project_view_count(project.id)
+  end
+
+  def increase_project_view_count(project_id) do
+    from(p in Project,
+      where: p.id == ^project_id,
+      where: not is_nil(p.published_at)
+    )
+    |> Repo.update_all(inc: [view_count: 1])
+  end
+
   defp upsert_project_activity_query(multi, project) do
     changeset = Activity.changeset(%Activity{}, %{project_id: project.id})
     Multi.insert(multi, :upsert_project_activity, changeset, on_conflict: :nothing)
@@ -277,16 +279,6 @@ defmodule Birdiy.Diy do
 
   def project_method_image_url(%ProjectMethod{} = method) do
     ProjectPhoto.url_from(method)
-  end
-
-  def get_project_view(project_id, ip) do
-    Repo.get_by(ProjectView, project_id: project_id, ip: ip)
-  end
-
-  def create_project_view(attrs \\ %{}) do
-    %ProjectView{}
-    |> ProjectView.changeset(attrs)
-    |> Repo.insert(on_conflict: :nothing)
   end
 
   def data do

@@ -229,6 +229,7 @@ defmodule BirdiyWeb.Schema do
     field :view_project, :project_result do
       arg(:input, non_null(:project_input))
 
+      middleware(Authorize)
       middleware(ParseIDs, input: [id: :project])
       resolve(&Resolvers.Accounts.view_project/3)
     end

@@ -17,7 +17,7 @@
     </div>
     <div class="row mb-4">
       <div class="col project-countings">
-        <%= Diy.count_project_views!(@project) %> 看過 · <%= Diy.count_project_likes!(@project) %> 喜歡 · <%= Diy.count_project_favorites!(@project) %> 收藏 · <%= Diy.count_project_related_posts!(@project) %> 跟著做
+        <%= @project.view_count %> 看過 · <%= Diy.count_project_likes!(@project) %> 喜歡 · <%= Diy.count_project_favorites!(@project) %> 收藏 · <%= Diy.count_project_related_posts!(@project) %> 跟著做
       </div>
     </div>
     <div class="row project-author">

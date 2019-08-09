@@ -8,6 +8,8 @@ defmodule BirdiyWeb.ProjectController do
   def show(conn, %{"id" => id}) do
     case Diy.project_from_global_id(id) do
       {:ok, %Diy.Project{deleted_at: nil, published_at: %DateTime{}} = project} ->
+        Diy.increase_project_view_count(project)
+
         project =
           Repo.preload(project, [
             :author,

@@ -38,6 +38,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
     loader
     |> Dataloader.load(Diy, Diy.Project, id)
     |> on_load(fn loader ->
+      Diy.increase_project_view_count(id)
       {:ok, Dataloader.get(loader, Diy, Diy.Project, id)}
     end)
   end
@@ -113,11 +114,8 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def project_viewed(project, _, %{context: %{remote_ip: ip}}) do
-    case Diy.get_project_view(project.id, ip) do
-      %Diy.ProjectView{} -> {:ok, true}
-      _ -> {:ok, false}
-    end
+  def project_viewed(_, _, _) do
+    {:ok, false}
   end
 
   def project_liked(project, _, %{context: %{current_user: current_user}}) do
@@ -208,10 +206,6 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def project_related_post_count(project, _, _) do
     {:ok, Diy.count_project_related_posts!(project)}
-  end
-
-  def project_view_count(project, _, _) do
-    {:ok, Diy.count_project_views!(project)}
   end
 
   def project_favorite_count(project, _, _) do

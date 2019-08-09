@@ -15,6 +15,7 @@ defmodule Birdiy.Diy.Project do
     field :tip, :string, size: 1000
     field :image, ProjectPhoto.Type
     field :video, :string
+    field :view_count, :integer, default: 0
     field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
     belongs_to :topic, Diy.ProjectTopic
@@ -60,8 +61,6 @@ defmodule Birdiy.Diy.Project do
                  join_through: "user_viewed_projects",
                  on_replace: :delete,
                  on_delete: :delete_all
-
-    has_many :views, Diy.ProjectView
 
     soft_delete_schema()
     timestamps()

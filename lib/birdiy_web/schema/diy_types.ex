@@ -96,6 +96,7 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :source, :string
     field :image, :string, resolve: ProjectPhoto.resolver(:image)
     field :video, :string
+    field :view_count, non_null(:integer)
     field :published_at, :datetime
     field :deleted_at, :datetime
 
@@ -141,10 +142,6 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
     field :related_post_count, :integer do
       resolve(&Resolvers.Diy.project_related_post_count/3)
-    end
-
-    field :view_count, :integer do
-      resolve(&Resolvers.Diy.project_view_count/3)
     end
 
     field :favorite_count, :integer do
