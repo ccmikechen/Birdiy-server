@@ -24,6 +24,7 @@ defmodule Birdiy.Diy do
     ProjectView
   }
 
+  alias Birdiy.Accounts
   alias Birdiy.Accounts.User
   alias Birdiy.Timeline.Activity
 
@@ -194,9 +195,15 @@ defmodule Birdiy.Diy do
   end
 
   def create_project(%User{} = author, attrs \\ %{}) do
-    %Project{author: author}
-    |> Project.draft_changeset(attrs)
-    |> Repo.insert()
+    cond do
+      Accounts.count_user_projects!(author, false) < 3 ->
+        %Project{author: author}
+        |> Project.draft_changeset(attrs)
+        |> Repo.insert()
+
+      true ->
+        {:error, "Reached maximum 3 drafts"}
+    end
   end
 
   def project_image_url(%Project{} = project) do

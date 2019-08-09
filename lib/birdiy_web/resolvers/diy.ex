@@ -48,7 +48,7 @@ defmodule BirdiyWeb.Resolvers.Diy do
         {:ok, %{project: project}}
 
       _ ->
-        Errors.create_project()
+        Errors.too_many_drafts()
     end
   end
 

@@ -47,6 +47,10 @@ defmodule BirdiyWeb.Errors do
     {:error, code: 2005, message: "Can't unpublish project"}
   end
 
+  def too_many_drafts do
+    {:error, code: 2006, message: "Can't create project since too many drafts"}
+  end
+
   def create_post do
     {:error, code: 3001, message: "Can't create post"}
   end
