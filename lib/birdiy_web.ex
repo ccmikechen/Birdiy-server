@@ -24,6 +24,7 @@ defmodule BirdiyWeb do
       import Plug.Conn
       import BirdiyWeb.Gettext
       alias BirdiyWeb.Router.Helpers, as: Routes
+      import Birdiy.Helpers.Controller
     end
   end
 
@@ -42,6 +43,7 @@ defmodule BirdiyWeb do
       import BirdiyWeb.ErrorHelpers
       import BirdiyWeb.Gettext
       alias BirdiyWeb.Router.Helpers, as: Routes
+      import Birdiy.Helpers.View
     end
   end
 

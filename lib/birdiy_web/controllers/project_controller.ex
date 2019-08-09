@@ -17,23 +17,9 @@ defmodule BirdiyWeb.ProjectController do
             methods: from(m in Diy.ProjectMethod, order_by: m.order)
           ])
 
-        attrs = [
-          %{property: "og:title", content: "#{project.name} by #{project.author.name}"},
-          %{property: "og:url", content: "https://birdiy.com/project/#{id}"},
-          %{property: "og:type", content: "article"},
-          %{property: "og:image", content: Diy.project_image_url(project)},
-          %{property: "og:image:width", content: "1024"},
-          %{property: "og:image:height", content: "768"},
-          %{property: "twitter:card", content: "summary_large_image"},
-          %{property: "twitter:title", content: project.name},
-          %{property: "twitter:image", content: Diy.project_image_url(project)}
-        ]
-
         render(conn, "show.html",
           current_url: "https://birdiy.com" <> current_path(conn, %{}),
-          project: project,
-          description: project.introduction,
-          meta_attrs: attrs
+          project: project
         )
 
       _ ->

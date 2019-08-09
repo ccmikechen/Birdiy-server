@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - RWD for website components.
 - Favicons.
 - robots.txt
+- Meta tags to all pages.
 
 ## [0.0.4] - 2019-08-08
 ### Added

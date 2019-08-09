@@ -3,18 +3,11 @@ defmodule BirdiyWeb.LayoutView do
 
   @description_length 75
 
+  def default_title do
+    "Birdiy - DIY社群平台 - 自己動手做，享受手作的樂趣！"
+  end
+
   def meta_tags(attrs_list) do
-    Enum.map(attrs_list, &meta_tag/1)
-  end
-
-  def meta_tag(attrs) do
-    tag(:meta, Enum.into(attrs, []))
-  end
-
-  def description(str) do
-    cond do
-      String.length(str) <= @description_length -> str
-      true -> "#{String.slice(str, 0, @description_length)}..."
-    end
+    Enum.map(attrs_list, &tag(:meta, Enum.into(&1, [])))
   end
 end
