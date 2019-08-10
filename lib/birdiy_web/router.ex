@@ -29,6 +29,9 @@ defmodule BirdiyWeb.Router do
     get "/search", SearchController, :index
     get "/search/:text", SearchController, :show
     get "/project/:id", ProjectController, :show
+
+    get "/privacy", PrivacyController, :index
+    get "/terms", TermsController, :index
   end
 
   scope "/admin" do

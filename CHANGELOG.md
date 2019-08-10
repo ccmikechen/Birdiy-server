@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Limitation of maximum project drafts.
 - Project view counting.
+- Privacy policy and terms of service.
 
 ## [0.0.5] - 2019-08-09
 ### Added

@@ -58,6 +58,7 @@ defmodule Birdiy.MixProject do
       {:gettext, "~> 0.17"},
       {:plug_cowboy, "~> 2.1"},
       {:ecto_soft_delete, "~> 1.1"},
+      {:phoenix_markdown, "~> 1.0.3"},
 
       # Authentication
       {:guardian, "~> 1.2.1"},

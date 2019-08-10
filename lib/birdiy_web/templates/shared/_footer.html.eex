@@ -25,8 +25,8 @@
     </div>
   </div>
   <div class="text-center py-3 grey-text">2019 © Birdiy 保留所有權利。|
-    <a class="footer-link"> 隱私條款 </a>|
-    <a class="footer-link"> 合約條款 </a>|
-     如繼續使用本網站與服務，即表示您接受我們的隱私條款。
+    <a class="footer-link" href="/privacy"> 隱私權政策 </a>|
+    <a class="footer-link" href="/terms"> 服務條款 </a>|
+     如繼續使用本網站與服務，即表示您接受我們的隱私權政策及服務條款。
   </div>
 </footer>

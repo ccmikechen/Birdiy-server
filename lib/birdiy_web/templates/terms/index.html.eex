@@ -1,0 +1,5 @@
+<div class="white">
+  <div class="doc container py-5 px-2">
+    <%= render "_terms.html" %>
+  </div>
+</div>
