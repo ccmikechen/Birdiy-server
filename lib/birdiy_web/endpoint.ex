@@ -28,7 +28,7 @@ defmodule BirdiyWeb.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, {:multipart, length: 20_000_000}, :json],
+    parsers: [:urlencoded, {:multipart, length: 50_000_000}, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
