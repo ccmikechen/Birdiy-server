@@ -81,8 +81,11 @@ defmodule Birdiy.Diy.Project do
     |> cast_attachments(attrs, [:image])
     |> cast_assoc(:topic)
     |> cast_assoc(:materials)
+    |> validate_length(:materials, max: 30)
     |> cast_assoc(:file_resources)
+    |> validate_length(:file_resources, max: 10)
     |> cast_assoc(:methods)
+    |> validate_length(:methods, max: 20)
     |> validate_published(project)
   end
 
