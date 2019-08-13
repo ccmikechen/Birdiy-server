@@ -1,5 +1,5 @@
 <header class="header">
-  <div class="row justify-content-center download-text">
+  <div class="d-flex justify-content-center download-text">
     <div class="col-10 justify-content-center text-center">
       <div>立即下載 Birdiy APP！</div>
       <div>探索更多 DIY 專案與作法。</div>
