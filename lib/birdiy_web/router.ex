@@ -26,8 +26,9 @@ defmodule BirdiyWeb.Router do
 
     get "/", HomeController, :index
     get "/download/", DownloadController, :index
-    get "/search", SearchController, :index
-    get "/search/:text", SearchController, :show
+    resources "/search", SearchController, only: [:index, :show], param: "text"
+    resources "/categories", CategoryController, only: [:index, :show], param: "name"
+    resources "/topics", TopicController, only: [:index, :show], param: "name"
     get "/project/:id", ProjectController, :show
 
     get "/privacy", PrivacyController, :index

@@ -14,7 +14,7 @@ defmodule BirdiyWeb.Sitemaps do
       # Categories
       Diy.list_project_categories()
       |> Enum.each(fn category ->
-        add(Helpers.search_path(Endpoint, :show, category.name),
+        add(Helpers.category_path(Endpoint, :show, category.name),
           priority: 0.5,
           changefreq: "weekly",
           expires: nil
@@ -24,7 +24,7 @@ defmodule BirdiyWeb.Sitemaps do
       # Topics
       Diy.list_project_topics()
       |> Enum.each(fn topic ->
-        add(Helpers.search_path(Endpoint, :show, topic.name),
+        add(Helpers.topic_path(Endpoint, :show, topic.name),
           priority: 0.5,
           changefreq: "weekly",
           expires: nil

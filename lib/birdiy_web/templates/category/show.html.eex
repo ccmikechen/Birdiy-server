@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center download-text">
     <div class="col-10 justify-content-center text-center">
       <div>立即下載 Birdiy APP！</div>
-      <div>搜尋「<span class="blue-text"><%= assigns[:search_text] %></span>」的專案與作法。</div>
+      <div>探索 <span class="blue-text"><%= assigns[:category_name] %></span> 類的專案與作法。</div>
     </div>
   </div>
   <%= render BirdiyWeb.SharedView, "_download.html" %>

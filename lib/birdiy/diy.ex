@@ -57,6 +57,8 @@ defmodule Birdiy.Diy do
   def get_project_category_by_name!(nil), do: nil
   def get_project_category_by_name!(name), do: Repo.get_by!(ProjectCategory, name: name)
 
+  def get_project_category_by_name(name), do: Repo.get_by(ProjectCategory, name: name)
+
   def create_project_category(attrs \\ %{}) do
     %ProjectCategory{}
     |> ProjectCategory.changeset(attrs)
