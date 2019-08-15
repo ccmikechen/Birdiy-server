@@ -21,7 +21,8 @@ defmodule Birdiy.Application do
           ttl_check_interval: :timer.seconds(10),
           global_ttl: :timer.minutes(10)
         ]
-      }
+      },
+      Birdiy.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

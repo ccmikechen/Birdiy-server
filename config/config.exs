@@ -17,6 +17,12 @@ config :birdiy, BirdiyWeb.Endpoint,
   render_errors: [view: BirdiyWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: Birdiy.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :birdiy, Birdiy.Scheduler,
+  jobs: [
+    # Generate sitemap every one hour
+    {"0 * * * *", {BirdiyWeb.Sitemaps, :generate, []}}
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

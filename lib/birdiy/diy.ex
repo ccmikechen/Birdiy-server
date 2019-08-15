@@ -91,7 +91,7 @@ defmodule Birdiy.Diy do
   end
 
   def list_projects do
-    Repo.all(Project) |> with_undeleted()
+    Project |> with_undeleted() |> Repo.all()
   end
 
   def projects_query(args), do: projects_query(Project, args)
