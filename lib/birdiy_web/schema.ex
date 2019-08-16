@@ -234,6 +234,13 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Accounts.view_project/3)
     end
 
+    field :report_project, :report_result do
+      arg(:input, non_null(:project_input))
+
+      middleware(ParseIDs, input: [id: :project])
+      resolve(&Resolvers.Diy.report_project/3)
+    end
+
     field :like_project, :project_result do
       arg(:input, non_null(:project_input))
 
@@ -337,6 +344,17 @@ defmodule BirdiyWeb.Schema do
       middleware(AuthUser, input: [post: :author_id])
       resolve(&Resolvers.Timeline.delete_post/3)
     end
+
+    field :report_post, :report_result do
+      arg(:input, non_null(:post_input))
+
+      middleware(ParseIDs, input: [id: :post])
+      resolve(&Resolvers.Timeline.report_post/3)
+    end
+  end
+
+  object :report_result do
+    field :reported, non_null(:boolean)
   end
 
   object :input_error do

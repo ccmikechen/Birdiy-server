@@ -101,6 +101,15 @@ defmodule Birdiy.Timeline do
     Repo.soft_delete(post)
   end
 
+  def increase_post_report_count(%Post{} = post) do
+    increase_post_report_count(post.id)
+  end
+
+  def increase_post_report_count(post_id) do
+    from(p in Post, where: p.id == ^post_id)
+    |> Repo.update_all(inc: [report_count: 1])
+  end
+
   def get_post_photo!(id), do: Repo.get!(PostPhoto, id)
 
   def get_post_photos!(%Post{} = post) do

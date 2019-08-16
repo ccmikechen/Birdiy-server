@@ -260,6 +260,15 @@ defmodule Birdiy.Diy do
     |> Repo.update_all(inc: [view_count: 1])
   end
 
+  def increase_project_report_count(%Project{} = project) do
+    increase_project_report_count(project.id)
+  end
+
+  def increase_project_report_count(project_id) do
+    from(p in Project, where: p.id == ^project_id)
+    |> Repo.update_all(inc: [report_count: 1])
+  end
+
   defp upsert_project_activity_query(multi, project) do
     changeset = Activity.changeset(%Activity{}, %{project_id: project.id})
     Multi.insert(multi, :upsert_project_activity, changeset, on_conflict: :nothing)

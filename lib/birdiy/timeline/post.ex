@@ -9,6 +9,7 @@ defmodule Birdiy.Timeline.Post do
     field :message, :string, size: 1000
     field :related_project_name, :string
     field :related_project_type, :string
+    field :report_count, :integer, default: 0
     belongs_to :author, Accounts.User
     belongs_to :related_project, Diy.Project
     has_one :activity, Timeline.Activity, on_delete: :delete_all
@@ -28,7 +29,13 @@ defmodule Birdiy.Timeline.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:author_id, :related_project_id, :related_project_name, :message])
+    |> cast(attrs, [
+      :author_id,
+      :related_project_id,
+      :related_project_name,
+      :message,
+      :report_count
+    ])
     |> assoc_constraint(:author)
     |> assoc_constraint(:related_project)
     |> put_related_project_type()

@@ -26,6 +26,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
         ExAdmin.Utils.link_to(project.name, "/admin/projects/#{project.id}")
       end)
 
+      column(:report_count)
       column(:topic)
       column(:author)
       column(:introduction)
@@ -78,6 +79,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
         row(:inserted_at)
         row(:published_at)
         row(:deleted_at)
+        row(:report_count)
       end
 
       panel "Materials" do
@@ -167,6 +169,7 @@ defmodule BirdiyWeb.Admin.Diy.Project do
         input(project, :tip, maxlength: 1000)
         input(project, :published_at)
         input(project, :deleted_at)
+        input(project, :report_count)
       end
 
       inputs "Materials" do

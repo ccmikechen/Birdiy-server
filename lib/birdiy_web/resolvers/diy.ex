@@ -110,6 +110,13 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
+  def report_project(_, %{input: %{id: project_id}}, _) do
+    case Diy.increase_project_report_count(project_id) do
+      {1, nil} -> {:ok, %{reported: true}}
+      _ -> {:ok, %{reported: false}}
+    end
+  end
+
   def project_published(project, _, _) do
     {:ok, !is_nil(project.published_at)}
   end

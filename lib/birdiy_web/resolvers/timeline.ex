@@ -75,6 +75,13 @@ defmodule BirdiyWeb.Resolvers.Timeline do
     end
   end
 
+  def report_post(_, %{input: %{id: post_id}}, _) do
+    case Timeline.increase_post_report_count(post_id) do
+      {1, nil} -> {:ok, %{reported: true}}
+      _ -> {:ok, %{reported: false}}
+    end
+  end
+
   def activities(pagination_args, _) do
     Connection.from_query(
       Timeline.activities_query(pagination_args),

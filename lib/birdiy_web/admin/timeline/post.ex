@@ -14,6 +14,7 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
         ExAdmin.Utils.link_to(post.id, "/admin/posts/#{post.id}")
       end)
 
+      column(:report_count)
       column(:message)
       column(:author)
 
@@ -37,6 +38,12 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
     show post do
       attributes_table do
         row(:id)
+
+        row(:global_id, fn post ->
+          global_id = Absinthe.Relay.Node.to_global_id("Post", post.id)
+          ExAdmin.Utils.link_to(global_id, "/post/#{global_id}", target: "_blank")
+        end)
+
         row(:message)
         row(:author)
         row(:related_project_type)
@@ -44,6 +51,7 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
         row(:related_project)
         row(:inserted_at)
         row(:deleted_at)
+        row(:report_count)
       end
 
       panel "Photos" do
@@ -78,6 +86,7 @@ defmodule BirdiyWeb.Admin.Timeline.Post do
 
         input(post, :related_project_id)
         input(post, :related_project_name)
+        input(post, :report_count)
       end
 
       inputs do

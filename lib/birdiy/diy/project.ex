@@ -16,6 +16,7 @@ defmodule Birdiy.Diy.Project do
     field :image, ProjectPhoto.Type
     field :video, :string
     field :view_count, :integer, default: 0
+    field :report_count, :integer, default: 0
     field :published_at, :utc_datetime
     belongs_to :author, Accounts.User
     belongs_to :topic, Diy.ProjectTopic
@@ -75,7 +76,15 @@ defmodule Birdiy.Diy.Project do
 
     project
     |> draft_changeset(attrs)
-    |> cast(attrs, [:deleted_at, :published_at, :introduction, :tip, :source, :video])
+    |> cast(attrs, [
+      :deleted_at,
+      :published_at,
+      :introduction,
+      :tip,
+      :source,
+      :video,
+      :report_count
+    ])
     |> validate_length(:introduction, max: 1000)
     |> validate_length(:tip, max: 1000)
     |> cast_attachments(attrs, [:image])
