@@ -20,7 +20,8 @@ config :birdiy, BirdiyWeb.Endpoint,
 config :birdiy, Birdiy.Scheduler,
   jobs: [
     # Generate sitemap every one hour
-    {"0 * * * *", {BirdiyWeb.Sitemaps, :generate, []}}
+    {"0 * * * *", {BirdiyWeb.Sitemap, :ping_google, []}},
+    {"0 * * * *", {BirdiyWeb.Sitemap, :ping_bing, []}}
   ]
 
 # Configures Elixir's Logger
