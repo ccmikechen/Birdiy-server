@@ -14,7 +14,7 @@ defmodule BirdiyWeb.Endpoint do
     at: "/",
     from: :birdiy,
     gzip: false,
-    only: ~w(css fonts images js favicons favicon.ico robots.txt sitemaps)
+    only: ~w(css fonts images js favicons favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

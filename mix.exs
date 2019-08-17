@@ -25,8 +25,7 @@ defmodule Birdiy.MixProject do
         :runtime_tools,
         :guardian,
         :edeliver,
-        :con_cache,
-        :sitemap
+        :con_cache
       ]
     ]
   end
@@ -87,10 +86,7 @@ defmodule Birdiy.MixProject do
       {:distillery, "~> 2.1", warn_missing: false},
 
       # Admin
-      {:ex_admin, github: "ccmikechen/ex_admin"},
-
-      # SEO
-      {:sitemap, "~> 1.1"}
+      {:ex_admin, github: "ccmikechen/ex_admin"}
     ]
   end
 
