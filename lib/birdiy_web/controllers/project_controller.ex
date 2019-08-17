@@ -21,7 +21,8 @@ defmodule BirdiyWeb.ProjectController do
 
         render(conn, "show.html",
           current_url: "https://birdiy.com" <> current_path(conn, %{}),
-          project: project
+          project: project,
+          video: project.video && Videx.parse(project.video)
         )
 
       _ ->

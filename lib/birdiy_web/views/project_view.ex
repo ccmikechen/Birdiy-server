@@ -39,4 +39,12 @@ defmodule BirdiyWeb.ProjectView do
   def avatar_alt(%Diy.Project{author: %Accounts.User{name: author_name}}) do
     String.first(author_name)
   end
+
+  def video_embed_url(%Videx.Youtube{} = video) do
+    Videx.Youtube.generate(video, :embed)
+  end
+
+  def video_embed_url(%Videx.Vimeo{} = video) do
+    Videx.Vimeo.generate(video, :embed)
+  end
 end

@@ -48,6 +48,7 @@ defmodule Birdiy.MixProject do
       {:con_cache, "~> 0.13"},
       {:quantum, "~> 2.3.4"},
       {:timex, "~> 3.5"},
+      {:videx, "~> 0.2.0"},
 
       # Phoenix & Database
       {:phoenix, "~> 1.4.9"},
