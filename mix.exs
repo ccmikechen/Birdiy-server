@@ -4,7 +4,7 @@ defmodule Birdiy.MixProject do
   def project do
     [
       app: :birdiy,
-      version: "0.0.8",
+      version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -25,8 +25,7 @@ defmodule Birdiy.MixProject do
         :runtime_tools,
         :guardian,
         :edeliver,
-        :con_cache,
-        :sitemap
+        :con_cache
       ]
     ]
   end
@@ -49,6 +48,7 @@ defmodule Birdiy.MixProject do
       {:con_cache, "~> 0.13"},
       {:quantum, "~> 2.3.4"},
       {:timex, "~> 3.5"},
+      {:videx, "~> 0.2.0"},
 
       # Phoenix & Database
       {:phoenix, "~> 1.4.9"},
@@ -87,10 +87,7 @@ defmodule Birdiy.MixProject do
       {:distillery, "~> 2.1", warn_missing: false},
 
       # Admin
-      {:ex_admin, github: "ccmikechen/ex_admin"},
-
-      # SEO
-      {:sitemap, "~> 1.1"}
+      {:ex_admin, github: "ccmikechen/ex_admin"}
     ]
   end
 

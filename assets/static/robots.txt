@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://birdiy.com/sitemaps/sitemap.xml.gz
+Sitemap: https://birdiy.com/sitemap.xml

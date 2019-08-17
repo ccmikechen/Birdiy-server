@@ -48,6 +48,11 @@
       </div>
    </div>
   </div>
+  <%= if @video do %>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe src="<%= video_embed_url(@video) %>" frameborder="0" allowfullscreen></iframe>
+    </div>
+  <% end %>
   <div class="section">
     <div class="section-title">介紹</div>
     <div class="section-content">

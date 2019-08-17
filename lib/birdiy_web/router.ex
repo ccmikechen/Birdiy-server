@@ -11,6 +11,11 @@ defmodule BirdiyWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :xml do
+    plug :accepts, ["xml"]
+    plug :put_resp_content_type, "application/xml"
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug BirdiyWeb.Context
@@ -33,6 +38,11 @@ defmodule BirdiyWeb.Router do
 
     get "/privacy", PrivacyController, :index
     get "/terms", TermsController, :index
+  end
+
+  scope "/", BirdiyWeb do
+    pipe_through :xml
+    get "/sitemap.xml", SitemapController, :index
   end
 
   scope "/admin" do
