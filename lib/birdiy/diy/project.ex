@@ -45,6 +45,12 @@ defmodule Birdiy.Diy.Project do
              where: [deleted_at: nil],
              on_delete: :delete_all
 
+    has_many :comments,
+             Diy.ProjectComment,
+             where: [parent_id: nil],
+             on_replace: :delete,
+             on_delete: :delete_all
+
     many_to_many :favorite_users,
                  Accounts.User,
                  join_through: "user_favorite_projects",

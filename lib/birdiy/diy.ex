@@ -9,7 +9,6 @@ defmodule Birdiy.Diy do
 
   alias Ecto.Multi
   alias Birdiy.Repo
-  alias Birdiy.Helpers
 
   alias Birdiy.ProjectPhoto
   alias Birdiy.ProjectFile
@@ -21,7 +20,7 @@ defmodule Birdiy.Diy do
     ProjectMaterial,
     ProjectFileResource,
     ProjectMethod,
-    ProjectView
+    ProjectComment
   }
 
   alias Birdiy.Accounts
@@ -290,6 +289,41 @@ defmodule Birdiy.Diy do
 
   def project_method_image_url(%ProjectMethod{} = method) do
     ProjectPhoto.url_from(method)
+  end
+
+  def list_project_comments do
+    Repo.all(ProjectComment)
+  end
+
+  def get_project_comment!(id), do: Repo.get!(ProjectComment, id)
+
+  def create_project_comment(%User{} = user, attrs \\ %{}) do
+    %ProjectComment{user: user}
+    |> ProjectComment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_project_comment(%ProjectComment{} = project_comment, attrs) do
+    project_comment
+    |> ProjectComment.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_project_comment(%ProjectComment{} = project_comment) do
+    Repo.delete(project_comment)
+  end
+
+  def change_project_comment(%ProjectComment{} = project_comment) do
+    ProjectComment.changeset(project_comment, %{})
+  end
+
+  def increase_project_comment_report_count(%ProjectComment{} = project_comment) do
+    increase_project_comment_report_count(project_comment.id)
+  end
+
+  def increase_project_comment_report_count(project_comment_id) do
+    from(p in ProjectComment, where: p.id == ^project_comment_id)
+    |> Repo.update_all(inc: [report_count: 1])
   end
 
   def data do

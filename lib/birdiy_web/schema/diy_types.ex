@@ -140,6 +140,10 @@ defmodule BirdiyWeb.Schema.DiyTypes do
       resolve(&Resolvers.Diy.related_posts_for_project/2)
     end
 
+    connection field :comments, node_type: :project_comment do
+      resolve(&Resolvers.Diy.comments_for_project/2)
+    end
+
     field :related_post_count, :integer do
       resolve(&Resolvers.Diy.project_related_post_count/3)
     end
@@ -151,10 +155,6 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :like_count, :integer do
       resolve(&Resolvers.Diy.project_like_count/3)
     end
-  end
-
-  input_object :project_input do
-    field :id, non_null(:id)
   end
 
   input_object :create_project_input do
@@ -203,5 +203,36 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     field :content, non_null(:string)
     field :image, :upload
     field :order, :integer
+  end
+
+  node object(:project_comment) do
+    field :message, non_null(:string)
+    field :project, non_null(:project)
+    field :user, non_null(:user)
+    field :parent, :project_comment
+    field :report_count, non_null(:integer)
+
+    connection field :replies, node_type: :project_comment do
+      resolve(&Resolvers.Diy.replies_for_project_comment/2)
+    end
+  end
+
+  input_object :project_comment_input do
+    field :id, non_null(:id)
+  end
+
+  input_object :create_project_comment_input do
+    field :message, non_null(:string)
+    field :project_id, non_null(:id)
+    field :parent_id, :id
+  end
+
+  input_object :edit_project_comment_input do
+    field :id, non_null(:id)
+    field :message, non_null(:string)
+  end
+
+  object :project_comment_result do
+    field :project_comment, non_null(:project_comment)
   end
 end

@@ -3,15 +3,20 @@ defmodule BirdiyWeb.Schema.Middleware.AuthUser do
 
   alias Absinthe.Resolution
   alias BirdiyWeb.Errors
+  alias Birdiy.Accounts.User
 
-  def call(resolution, config) do
+  def call(%{context: %{current_user: %User{} = current_user}} = resolution, config) do
     arguments = resolution.arguments
-    user_id = Map.get(resolution.context[:current_user], :id)
+    user_id = Map.get(current_user, :id)
 
     case auth(user_id, arguments, config) do
       :ok -> resolution
       :error -> Resolution.put_result(resolution, Errors.permission_denied())
     end
+  end
+
+  def call(resolution, _) do
+    Resolution.put_result(resolution, Errors.unauthorized())
   end
 
   defp auth(user_id, arguments, [{arg_field, arg} | rest]) do
@@ -25,6 +30,10 @@ defmodule BirdiyWeb.Schema.Middleware.AuthUser do
 
   defp auth(_, _, []) do
     :ok
+  end
+
+  defp auth(_, nil, _) do
+    :error
   end
 
   defp auth(user_id, arg, field) do

@@ -46,10 +46,6 @@ defmodule BirdiyWeb.Schema.TimelineTypes do
     field :inserted_at, :datetime
   end
 
-  input_object :post_input do
-    field :id, non_null(:id)
-  end
-
   input_object :create_post_input do
     field :related_project_type, non_null(:related_project_type)
     field :related_project_id, :id

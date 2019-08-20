@@ -62,4 +62,16 @@ defmodule BirdiyWeb.Errors do
   def delete_post do
     {:error, code: 3003, message: "Can't delete post"}
   end
+
+  def create_project_comment do
+    {:error, code: 4001, message: "Can't create project comment"}
+  end
+
+  def update_project_comment do
+    {:error, code: 4002, message: "Can't update project comment"}
+  end
+
+  def delete_project_comment do
+    {:error, code: 4003, message: "Can't delete project comment"}
+  end
 end
