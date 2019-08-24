@@ -295,6 +295,18 @@ defmodule Birdiy.Diy do
     Repo.all(ProjectComment)
   end
 
+  def project_comments_query(args), do: project_comments_query(ProjectComment, args)
+
+  def project_comments_query(query, args) do
+    Enum.reduce(args, query, fn
+      {:order, order}, query ->
+        query |> order_by(desc: ^order)
+
+      _, query ->
+        query
+    end)
+  end
+
   def get_project_comment!(id), do: Repo.get!(ProjectComment, id)
 
   def create_project_comment(%User{} = user, attrs \\ %{}) do

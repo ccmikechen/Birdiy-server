@@ -218,8 +218,9 @@ defmodule BirdiyWeb.Resolvers.Diy do
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
-  def comments_for_project(pagination_args, %{source: project}) do
+  def comments_for_project(project, pagination_args, _) do
     Ecto.assoc(project, :comments)
+    |> Diy.project_comments_query(pagination_args)
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
@@ -233,6 +234,14 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def project_like_count(project, _, _) do
     {:ok, Diy.count_project_likes!(project)}
+  end
+
+  def project_comment(_, %{id: id}, %{context: %{loader: loader}}) do
+    loader
+    |> Dataloader.load(Diy, Diy.ProjectComment, id)
+    |> on_load(fn loader ->
+      {:ok, Dataloader.get(loader, Diy, Diy.ProjectComment, id)}
+    end)
   end
 
   def create_project_comment(_, %{input: params}, %{context: %{current_user: current_user}}) do
@@ -272,8 +281,21 @@ defmodule BirdiyWeb.Resolvers.Diy do
     end
   end
 
-  def replies_for_project_comment(pagination_args, %{source: project_comment}) do
+  def project_comment_project(project_comment, _, _) do
+    Helpers.batch_by_id(Diy.Project, project_comment.project_id)
+  end
+
+  def project_comment_parent(project_comment, _, _) do
+    Helpers.batch_by_id(Diy.ProjectComment, project_comment.parent_id)
+  end
+
+  def project_comment_user(project_comment, _, _) do
+    Helpers.batch_by_id(Accounts.User, project_comment.user_id)
+  end
+
+  def replies_for_project_comment(project_comment, pagination_args, _) do
     Ecto.assoc(project_comment, :replies)
+    |> Diy.project_comments_query(pagination_args)
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 end

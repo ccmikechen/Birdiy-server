@@ -141,7 +141,9 @@ defmodule BirdiyWeb.Schema.DiyTypes do
     end
 
     connection field :comments, node_type: :project_comment do
-      resolve(&Resolvers.Diy.comments_for_project/2)
+      arg(:order, type: :rank_order, default_value: :inserted_at)
+
+      resolve(&Resolvers.Diy.comments_for_project/3)
     end
 
     field :related_post_count, :integer do
@@ -207,13 +209,26 @@ defmodule BirdiyWeb.Schema.DiyTypes do
 
   node object(:project_comment) do
     field :message, non_null(:string)
-    field :project, non_null(:project)
-    field :user, non_null(:user)
-    field :parent, :project_comment
+
+    field :project, non_null(:project) do
+      resolve(&Resolvers.Diy.project_comment_project/3)
+    end
+
+    field :parent, :project_comment do
+      resolve(&Resolvers.Diy.project_comment_parent/3)
+    end
+
     field :report_count, non_null(:integer)
+    field :inserted_at, :datetime
+
+    field :user, non_null(:user) do
+      resolve(&Resolvers.Diy.project_comment_user/3)
+    end
 
     connection field :replies, node_type: :project_comment do
-      resolve(&Resolvers.Diy.replies_for_project_comment/2)
+      arg(:order, type: :rank_order, default_value: :inserted_at)
+
+      resolve(&Resolvers.Diy.replies_for_project_comment/3)
     end
   end
 

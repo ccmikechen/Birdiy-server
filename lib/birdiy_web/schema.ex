@@ -125,6 +125,13 @@ defmodule BirdiyWeb.Schema do
       resolve(&Resolvers.Diy.project/3)
     end
 
+    field :project_comment, :project_comment do
+      arg(:id, non_null(:id))
+
+      middleware(ParseIDs, id: :project_comment)
+      resolve(&Resolvers.Diy.project_comment/3)
+    end
+
     connection field :all_posts, node_type: :post do
       arg(:order, type: :post_order, default_value: :newest)
 
@@ -434,6 +441,7 @@ defmodule BirdiyWeb.Schema do
 
   enum :rank_order do
     value(:name)
+    value(:inserted_at)
   end
 
   enum :result do
