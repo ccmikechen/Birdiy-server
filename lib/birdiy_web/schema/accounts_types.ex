@@ -159,10 +159,6 @@ defmodule BirdiyWeb.Schema.AccountsTypes do
     field :viewer, non_null(:viewer)
   end
 
-  input_object :user_input do
-    field :id, non_null(:id)
-  end
-
   object :follow_user_result do
     field :following_user, non_null(:user)
     field :followed_user, non_null(:user)

@@ -218,6 +218,12 @@ defmodule BirdiyWeb.Resolvers.Diy do
     |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 
+  def comments_for_project(project, pagination_args, _) do
+    Ecto.assoc(project, :comments)
+    |> Diy.project_comments_query(pagination_args)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
+  end
+
   def project_related_post_count(project, _, _) do
     {:ok, Diy.count_project_related_posts!(project)}
   end
@@ -228,5 +234,68 @@ defmodule BirdiyWeb.Resolvers.Diy do
 
   def project_like_count(project, _, _) do
     {:ok, Diy.count_project_likes!(project)}
+  end
+
+  def project_comment(_, %{id: id}, %{context: %{loader: loader}}) do
+    loader
+    |> Dataloader.load(Diy, Diy.ProjectComment, id)
+    |> on_load(fn loader ->
+      {:ok, Dataloader.get(loader, Diy, Diy.ProjectComment, id)}
+    end)
+  end
+
+  def create_project_comment(_, %{input: params}, %{context: %{current_user: current_user}}) do
+    case Diy.create_project_comment(current_user, params) do
+      {:ok, project_comment} ->
+        {:ok, %{project_comment: project_comment}}
+
+      _ ->
+        Errors.create_project_comment()
+    end
+  end
+
+  def edit_project_comment(_, %{input: params}, _) do
+    case Diy.update_project_comment(params[:project_comment], params) do
+      {:ok, project_comment} ->
+        {:ok, %{project_comment: project_comment}}
+
+      _ ->
+        Errors.update_project_comment()
+    end
+  end
+
+  def delete_project_comment(_, %{input: params}, _) do
+    case Diy.delete_project_comment(params[:project_comment]) do
+      {:ok, project_comment} ->
+        {:ok, %{project_comment: project_comment}}
+
+      _ ->
+        Errors.delete_project_comment()
+    end
+  end
+
+  def report_project_comment(_, %{input: %{id: project_comment_id}}, _) do
+    case Diy.increase_project_comment_report_count(project_comment_id) do
+      {1, nil} -> {:ok, %{reported: true}}
+      _ -> {:ok, %{reported: false}}
+    end
+  end
+
+  def project_comment_project(project_comment, _, _) do
+    Helpers.batch_by_id(Diy.Project, project_comment.project_id)
+  end
+
+  def project_comment_parent(project_comment, _, _) do
+    Helpers.batch_by_id(Diy.ProjectComment, project_comment.parent_id)
+  end
+
+  def project_comment_user(project_comment, _, _) do
+    Helpers.batch_by_id(Accounts.User, project_comment.user_id)
+  end
+
+  def replies_for_project_comment(project_comment, pagination_args, _) do
+    Ecto.assoc(project_comment, :replies)
+    |> Diy.project_comments_query(pagination_args)
+    |> Connection.from_query(&Repo.all/1, pagination_args)
   end
 end

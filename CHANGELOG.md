@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2019-08-31
+### Added
+- Project comment.
+- .gitattributes file.
+
 ## [0.1.0] - 2019-08-17
 ### Added
 - Sitemap controller.
@@ -60,7 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First deployment version of this project.
 - This CHANGELOG file even this is not a open source project.
 
-[Unreleased]: https://github.com/ccmikechen/Birdiy-server/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/ccmikechen/Birdiy-server/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/ccmikechen/Birdiy-server/releases/tag/v0.1.1
 [0.1.0]: https://github.com/ccmikechen/Birdiy-server/releases/tag/v0.1.0
 [0.0.8]: https://github.com/ccmikechen/Birdiy-server/releases/tag/v0.0.8
 [0.0.7]: https://github.com/ccmikechen/Birdiy-server/releases/tag/v0.0.7
